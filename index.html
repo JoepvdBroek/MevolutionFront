@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mevolution</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div id="wrapper">
+        <div id="navigation-wrapper">
+            <div class="toggle-navigation">
+                <i class="fa"></i>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        <img class="big" src="/assets/img/logo.jpg" alt="Mevolution" />
+                        <img class="small" src="/assets/img/logo-small.png" alt="M" />
+                    </a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+                <li class="active">
+                    <a href="#"><i class="fa fa-pie-chart"></i> Ontwikkelruimte</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-briefcase"></i> Portfolio</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-list-alt"></i> Verzamelbak</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-question"></i> Development Spiral</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
+                </li>
+            </ul>
+            <div class="footer">
+                &copy; MeVOLUTION 2015
+            </div>
+        </div>
+
+        <div class="container-fluid content mv-spiral zoomViewport">
+            <div class="zoomContainer">
+                <div class="row mv-row">
+                    <div class="col-xs-6 mv-spiral-section mv-yellow zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                    <div class="col-xs-6 mv-spiral-section mv-blue zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                </div>
+                <div class="row mv-row">
+                    <div class="col-xs-6 mv-spiral-section mv-red zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                    <div class="col-xs-6 mv-spiral-section mv-green zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 col-xs-offset-5 mv-toolbar unfolded">
+                    <div class="collapse-toolbar">
+                        <a href="#"><i class="fa"></i></a>
+                    </div>
+                    <ul>
+                        <li class="mv-add" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Voeg item toe'>
+                            <a href="#"><i class="fa fa-plus"></i></a>
+                        </li>
+                        <li class="mv-zoom-yellow" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het gele gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-blue" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het blauwe gedeelte'>
+                            <a href="#" class="zoomButton" data-root=".mv-spiral"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-red" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het rode gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-green" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het groene gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-help" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Help'>
+                            <a href="#"><i class="fa fa-question"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="/assets/js/lib/jquery.zoomooz.js"></script>
+    <script src="/assets/js/Main.js"></script>
+    <script src="http://avans.milananas.nl:4002/livereload.js"></script>
+</body>
+</html>
