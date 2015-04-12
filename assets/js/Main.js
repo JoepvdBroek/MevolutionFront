@@ -18,6 +18,18 @@ var Mevolution =
                 {
                     button: '.mv-zoom-yellow > a',
                     target: '.mv-yellow'
+                },
+                {
+                    button: '.mv-zoom-blue > a',
+                    target: '.mv-blue'
+                },
+                {
+                    button: '.mv-zoom-red > a',
+                    target: '.mv-red'
+                },
+                {
+                    button: '.mv-zoom-green > a',
+                    target: '.mv-green'
                 }
             ]
         }
@@ -54,11 +66,20 @@ var Mevolution =
         {
             var button = this._settings.toolbar.zoomButtons[key];
 
-            $(button.button).click(function()
-           {
-               $(button.target).click();
-           });
+            this.bindZoomButtonClick(button);
         }
+    },
+
+    bindZoomButtonClick: function(button)
+    {
+        $(button.button).click(function()
+        {
+            setTimeout(function()
+            {
+                $(button.target).trigger('click');
+
+            }, 0);
+       });
     },
 
     navigation: function()
