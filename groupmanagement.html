@@ -59,7 +59,7 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="title-header col-md-10">
-                    <h1>Gebruiker beheer</h1>
+                    <h1>Groepen beheer</h1>
                     <div class="divider"></div>
                 </div>
                 <div class="col-md-1"></div>
@@ -68,67 +68,39 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div class="add-student">
-                        <a class="btn btn-success" href="userform.html" role="button">Voeg gebruiker toe <span class="glyphicon glyphicon-plus"></span></a>
+                        <a class="btn btn-success" href="groupform.html" role="button">Voeg groep toe <span class="glyphicon glyphicon-plus"></span></a>
                     </div>
                     <table class="student-table table table-striped table-bordered" data-height="299" data-sort-name="name" data-sort-order="desc">
                         <thead>
                             <tr>
-                                <th data-field="leerlingnr" data-align="right" data-sortable="true">Gebruiker nr.</th>
-                                <th data-field="naam" data-align="right" data-sortable="true">Naam</th>
-                                <th data-field="geboortedatum" data-align="center" data-sortable="true">Geboortedatum</th>
-                                <th data-field="geboortedatum" data-align="center" data-sortable="true">Rol</th>
+                                <th data-field="leerlingnr" data-align="right" data-sortable="true">Groep naam</th>
+                                <th data-field="naam" data-align="right" data-sortable="true">Jaar</th>
                                 <th data-field="controls" data-sortable="false"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>123456</td>
-                                <td>Henk Jansen</td>
+                                <td>Groep 1</td>
                                 <td>13-09-2001</td>
-                                <td>Leerling</td>
                                 <td class="last">
                                     <a href="#" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a href="userform.html"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="groupform.html"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                             </tr>
                             <tr>
-                                <td>123457</td>
-                                <td>Peter Koppens</td>
+                                <td>Groep 2</td>
                                 <td>13-09-2002</td>
-                                <td>Leerling</td>
                                 <td class="last">
                                     <a href="#" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a href="userform.html"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="groupform.html"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                             </tr>
                             <tr>
-                                <td>123458</td>
-                                <td>Annelies van Dijk</td>
-                                <td>13-09-2001</td>
-                                <td>Leerling</td>
-                                <td class="last">
-                                    <a href="#" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a href="userform.html"><span class="glyphicon glyphicon-pencil"></span></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>123459</td>
-                                <td>Hennie Kampers</td>
-                                <td>13-09-2002</td>
-                                <td>Leerling</td>
-                                <td class="last">
-                                    <a href="#" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a href="userform.html"><span class="glyphicon glyphicon-pencil"></span></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>123460</td>
-                                <td>Sjaan Vesters</td>
+                                <td>Groep 3</td>
                                 <td>13-09-2000</td>
-                                <td>Leerling</td>
                                 <td class="last">
                                     <a href="#" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-remove"></span></a>
-                                    <a href="userform.html"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="groupform.html"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                             </tr>
 
@@ -145,10 +117,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Verwijder leerling</h4>
+            <h4 class="modal-title">Verwijder groep</h4>
           </div>
           <div class="modal-body">
-            <p>Weet u zeker dat u deze leerling wilt verwijderen?</p>
+            <p>Weet u zeker dat u deze groep wilt verwijderen?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Annuleren</button>
