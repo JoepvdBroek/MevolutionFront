@@ -137,14 +137,16 @@
                     <div class="row"></div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="exampleInputFile">Pasfoto opslaan</label><br />
+                                <label for="exampleInputFile">Pasfoto</label><br />
                                 <img src="assets/img/placeholder-photo.png" alt="Pasfoto" />
                                 <br /><br />
-                                <div class="btn" onclick="document.getElementById('photo-file').click();">
-                                    Kies foto
+                                <div id="uploadbutton">
+                                    <div class="btn" onclick="document.getElementById('photo-file').click();">
+                                        Kies foto
+                                    </div>
+                                    <input type="file" id="photo-file">
+                                    <p class="help-block">Kies een pasfoto met de afmetingen 150x240 pixels.</p>
                                 </div>
-                                <input type="file" id="photo-file">
-                                <p class="help-block">Kies een pasfoto met de afmetingen 150x240 pixels.</p>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -168,6 +170,8 @@
                                 <label for="zipcode">Postcode</label>
                                 <input type="text" class="form-control" disabled="disabled" id="zipcode" value="5051WZ">
                             </div>
+
+                            <a style="margin-top: 20px;" href="password.html" class="btn btn-default"> Wijzig wachtwoord </a>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -186,9 +190,9 @@
                                 <label for="phonenumber2">Telefoon nummer 2</label>
                                 <input type="text" class="form-control" disabled="disabled" id="phonenumber2" >
                             </div>
-                            <div class="form-group">
-                                <button type="submit" id="editprofile-button" class="btn btn-default">Wijzig gegevens</button>
-                            </div>
+
+                            <button type="submit" id="editprofile-button" class="btn btn-default">Wijzig gegevens</button>
+                            
                         </div>
                     </form>
                 </div>
@@ -206,23 +210,26 @@
         var editmode = false;
 
         $(document).ready(function() {
+            $('#uploadbutton').hide();
+
             $(document).on('click', '#editprofile-button', function(event){
                 event.preventDefault();
 
                 if(editmode){
                     $(".form-control").prop('disabled', true);
+                    $('#uploadbutton').hide();
                     $('#editprofile-button').html("Wijzig gegevens");
                     editmode = false;
                 } else {
                     $(".form-control").prop('disabled', false);
+                    $('#uploadbutton').show();
                     $('#editprofile-button').html("Opslaan");
                     editmode = true;
                 }
                 
             });
 
-
-        } );
+        });
     </script>
     
 </body>
