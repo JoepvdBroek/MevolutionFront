@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/canvas.css">
+    <link rel="stylesheet" href="assets/css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -55,9 +56,38 @@
         </div>
     </div>
 
-    <div class="container-fluid content">
-
-    </div>
+    <div class="container-fluid content mv-spiral zoomViewport">
+            <div class="zoomContainer">
+                
+            </div>
+            <div class="row">
+                <div class="col-xs-2 col-xs-offset-5 mv-toolbar unfolded">
+                    <div class="collapse-toolbar">
+                        <a href="#"><i class="fa"></i></a>
+                    </div>
+                    <ul>
+                        <li class="mv-add" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Voeg item toe'>
+                            <a href="#"><i class="fa fa-plus"></i></a>
+                        </li>
+                        <li class="mv-zoom-yellow" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het gele gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-blue" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het blauwe gedeelte'>
+                            <a href="#" class="zoomButton" data-root=".mv-spiral"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-red" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het rode gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-green" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het groene gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-help" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Help'>
+                            <a href="#"><i class="fa fa-question"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
