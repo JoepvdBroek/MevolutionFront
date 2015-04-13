@@ -1,0 +1,60 @@
+@import "general.less";
+
+#wrapper > .content
+{
+    padding-left: 70px;
+
+    > .row
+    {
+        border-radius: 10px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        overflow: hidden;
+
+        h2
+        {
+            background-color: #eee;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .items
+        {
+            padding: 25px;
+            text-align: center;
+
+            .item
+            {
+                display: inline-block;
+                float: none;
+                text-align: left;
+                margin-right: -4px;
+                padding: 10px;
+
+                .content
+                {
+                    border-radius: 5px;
+                    height: 100%;
+                    width: 100%;
+                    border: 1px solid #eee;
+                    background-color: inherit;
+                    padding: 10px;
+
+                    &:hover
+                    {
+                        cursor: pointer;
+                        background-color: #eee;
+                    }
+
+                    h3
+                    {
+                        text-align: center;
+                        margin: 0 0 15px 0;
+                        padding-bottom: 5px;
+                        border-bottom: 1px solid #eee;
+                    }
+                }
+            }
+        }
+    }
+}
