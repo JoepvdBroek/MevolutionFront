@@ -18,47 +18,6 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
-<style>
-#wrapper {
-    background-color: #2B99CE;
-    color: #FFF;
-}
-
-.form-control{
-    width:100%;
-    border: 1px solid #86C5E3;
-    height: 34px;
-    color: #257CA6;
-    background: #FFF;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-}
-
-.btn{
-    border: 1px solid #86C5E3;
-    height: 34px;
-    color: #257CA6;
-    background: #FFF;
-    outline: 0;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-}
-
-#change-password-button{
-    margin-top: 24px;
-    float: right;
-}
-
-#back-button {
-    margin-top: 24px;
-    float: left;
-}
-
-</style>
-
 <body>
     <div id="wrapper">
         <div id="navigation-wrapper">
@@ -75,7 +34,7 @@
                 <li>
                     <a href="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="develpmentcircle.html"><i class="fa fa-pie-chart"></i> Ontwikkelruimte</a>
                 </li>
                 <li>
@@ -96,43 +55,54 @@
             </div>
         </div>
 
-        <div class="container-fluid content">
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="title-header col-md-4">
-                    <h1>Wijzig wachtwoord</h1>
-                    <div class="divider"></div>
+        <div class="container-fluid content mv-spiral zoomViewport">
+            <div class="zoomContainer">
+                <div class="row mv-row">
+                    <div class="col-xs-6 mv-spiral-section mv-yellow zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                    <div class="col-xs-6 mv-spiral-section mv-blue zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="row mv-row">
+                    <div class="col-xs-6 mv-spiral-section mv-red zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                    <div class="col-xs-6 mv-spiral-section mv-green zoomTarget" data-targetsize="0.95" data-closeclick="true">
+
+                    </div>
+                </div>
             </div>
-            <div class="row "> 
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <form>
-                    <div class="row"></div>
-                       <!--  <div class="col-md-1"></div> -->
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="old-password">Oud wachtwoord</label>
-                                <input type="password" class="form-control" id="old-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="new-password">Nieuw wachtwoord</label>
-                                <input type="password" class="form-control" id="new-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="repeat-password">Herhaal nieuw wachtwoord</label>
-                                <input type="password" class="form-control" id="repeat-password">
-                            </div>
-                            <a class="btn btn-default" id="back-button" href="profile.html"><span class="glyphicon glyphicon-chevron-left"></span> Ga terug</a>
-                            <button type="submit" id="change-password-button" class="btn btn-default">Wijzig</button>
-                        </div>
-                        <div class="col-md-4"></div>
-                    </form>
+            <div class="row">
+                <div class="col-xs-2 col-xs-offset-5 mv-toolbar unfolded">
+                    <div class="collapse-toolbar">
+                        <a href="#"><i class="fa"></i></a>
+                    </div>
+                    <ul>
+                        <li class="mv-add" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Voeg item toe'>
+                            <a href="#"><i class="fa fa-plus"></i></a>
+                        </li>
+                        <li class="mv-zoom-yellow" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het gele gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-blue" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het blauwe gedeelte'>
+                            <a href="#" class="zoomButton" data-root=".mv-spiral"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-red" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het rode gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-zoom-green" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het groene gedeelte'>
+                            <a href="#"><i class="fa fa-square"></i></a>
+                        </li>
+                        <li class="mv-help" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Help'>
+                            <a href="#"><i class="fa fa-question"></i></a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-md-4"></div>
             </div>
         </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
@@ -140,6 +110,5 @@
     <script src="assets/js/lib/jquery.zoomooz.js"></script>
     <script src="assets/js/Main.js"></script>
     <script src="http://avans.milananas.nl:4002/livereload.js"></script>
-    
 </body>
 </html>

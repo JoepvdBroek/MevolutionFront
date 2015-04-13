@@ -18,89 +18,239 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
+<style>
+#wrapper {
+    background-color: #2B99CE;
+}
+
+#wrapper a {
+    color: #FFF;
+}
+
+#login-header .circle {
+    border-radius: 50%;
+    width:250px;
+    height:250px;
+    margin: 100px auto -350px;
+    margin-top: 100px;
+    /* To ratate */
+    /*-webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);*/
+
+    -moz-box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);
+}
+
+#login-header #circle-container {
+    width:250px;
+    height:250px;
+    margin: auto;
+    margin-top: 100px;
+
+    /*-moz-box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 60px 70px rgba(255, 255, 255, 0.4);*/
+}
+.quarter{width:125px;height:125px}
+.top-left{border-top-left-radius:125px;background:#FDCC02;float:left}
+.top-right{border-top-right-radius:125px;background:#2B99CE;float:right}
+.bottom-left{border-bottom-left-radius:125px;background:#CB1502;float:left}
+.bottom-right{border-bottom-right-radius:125px;background:#9FCD11;float:right}
+
+#login-header #overlay {
+    position: relative;
+    background: #FFF;
+    width: 550px;
+    height: 125px;
+    margin: auto;
+    margin-top: -185px;
+    box-shadow: 1px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+#login-header #overlay img {
+    width: 86%;
+    margin: 10px 7%;
+}
+
+#loginform-wrapper{
+    position: relative;
+    width: 300px;
+    margin: auto;
+    margin-top: 140px;
+}
+
+#input-username,
+#input-password,
+#submit-login{
+    width:100%;
+    padding: 6px 8px;
+    border: 1px solid #86C5E3;
+    height: 34px;
+    color: #257CA6;
+    background: #FFF;
+    outline: 0;
+}
+
+#input-username{
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom: none;
+}
+
+#input-password{
+    -webkit-border-bottom-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -moz-border-radius-bottomright: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+#left,
+#right{
+    position: absolute;
+    z-index: 100;
+    width: 7px;
+    height: 3px;
+    background: #FFF;
+}
+
+#left{
+    left: 1px;
+    top: 32px;
+}
+
+#right{
+    right: 1px;
+    top: 32px;
+}
+
+#submit-login{
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin-top: 20px;
+}
+
+#information-wrapper{
+    color: #FFF;
+    width: 300px;
+    padding: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+}
+
+#information-wrapper a {
+    color: #FFF;
+}
+
+#nav-wrapper {
+    color: #FFF;
+    width: 300px;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+}
+
+#nav-list {
+    list-style-type: none;
+    float: right;
+}
+
+#nav-list li{
+    line-height: 40px;
+}
+
+#nav-list li a i{
+    font-size: 20px;
+    padding: 0px 10px;
+    width: 40px;
+    text-align: center;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #AAC4D5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #AAC4D5;
+   opacity: 1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #AAC4D5;
+   opacity: 1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color: #AAC4D5;
+}
+
+.clearer {
+    clear: both;
+}
+</style>
+
 <body>
     <div id="wrapper">
-        <div id="navigation-wrapper">
-            <div class="toggle-navigation">
-                <i class="fa"></i>
+        <div id="login-header">
+            <!-- <img id="header-image" src="assets/img/login-header.png" alt="Mevolution" />  -->
+            <div class="circle"></div>
+            <div id="circle-container">
+                <div class="quarter top-left"></div>
+                <div class="quarter top-right"></div>
+                <div class="quarter bottom-left"></div>
+                <div class="quarter bottom-right"></div>
             </div>
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        <img class="big" src="assets/img/logo.jpg" alt="Mevolution" />
-                        <img class="small" src="assets/img/logo-small.png" alt="M" />
-                    </a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
-                </li>
-                <li class="active">
-                    <a href="#"><i class="fa fa-pie-chart"></i> Ontwikkelruimte</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-briefcase"></i> Portfolio</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-list-alt"></i> Verzamelbak</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-question"></i> Development Spiral</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
-                </li>
-            </ul>
-            <div class="footer">
-                &copy; MeVOLUTION 2015
+            <div class="clearer"></div>
+            <div id="overlay">
+                <img id="header-image" src="assets/img/title.jpg" alt="Mevolution" />
             </div>
         </div>
 
-        <div class="container-fluid content mv-spiral zoomViewport">
-            <div class="zoomContainer">
-                <div class="row mv-row">
-                    <div class="col-xs-6 mv-spiral-section mv-yellow zoomTarget" data-targetsize="0.95" data-closeclick="true">
+        <div id="loginform-wrapper">
+            <input id="input-username" type="text" placeholder="Gebruikersnaam"/>
+            <input id="input-password" type="password" placeholder="Wachtwoord"/>
 
-                    </div>
-                    <div class="col-xs-6 mv-spiral-section mv-blue zoomTarget" data-targetsize="0.95" data-closeclick="true">
+            <div id="left"></div>
+            <div id="right"></div>
 
-                    </div>
-                </div>
-                <div class="row mv-row">
-                    <div class="col-xs-6 mv-spiral-section mv-red zoomTarget" data-targetsize="0.95" data-closeclick="true">
+            <a href="dashboard.html"><input id="submit-login" type="submit" value="Inloggen"/></a>
+        </div>
 
-                    </div>
-                    <div class="col-xs-6 mv-spiral-section mv-green zoomTarget" data-targetsize="0.95" data-closeclick="true">
+        <div id="information-wrapper">
+            <p><b>ServiceDesk:</b></br>
+            t  <a href="tel:31204084933">+31 20 408 49 33</a></br>
+            e   <a href="mailto:servicedesk@me-volution.net">servicedesk@me-volution.net</a></p>
+             
+            <p><b>D.N.R. B.V.</b></br>
+            Lisoddelaan 61</br>
+            1087 KB Amsterdam</br>
+            The Netherlands</p>
 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2 col-xs-offset-5 mv-toolbar unfolded">
-                    <div class="collapse-toolbar">
-                        <a href="#"><i class="fa"></i></a>
-                    </div>
-                    <ul>
-                        <li class="mv-add" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Voeg item toe'>
-                            <a href="#"><i class="fa fa-plus"></i></a>
-                        </li>
-                        <li class="mv-zoom-yellow" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het gele gedeelte'>
-                            <a href="#"><i class="fa fa-square"></i></a>
-                        </li>
-                        <li class="mv-zoom-blue" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het blauwe gedeelte'>
-                            <a href="#" class="zoomButton" data-root=".mv-spiral"><i class="fa fa-square"></i></a>
-                        </li>
-                        <li class="mv-zoom-red" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het rode gedeelte'>
-                            <a href="#"><i class="fa fa-square"></i></a>
-                        </li>
-                        <li class="mv-zoom-green" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Zoom in naar het groene gedeelte'>
-                            <a href="#"><i class="fa fa-square"></i></a>
-                        </li>
-                        <li class="mv-help" data-toggle="tooltip" title='<i class="fa fa-question-circle"></i> Help'>
-                            <a href="#"><i class="fa fa-question"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <p><b>Informatie:</b></br>
+            Tom Oosterhuis, mevolutionair</br>
+            m  <a href="tel:31629516941">+31 6 2 951 6 941</a></br>
+            e   <a href="mailto:tom@me-volution.net">tom@me-volution.net</a></p>
+
+            <p><b>Gerleen Balstra, mevolutionair</b></br>
+            m  <a href="tel:31653596711">+31 6 53 59 67 11</a></br>
+            e   <a href="mailto:gerleen@me-volution.net">gerleen@me-volution.net</a></p>
+        </div>
+
+        <div id="nav-wrapper">
+            <ul id="nav-list">
+                <li><a href="#">Development Spiral <i class="fa fa-question"></i></a></li>
+                <li><a href="#">Over MeVOLUTION <i class="fa fa-support"></i></a></li>
+            </ul>
         </div>
     </div>
 
