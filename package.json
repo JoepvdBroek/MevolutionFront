@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "devDependencies":
+  {
+    "gulp": "^3.8.8",
+    "gulp-less": "*",
+    "gulp-rename": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-autoprefixer": "*",
+    "tiny-lr": "*",
+    "connect-livereload": "*"
+  }
+}
