@@ -2,6 +2,8 @@
 
 @section('content')
 
-<p>hello</p>
+<div ng-controller="ModeratorController">
+	[[ testvar ]]
+</div>
 
 @endsection
