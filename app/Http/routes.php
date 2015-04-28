@@ -12,3 +12,5 @@
 */
 
 Route::controller('/canvas', 'CanvasController');
+
+Route::resource('/moderator', 'ModeratorController');
