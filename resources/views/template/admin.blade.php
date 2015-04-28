@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="mevolution-app">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,8 +72,9 @@
 
 @if (env('APP_DEBUG') == true)
 
-    <script src="/dev/js/jquery-bootstrap-angular.js"></script>
+    <script src="dev/js/jquery-bootstrap-angular.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
+    <script src="dev/js/angular.js"></script>
 
     @yield('script-debug')
 
