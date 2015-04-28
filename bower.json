@@ -7,6 +7,8 @@
         "datatables": "latest",
         "bootstrap-wysihtml5": "latest",
         "bootstrap-select": "latest",
-        "datetimepicker": "latest"
+        "datetimepicker": "latest",
+        "angular": "latest",
+        "zoomooz": "latest"
     }
 }

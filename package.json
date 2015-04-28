@@ -7,6 +7,13 @@
     "gulp-rename": "*",
     "gulp-sourcemaps": "*",
     "gulp-autoprefixer": "*",
+    "gulp-minify": "*",
+    "gulp-uglify": "*",
+    "gulp-concat": "*",
+    "gulp-coffee": "*",
+    "gulp-newer": "*",
+    "gulp-imagemin": "*",
+    "gulp-minify-css": "*",
     "tiny-lr": "*",
     "connect-livereload": "*"
   }
