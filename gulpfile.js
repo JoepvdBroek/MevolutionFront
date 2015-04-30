@@ -46,6 +46,18 @@ var path =
             _base: 'angular/',
             base: '',
             dist: ''
+        },
+        angularResource:
+        {
+            _base: 'angular-resource/',
+            base: '',
+            dist: ''
+        },
+        angularRoute:
+        {
+            _base: 'angular-route/',
+            base: '',
+            dist: ''
         }
     },
 
@@ -232,7 +244,9 @@ gulp.task('lib-script-jquery-bootstrap-angular', function()
     ([
          path.bower('jquery', 'dist') + 'jquery.js',
          path.bower('bootstrap', 'dist') + 'js/bootstrap.js',
-         path.bower('angular', 'dist') + 'angular.js'
+         path.bower('angular', 'dist') + 'angular.js',
+         path.bower('angularResource', 'dist') + 'angular-resource.js',
+         path.bower('angularRoute', 'dist') + 'angular-route.js'
     ])
     .pipe(concat('jquery-bootstrap-angular.js'))
     .pipe(gulp.dest(path.deploy('js')))

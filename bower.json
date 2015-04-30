@@ -9,6 +9,8 @@
         "bootstrap-select": "latest",
         "datetimepicker": "latest",
         "angular": "latest",
+        "angular-resource": "latest",
+        "angular-route": "latest",
         "zoomooz": "latest"
     }
 }
