@@ -26,7 +26,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="Mevolution">
+<body ng-app="app">
 <div id="wrapper">
     <div ng-view>
         @yield('content')
@@ -35,19 +35,16 @@
 
 @if (env('APP_DEBUG') == true)
 
-    <script src="/dev/js/jquery-bootstrap-angular.js"></script>
-    <script src="/dev/js/Angular.js"></script>
-    <script src="/dev/js/Route.js"></script>
-    <script src="/dev/js/Api.js"></script>
-    <script src="/dev/js/Authentication/AuthenticationController.js"></script>
-    <script src="/dev/js/Authentication/Authentication.js"></script>
+    <script src="/dev/js/libs.js"></script>
+    <script src="/dev/js/Application.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
 
     @yield('script-debug')
 
 @else
 
-    <script src="/assets/js/jquery-bootstrap-angular.min.js"></script>
+    <script src="/assets/js/libs.min.js"></script>
+    <script src="/assets/js/Application.min.js"></script>
     @yield('script-non-debug')
 
 @endif

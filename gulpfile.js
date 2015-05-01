@@ -8,7 +8,11 @@ var gulp         = require('gulp'),
     sourcemaps   = require('gulp-sourcemaps'),
     newer        = require('gulp-newer'),
     rename       = require('gulp-rename'),
-    imagemin     = require('gulp-imagemin');
+    imagemin     = require('gulp-imagemin'),
+    browserify   = require('browserify'),
+    reactify     = require('reactify'),
+    through2     = require('through2'),
+    vinyl        = require('vinyl');
 
 var path =
 {
@@ -40,24 +44,6 @@ var path =
             _base: 'fontawesome/',
             base: '',
             fonts: 'fonts/'
-        },
-        angular:
-        {
-            _base: 'angular/',
-            base: '',
-            dist: ''
-        },
-        angularResource:
-        {
-            _base: 'angular-resource/',
-            base: '',
-            dist: ''
-        },
-        angularRoute:
-        {
-            _base: 'angular-route/',
-            base: '',
-            dist: ''
         }
     },
 
@@ -142,8 +128,7 @@ function notifyLiveReload (event)
  */
 gulp.task('global', function ()
 {
-    gulp.start('lib-script-jquery-bootstrap-angular', 'lib-style', 'global-style',
-               'global-script', 'global-image', 'fonts', 'lib-script');
+    gulp.start('lib-style', 'global-style', 'global-script', 'global-image', 'fonts', 'lib-script');
 });
 
 gulp.task('fonts', function()
@@ -200,14 +185,44 @@ gulp.task('global-style', function ()
 
 gulp.task('global-script', function ()
 {
+    var bundler = function(file)
+    {
+        var stream = through2.obj(function(file, enc, next)
+        {
+            var b = browserify();
+
+            b.add(file.path);
+            b.transform(reactify);
+            b.bundle(function(err, src)
+            {
+                if (err)
+                {
+                    console.log(err);
+                }
+
+                stream.push(new vinyl
+                ({
+                    path: file.path.replace(/^.*[\\\/]/, ''),
+                    contents: src
+                }));
+
+                next();
+            })
+        });
+
+        return stream;
+    };
+
     return gulp.src
-    ([
-         path.src('js') + '**/*.js'
-    ])
-    .pipe(gulp.dest(path.deploy('js')))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(uglify())
-    .pipe(gulp.dest(path.deploy('js', true)));
+           ([
+               path.src('js') + 'libs.js',
+               path.src('js') + 'Application.js'
+           ])
+           .pipe(bundler())
+           .pipe(gulp.dest(path.deploy('js')))
+           .pipe(rename({ suffix: '.min' }))
+           .pipe(uglify())
+           .pipe(gulp.dest(path.deploy('js', true)));
 });
 
 gulp.task('lib-script', function ()
@@ -233,26 +248,6 @@ gulp.task('global-image', function()
          interlaced: true
     }))
     .pipe(gulp.dest(path.deploy('img', true)));
-});
-
-/**
- * jQuery / bootstrap
- */
-gulp.task('lib-script-jquery-bootstrap-angular', function()
-{
-    return gulp.src
-    ([
-         path.bower('jquery', 'dist') + 'jquery.js',
-         path.bower('bootstrap', 'dist') + 'js/bootstrap.js',
-         path.bower('angular', 'dist') + 'angular.js',
-         path.bower('angularResource', 'dist') + 'angular-resource.js',
-         path.bower('angularRoute', 'dist') + 'angular-route.js'
-    ])
-    .pipe(concat('jquery-bootstrap-angular.js'))
-    .pipe(gulp.dest(path.deploy('js')))
-    .pipe(rename('jquery-bootstrap-angular.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(path.deploy('js', true)));
 });
 
 gulp.task('watch', function ()
