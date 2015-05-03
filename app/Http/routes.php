@@ -11,8 +11,7 @@
 |
 */
 
-Route::controller('/canvas', 'CanvasController');
-
-Route::resource('/moderator', 'ModeratorController');
-
-Route::resource('/user', 'UserController');
+Route::get('/', function()
+{
+    return view('template.base');
+});

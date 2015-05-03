@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html ng-app="mevolution-app">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +30,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body ng-app="Mevolution">
 <div id="wrapper">
     <div id="navigation-wrapper">
         <div class="toggle-navigation">
@@ -73,17 +72,19 @@
 
 @if (env('APP_DEBUG') == true)
 
-    <script src="dev/js/jquery-bootstrap-angular.js"></script>
+    <script src="/dev/js/jquery-bootstrap-angular.js"></script>
+    <script src="/dev/js/Angular.js"></script>
+    <script src="/dev/js/api/Route.js"></script>
+    <script src="/dev/js/api/AuthenticationController.js"></script>
+    <script src="/dev/js/api/Authentication.js"></script>
+    <script src="/dev/js/api/Api.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
-    <script src="dev/js/angular.js"></script>
-
 
     @yield('script-debug')
 
 @else
 
     <script src="/assets/js/jquery-bootstrap-angular.min.js"></script>
-
     @yield('script-non-debug')
 
 @endif
