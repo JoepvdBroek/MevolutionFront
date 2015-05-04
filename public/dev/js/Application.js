@@ -1,10 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(admin)
 {
-    admin.controller('AdminController', [ '$scope', '$location', '$window', 'AdminFactory', function($scope, $location, $window, AdminFactory)
+    admin.controller('AdminController', [ '$scope', '$location', '$window', 'OrganisationService', 'AdminFactory', function($scope, $location, $window, OrganisationService, AdminFactory)
     {
-        $scope.groups = AdminFactory.groups;
+        var groups = [];
 
+        OrganisationService.getOrganisations().success(function(data, status, headers, config)
+                {
+                	groups = data;
+
+                }).error(function(data, status, headers, config)
+                {
+                    console.log(status);
+                    console.log(data);
+                    console.log(headers);
+                    console.log(config);
+                });
+
+        $scope.allGroups = groups;
     }]);
 };
 
@@ -21,8 +34,10 @@ module.exports = function(admin)
     {
         var admin = {};
 
-        admin.groups = [{name:'test1'},{name:'test2'}];
+        //admin.groups = [{name:'test1'},{name:'test2'}];
+       // admin.groups = $
 
+        // merijncelie.nl::3000/api/groups/
 
         return admin;
     });
@@ -73,6 +88,24 @@ module.exports = function(api)
                     "grant_type": "password",
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
+                });
+            }
+        };
+    });
+
+    api.factory('OrganisationService', function($http, API)
+    {
+        return {
+            getOrganisations: function ()
+            {
+                return $http.get(API.url + '/groups/' + sessionStorage.access_token,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
                 });
             }
         };

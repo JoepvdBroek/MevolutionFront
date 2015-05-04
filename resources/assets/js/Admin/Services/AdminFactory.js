@@ -4,8 +4,10 @@ module.exports = function(admin)
     {
         var admin = {};
 
-        admin.groups = [{name:'test1'},{name:'test2'}];
+        //admin.groups = [{name:'test1'},{name:'test2'}];
+       // admin.groups = $
 
+        // merijncelie.nl::3000/api/groups/
 
         return admin;
     });

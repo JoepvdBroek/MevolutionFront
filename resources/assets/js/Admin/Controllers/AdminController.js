@@ -1,8 +1,21 @@
 module.exports = function(admin)
 {
-    admin.controller('AdminController', [ '$scope', '$location', '$window', 'AdminFactory', function($scope, $location, $window, AdminFactory)
+    admin.controller('AdminController', [ '$scope', '$location', '$window', 'OrganisationService', 'AdminFactory', function($scope, $location, $window, OrganisationService, AdminFactory)
     {
-        $scope.groups = AdminFactory.groups;
+        var groups = [];
 
+        OrganisationService.getOrganisations().success(function(data, status, headers, config)
+                {
+                	groups = data;
+
+                }).error(function(data, status, headers, config)
+                {
+                    console.log(status);
+                    console.log(data);
+                    console.log(headers);
+                    console.log(config);
+                });
+
+        $scope.allGroups = groups;
     }]);
 };
