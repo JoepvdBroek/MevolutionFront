@@ -42,7 +42,7 @@ module.exports = function(app)
 };
 
 },{"./Api.js":1}],3:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator' ]);
 
 app.config(function($httpProvider)
 {
@@ -56,6 +56,8 @@ app.config(function($httpProvider)
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);
+
+var moderator = require('./Moderator/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
 {
@@ -72,8 +74,13 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 {
     $routeProvider.when('/auth/login',
     {
-        templateUrl: '/partials/login.html',
+        templateUrl: 'partials/login.html',
         controller: 'AuthenticationController'
+    })
+    .when('/moderator',
+    {
+        templateUrl: 'partials/moderator_dash.html',
+        controller: 'ModeratorController'
     })
         /*when('/admin/login',
          {
@@ -85,7 +92,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     });
 }]);
 
-},{"./Api/_index":2,"./Authentication/_index":8}],4:[function(require,module,exports){
+},{"./Api/_index":2,"./Authentication/_index":8,"./Moderator/_index":13}],4:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -198,4 +205,48 @@ module.exports = function(app)
     return auth;
 };
 
-},{"./Controllers/_index.js":5,"./Services/_index.js":7}]},{},[3]);
+},{"./Controllers/_index.js":5,"./Services/_index.js":7}],9:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
+    {
+        
+    }]);
+};
+
+},{}],10:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    require('./ModeratorController.js')(moderator);
+};
+
+},{"./ModeratorController.js":9}],11:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    moderator.factory('ModeratorFactory', function()
+    {
+        var moderator = {};
+
+        return moderator;
+    });
+
+};
+
+},{}],12:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    require('./ModeratorFactory.js')(moderator);
+};
+
+},{"./ModeratorFactory.js":11}],13:[function(require,module,exports){
+module.exports = function(app)
+{
+    var moderator = angular.module('app.moderator', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(moderator);
+    require('./Services/_index.js')(moderator);
+
+    return moderator;
+};
+
+},{"./Controllers/_index.js":10,"./Services/_index.js":12}]},{},[3]);
