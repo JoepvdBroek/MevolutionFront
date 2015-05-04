@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication']);
 
 app.config(function($httpProvider)
 {
@@ -11,6 +11,7 @@ app.config(function($httpProvider)
 });
 
 var authentication = require('./Authentication/_index')(app);
+var user = require('./User/_index')(app);
 var api = require('./Api/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
@@ -28,7 +29,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 {
     $routeProvider.when('/auth/login',
     {
-        templateUrl: '/partials/login.html',
+        templateUrl: 'partials/login.html',
+        controller: 'AuthenticationController'
+    })
+    .when('/profile/edit',
+    {
+        templateUrl: 'partials/user/edit.html',
         controller: 'AuthenticationController'
     })
         /*when('/admin/login',

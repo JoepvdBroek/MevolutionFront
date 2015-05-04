@@ -25,6 +25,11 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
+            },
+
+            getUserInfo: function ()
+            {
+                return $http.get(API.url + '/users/@me');
             }
         };
     });

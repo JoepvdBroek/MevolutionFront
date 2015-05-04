@@ -26,6 +26,11 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
+            },
+
+            getUserInfo: function ()
+            {
+                return $http.get(API.url + '/users/@me');
             }
         };
     });
@@ -42,7 +47,7 @@ module.exports = function(app)
 };
 
 },{"./Api.js":1}],3:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication']);
 
 app.config(function($httpProvider)
 {
@@ -55,6 +60,7 @@ app.config(function($httpProvider)
 });
 
 var authentication = require('./Authentication/_index')(app);
+var user = require('./User/_index')(app);
 var api = require('./Api/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
@@ -72,7 +78,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 {
     $routeProvider.when('/auth/login',
     {
-        templateUrl: '/partials/login.html',
+        templateUrl: 'partials/login.html',
+        controller: 'AuthenticationController'
+    })
+    .when('/profile/edit',
+    {
+        templateUrl: 'partials/user/edit.html',
         controller: 'AuthenticationController'
     })
         /*when('/admin/login',
@@ -85,7 +96,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     });
 }]);
 
-},{"./Api/_index":2,"./Authentication/_index":8}],4:[function(require,module,exports){
+},{"./Api/_index":2,"./Authentication/_index":8,"./User/_index":13}],4:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -107,6 +118,24 @@ module.exports = function(authentication)
                     console.log(status);
                     console.log(data);
                 });
+            }
+        };
+
+        $scope.getUserInfo = function getUserInfo()
+        {
+            if (AuthenticationService.isAuthenticated)
+            {
+                UserService.getUserInfo().success(function(data)
+                {
+                    console.log(data);
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            } else {
+                console.log('not authenticated');
             }
         };
     }]);
@@ -139,9 +168,12 @@ module.exports = function(authentication)
             {
                 config.headers = config.headers || {};
 
-                if ($window.sessionStorage.token)
+                //if ($window.sessionStorage.token)
+                if( AuthenticationService.isAuthenticated )
                 {
+                    console.log('authentication header');
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
+                    //config.headers["Authorization"] = 'Bearer ' + $window.sessionStorage.access_token;
                 }
 
                 config.headers["x-key"] = API.key;
@@ -198,4 +230,61 @@ module.exports = function(app)
     return auth;
 };
 
-},{"./Controllers/_index.js":5,"./Services/_index.js":7}]},{},[3]);
+},{"./Controllers/_index.js":5,"./Services/_index.js":7}],9:[function(require,module,exports){
+module.exports = function(user)
+{
+    user.controller('UserController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
+    {
+        $scope.getUserInfo = function getUserInfo()
+        {
+            if (AuthenticationService.isAuthenticated)
+            {
+                UserService.getUserInfo().success(function(data)
+                {
+                    console.log(data);
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            }
+        };
+    }]);
+};
+
+},{}],10:[function(require,module,exports){
+module.exports = function(user)
+{
+    require('./UserController.js')(user);
+};
+
+},{"./UserController.js":9}],11:[function(require,module,exports){
+module.exports = function(user)
+{
+    user.factory('UserFactory', function()
+    {
+        var factory = { };
+
+        return factory;
+    });
+};
+
+},{}],12:[function(require,module,exports){
+module.exports = function(user)
+{
+    require('./UserService.js')(user);
+};
+
+},{"./UserService.js":11}],13:[function(require,module,exports){
+module.exports = function(app)
+{
+    var user = angular.module('app.user', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(user);
+    require('./Services/_index.js')(user);
+
+    return user;
+};
+
+},{"./Controllers/_index.js":10,"./Services/_index.js":12}]},{},[3]);

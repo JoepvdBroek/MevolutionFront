@@ -21,5 +21,23 @@ module.exports = function(authentication)
                 });
             }
         };
+
+        $scope.getUserInfo = function getUserInfo()
+        {
+            if (AuthenticationService.isAuthenticated)
+            {
+                UserService.getUserInfo().success(function(data)
+                {
+                    console.log(data);
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            } else {
+                console.log('not authenticated');
+            }
+        };
     }]);
 };
