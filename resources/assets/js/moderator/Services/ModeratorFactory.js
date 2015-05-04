@@ -4,6 +4,12 @@ module.exports = function(moderator)
     {
         var moderator = {};
 
+        moderator.groups = [{name:'test1'},{name:'test2'}];
+
+        moderator.addGroup = function(newGroupName){
+    		moderator.groups.push({name:newGroupName});
+        };
+
         return moderator;
     });
 

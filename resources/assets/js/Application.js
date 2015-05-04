@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions' ]);
 
 app.config(function($httpProvider)
 {
@@ -13,6 +13,7 @@ app.config(function($httpProvider)
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);
 
+var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
@@ -37,6 +38,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/moderator_dash.html',
         controller: 'ModeratorController'
+    })
+    .when('/admin',
+    {
+        templateUrl: 'partials/admin_dash.html',
+        controller: 'AdminController'
     })
         /*when('/admin/login',
          {
