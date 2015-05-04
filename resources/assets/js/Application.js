@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication']);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' , 'app.user']);
 
 app.config(function($httpProvider)
 {
@@ -35,7 +35,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/profile/edit',
     {
         templateUrl: 'partials/user/edit.html',
-        controller: 'AuthenticationController'
+        controller: 'UserController'
     })
         /*when('/admin/login',
          {

@@ -47,7 +47,7 @@ module.exports = function(app)
 };
 
 },{"./Api.js":1}],3:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication']);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' , 'app.user']);
 
 app.config(function($httpProvider)
 {
@@ -84,7 +84,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/profile/edit',
     {
         templateUrl: 'partials/user/edit.html',
-        controller: 'AuthenticationController'
+        controller: 'UserController'
     })
         /*when('/admin/login',
          {
@@ -111,31 +111,13 @@ module.exports = function(authentication)
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
 
-                    $location.path('/canvas');
+                    $location.path('/profile/edit');
 
                 }).error(function(status, data)
                 {
                     console.log(status);
                     console.log(data);
                 });
-            }
-        };
-
-        $scope.getUserInfo = function getUserInfo()
-        {
-            if (AuthenticationService.isAuthenticated)
-            {
-                UserService.getUserInfo().success(function(data)
-                {
-                    console.log(data);
-
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-            } else {
-                console.log('not authenticated');
             }
         };
     }]);
@@ -233,22 +215,15 @@ module.exports = function(app)
 },{"./Controllers/_index.js":5,"./Services/_index.js":7}],9:[function(require,module,exports){
 module.exports = function(user)
 {
-    user.controller('UserController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
+    user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', function($scope, $location, $window, UserFactory)
     {
-        $scope.getUserInfo = function getUserInfo()
-        {
-            if (AuthenticationService.isAuthenticated)
-            {
-                UserService.getUserInfo().success(function(data)
-                {
-                    console.log(data);
 
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-            }
+        $scope.user = UserFactory.getUser();
+
+        $scope.UpdateUserInfo = function()
+        {
+            //test om waarde te bekijken
+            console.log($scope.user);
         };
     }]);
 };
@@ -262,12 +237,59 @@ module.exports = function(user)
 },{"./UserController.js":9}],11:[function(require,module,exports){
 module.exports = function(user)
 {
-    user.factory('UserFactory', function()
+    user.factory('UserFactory', [ 'UserService', 'AuthenticationService', function(UserService, AuthenticationService)
     {
-        var factory = { };
+        var factory = {};
+
+        //test data aangezien ik nog niet bij users/@me kan
+
+        factory.user = 
+	    {
+	        "username": "JoepTest",
+	        "hashedPassword": "3872822418e1325c97520b1e65aae2137359a2a8",
+	        "salt": "U3WCVzqIyNLgADHRScp8ncbWMQDgNSbj+dl9ITauhPw=",
+	        "email": "jjc.vandenbroek@student.avans.nl",
+	        "firstName": "Joep",
+	        "middleName": "van den",
+	        "surName": "Broek",
+	        "street": "leijzoom",
+	        "houseNumber": "4",
+	        "city": "Goirle",
+	        "_id": "553e5c609f8bdebe785299a7",
+	        "__v": 0,
+	        "roles": [],
+	        "organization": [],
+	        "created": "2015-04-27T15:57:20.123Z"
+	    };
+
+	    factory.getUser = function(){
+	    	//TODO: vul user met gegevens uit api call /users/@me
+			return factory.user;
+		}
+
+		factory.getUserInfo = function(){
+			if (AuthenticationService.isAuthenticated)
+            {
+                UserService.getUserInfo().success(function(data)
+                {
+                    factory.user = data[0];
+                    
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            } else {
+                console.log('not authenticated');
+            }
+		}
+
+		factory.updateUserInfo = function(){
+			//TODO: doe PUT request naar /users/:id met factory.user
+		}
 
         return factory;
-    });
+    }]);
 };
 
 },{}],12:[function(require,module,exports){

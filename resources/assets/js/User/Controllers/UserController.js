@@ -1,21 +1,14 @@
 module.exports = function(user)
 {
-    user.controller('UserController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
+    user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', function($scope, $location, $window, UserFactory)
     {
-        $scope.getUserInfo = function getUserInfo()
-        {
-            if (AuthenticationService.isAuthenticated)
-            {
-                UserService.getUserInfo().success(function(data)
-                {
-                    console.log(data);
 
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-            }
+        $scope.user = UserFactory.getUser();
+
+        $scope.UpdateUserInfo = function()
+        {
+            //test om waarde te bekijken
+            console.log($scope.user);
         };
     }]);
 };
