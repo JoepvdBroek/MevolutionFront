@@ -35,16 +35,16 @@
 
 @if (env('APP_DEBUG') == true)
 
-    <script src="/dev/js/libs.js"></script>
-    <script src="/dev/js/Application.js"></script>
+    <script src="dev/js/libs.js"></script>
+    <script src="dev/js/Application.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
 
     @yield('script-debug')
 
 @else
 
-    <script src="/assets/js/libs.min.js"></script>
-    <script src="/assets/js/Application.min.js"></script>
+    <script src="assets/js/libs.min.js"></script>
+    <script src="assets/js/Application.min.js"></script>
     @yield('script-non-debug')
 
 @endif
