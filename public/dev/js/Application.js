@@ -31,6 +31,26 @@ module.exports = function(api)
             getUserInfo: function ()
             {
                 return $http.get(API.url + '/users/@me');
+            },
+
+            updateUser: function (user)
+            {
+                return $http.put(API.url + '/users/' + user._id,
+                {
+                    //"password" : user.password,
+                    "email" : user.emai,
+                    "firstName" : user.firstName,
+                    "middleName" : user.middleName,
+                    "surName" : user.surName,
+                    "street" : user.street,
+                    "houseNumber" : user.houseNumber,
+                    "city" : user.city,
+                    "zipCode" : user.zipCode,
+                    "phone1" : user.phone1,
+                    "phone2" : user.phone2,
+                    "organization" : user.organization,
+                    "roles" : user.roles
+                });
             }
         };
     });
@@ -215,16 +235,45 @@ module.exports = function(app)
 },{"./Controllers/_index.js":5,"./Services/_index.js":7}],9:[function(require,module,exports){
 module.exports = function(user)
 {
-    user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', function($scope, $location, $window, UserFactory)
+    user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserFactory, UserService, AuthenticationService)
     {
+        $scope.user = {};
+        getUserInfo();       
 
-        $scope.user = UserFactory.getUser();
-
-        $scope.UpdateUserInfo = function()
+        $scope.updateUserInfo = function()
         {
-            //test om waarde te bekijken
-            console.log($scope.user);
+            if (AuthenticationService.isAuthenticated)
+            {
+                UserService.updateUser($scope.user).success(function(data)
+                {
+                    alert('opgeslagen');
+                    
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            } else {
+                console.log('not authenticated');
+            }
         };
+
+        function getUserInfo(){
+            if (AuthenticationService.isAuthenticated)
+            {
+                UserService.getUserInfo().success(function(data)
+                {
+                    $scope.user = data[0];
+                    
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            } else {
+                console.log('not authenticated');
+            }
+        }
     }]);
 };
 
@@ -243,7 +292,8 @@ module.exports = function(user)
 
         //test data aangezien ik nog niet bij users/@me kan
 
-        factory.user = 
+        factory.user = {};
+        /*factory.user = 
 	    {
 	        "username": "JoepTest",
 	        "hashedPassword": "3872822418e1325c97520b1e65aae2137359a2a8",
@@ -260,11 +310,33 @@ module.exports = function(user)
 	        "roles": [],
 	        "organization": [],
 	        "created": "2015-04-27T15:57:20.123Z"
-	    };
+	    };*/
 
 	    factory.getUser = function(){
 	    	//TODO: vul user met gegevens uit api call /users/@me
+	    	console.log('get user');
 			return factory.user;
+		}
+
+		factory.fillUser = function(){
+			factory.user = 
+			{
+		        "username": "JoepTest",
+		        "hashedPassword": "3872822418e1325c97520b1e65aae2137359a2a8",
+		        "salt": "U3WCVzqIyNLgADHRScp8ncbWMQDgNSbj+dl9ITauhPw=",
+		        "email": "jjc.vandenbroek@student.avans.nl",
+		        "firstName": "Joep",
+		        "middleName": "van den",
+		        "surName": "Broek",
+		        "street": "leijzoom",
+		        "houseNumber": "4",
+		        "city": "Goirle",
+		        "_id": "553e5c609f8bdebe785299a7",
+		        "__v": 0,
+		        "roles": [],
+		        "organization": [],
+		        "created": "2015-04-27T15:57:20.123Z"
+		    };
 		}
 
 		factory.getUserInfo = function(){
@@ -273,7 +345,8 @@ module.exports = function(user)
                 UserService.getUserInfo().success(function(data)
                 {
                     factory.user = data[0];
-                    
+                   	return data[0];
+                                        
                 }).error(function(status, data)
                 {
                     console.log(status);
