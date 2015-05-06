@@ -135,7 +135,7 @@ gulp.task('fonts', function()
 {
     return gulp.src
     ([
-        path.bower('fontawesome', 'fonts') + '*/**'
+        path.bower('fontawesome', 'fonts') + '**/*'
     ])
     .pipe(gulp.dest(path.deploy('fonts', false)))
     .pipe(gulp.dest(path.deploy('fonts', true)));
