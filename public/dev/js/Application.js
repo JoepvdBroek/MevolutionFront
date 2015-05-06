@@ -171,10 +171,12 @@ module.exports = function(authentication)
                 config.headers = config.headers || {};
 
                 //if ($window.sessionStorage.token)
-                if( AuthenticationService.isAuthenticated )
+                //if( AuthenticationService.isAuthenticated )
+                if($window.sessionStorage.refresh_token)
                 {
                     console.log('authentication header');
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
+                    AuthenticationService.isAuthenticated = true;
                     //config.headers["Authorization"] = 'Bearer ' + $window.sessionStorage.access_token;
                 }
 
@@ -237,8 +239,17 @@ module.exports = function(user)
 {
     user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserFactory, UserService, AuthenticationService)
     {
+        $scope.editmode = false;
         $scope.user = {};
-        getUserInfo();       
+        getUserInfo();  
+
+        function switchEditmodeOff(){
+            $scope.editmode = false;
+        }
+
+        $scope.switchToEditmode = function(){
+            $scope.editmode = true;
+        }     
 
         $scope.updateUserInfo = function()
         {
@@ -246,7 +257,7 @@ module.exports = function(user)
             {
                 UserService.updateUser($scope.user).success(function(data)
                 {
-                    alert('opgeslagen');
+                    switchEditmodeOff();
                     
                 }).error(function(status, data)
                 {

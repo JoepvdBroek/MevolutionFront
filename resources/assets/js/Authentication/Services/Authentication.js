@@ -19,10 +19,12 @@ module.exports = function(authentication)
                 config.headers = config.headers || {};
 
                 //if ($window.sessionStorage.token)
-                if( AuthenticationService.isAuthenticated )
+                //if( AuthenticationService.isAuthenticated )
+                if($window.sessionStorage.refresh_token)
                 {
                     console.log('authentication header');
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
+                    AuthenticationService.isAuthenticated = true;
                     //config.headers["Authorization"] = 'Bearer ' + $window.sessionStorage.access_token;
                 }
 

@@ -2,8 +2,17 @@ module.exports = function(user)
 {
     user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserFactory, UserService, AuthenticationService)
     {
+        $scope.editmode = false;
         $scope.user = {};
-        getUserInfo();       
+        getUserInfo();  
+
+        function switchEditmodeOff(){
+            $scope.editmode = false;
+        }
+
+        $scope.switchToEditmode = function(){
+            $scope.editmode = true;
+        }     
 
         $scope.updateUserInfo = function()
         {
@@ -11,7 +20,7 @@ module.exports = function(user)
             {
                 UserService.updateUser($scope.user).success(function(data)
                 {
-                    alert('opgeslagen');
+                    switchEditmodeOff();
                     
                 }).error(function(status, data)
                 {

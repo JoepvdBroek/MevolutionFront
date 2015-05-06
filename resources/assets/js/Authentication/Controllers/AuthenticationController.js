@@ -12,31 +12,13 @@ module.exports = function(authentication)
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
 
-                    $location.path('/canvas');
+                    $location.path('/profile/edit');
 
                 }).error(function(status, data)
                 {
                     console.log(status);
                     console.log(data);
                 });
-            }
-        };
-
-        $scope.getUserInfo = function getUserInfo()
-        {
-            if (AuthenticationService.isAuthenticated)
-            {
-                UserService.getUserInfo().success(function(data)
-                {
-                    console.log(data);
-
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-            } else {
-                console.log('not authenticated');
             }
         };
     }]);
