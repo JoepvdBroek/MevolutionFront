@@ -1,4 +1,89 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = function(admin)
+{
+
+
+    admin.controller('AdminController', [ '$scope', '$location', '$window', 'OrganisationService', 'AdminFactory', function($scope, $location, $window, OrganisationService, AdminFactory)
+    {
+        var groups = [];
+
+        OrganisationService.getOrganisations().success(function(data, status, headers, config)
+        {
+            groups = data;
+
+        }).error(function(data, status, headers, config)
+        {
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        });
+
+        $scope.allGroups = groups;
+    }]);
+};
+
+},{}],2:[function(require,module,exports){
+module.exports = function(admin)
+{
+    admin.controller('NavigationBarController', [ '$scope', function($scope)
+    {
+        $scope.toggle = function()
+        {
+            angular.element(document.getElementById('wrapper')).toggleClass('unfolded');
+        }
+    }]);
+}
+
+},{}],3:[function(require,module,exports){
+module.exports = function(admin)
+{
+    require('./AdminController.js')(admin);
+    require('./NavigationBarController.js')(admin);
+};
+
+},{"./AdminController.js":1,"./NavigationBarController.js":2}],4:[function(require,module,exports){
+module.exports = function(admin)
+{
+
+};
+
+},{}],5:[function(require,module,exports){
+module.exports = function(admin)
+{
+    admin.factory('AdminFactory', function()
+    {
+        var admin = {};
+
+        //admin.groups = [{name:'test1'},{name:'test2'}];
+       // admin.groups = $
+
+        // merijncelie.nl::3000/api/groups/
+
+        return admin;
+    });
+
+};
+
+},{}],6:[function(require,module,exports){
+module.exports = function(admin)
+{
+    require('./AdminFactory.js')(admin);
+};
+
+},{"./AdminFactory.js":5}],7:[function(require,module,exports){
+module.exports = function(app)
+{
+    var admin = angular.module('app.adminFunctions', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(admin);
+    require('./Services/_index.js')(admin);
+    require('./Directives/_index.js')(admin);
+
+    return admin;
+};
+
+},{"./Controllers/_index.js":3,"./Directives/_index.js":4,"./Services/_index.js":6}],8:[function(require,module,exports){
 'use strict';
 
 module.exports = function(api)
@@ -26,6 +111,7 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
+
             },
 
             getUserInfo: function ()
@@ -54,9 +140,28 @@ module.exports = function(api)
             }
         };
     });
+
+    api.factory('OrganisationService', function($http, API)
+    {
+        return {
+            getOrganisations: function ()
+            {
+                return $http.get(API.url + '/groups/' + sessionStorage.access_token,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
+
+                });
+            }
+        };
+    });
 };
 
-},{}],2:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function(app)
 {
     var api = angular.module('app.api', []);
@@ -66,8 +171,19 @@ module.exports = function(app)
     return api;
 };
 
-},{"./Api.js":1}],3:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication' , 'app.user']);
+},{"./Api.js":8}],10:[function(require,module,exports){
+
+var modules =
+[
+    'ngRoute', 'door3.css',
+    'app.api', 'app.authentication',
+    'app.user',
+    'app.moderator', 'app.adminFunctions',
+
+    'app.canvas'
+];
+
+var app = angular.module('app', modules);
 
 app.config(function($httpProvider)
 {
@@ -80,8 +196,58 @@ app.config(function($httpProvider)
 });
 
 var authentication = require('./Authentication/_index')(app);
-var user = require('./User/_index')(app);
+
 var api = require('./Api/_index')(app);
+
+var user = require('./User/_index')(app);
+var admin = require('./Admin/_index')(app);
+var moderator = require('./Moderator/_index')(app);
+
+var canvas = require('./Canvas/_index')(app);
+
+// @todo Maybe create a general app file for this kind of stuff
+app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
+{
+    $routeProvider.when('/auth/login',
+    {
+        templateUrl: 'partials/login.html',
+        controller: 'AuthenticationController'
+    })
+    .when('/profile',
+    {
+        templateUrl: 'partials/user/profile.html',
+        controller: 'UserController'
+    })
+        /*when('/admin/login',
+         {
+         controller: 'AdminUserCtrl'
+         }).*/
+    .when('/moderator',
+    {
+        templateUrl: 'partials/moderator_dash.html',
+        controller: 'ModeratorController'
+    })
+    .when('/admin',
+    {
+        templateUrl: 'partials/admin_dash.html',
+        controller: 'AdminController'
+    })
+    .when('/canvas',
+    {
+        templateUrl: '/partials/canvas/spiral.html',
+        controller: 'CanvasController',
+        css:
+        [{
+            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+        }]
+    })
+
+    .otherwise
+    ({
+        redirectTo: '/'
+    });
+
+}]);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
 {
@@ -94,29 +260,8 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
     });
 });
 
-app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
-{
-    $routeProvider.when('/auth/login',
-    {
-        templateUrl: 'partials/login.html',
-        controller: 'AuthenticationController'
-    })
-    .when('/profile/edit',
-    {
-        templateUrl: 'partials/user/edit.html',
-        controller: 'UserController'
-    })
-        /*when('/admin/login',
-         {
-         controller: 'AdminUserCtrl'
-         }).*/
-    .otherwise
-    ({
-        redirectTo: '/'
-    });
-}]);
 
-},{"./Api/_index":2,"./Authentication/_index":8,"./User/_index":13}],4:[function(require,module,exports){
+},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":18,"./Moderator/_index":23,"./User/_index":28}],11:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -131,7 +276,7 @@ module.exports = function(authentication)
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
 
-                    $location.path('/profile/edit');
+                    $location.path('/canvas');
 
                 }).error(function(status, data)
                 {
@@ -143,13 +288,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],5:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./AuthenticationController.js')(auth);
 };
 
-},{"./AuthenticationController.js":4}],6:[function(require,module,exports){
+},{"./AuthenticationController.js":11}],13:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.factory('AuthenticationService', function()
@@ -170,14 +315,9 @@ module.exports = function(authentication)
             {
                 config.headers = config.headers || {};
 
-                //if ($window.sessionStorage.token)
-                //if( AuthenticationService.isAuthenticated )
-                if($window.sessionStorage.refresh_token)
+                if ($window.sessionStorage.token)
                 {
-                    console.log('authentication header');
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
-                    AuthenticationService.isAuthenticated = true;
-                    //config.headers["Authorization"] = 'Bearer ' + $window.sessionStorage.access_token;
                 }
 
                 config.headers["x-key"] = API.key;
@@ -217,13 +357,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./Authentication.js')(auth);
 };
 
-},{"./Authentication.js":6}],8:[function(require,module,exports){
+},{"./Authentication.js":13}],15:[function(require,module,exports){
 module.exports = function(app)
 {
     var auth = angular.module('app.authentication', [ 'app.api' ]);
@@ -234,7 +374,91 @@ module.exports = function(app)
     return auth;
 };
 
-},{"./Controllers/_index.js":5,"./Services/_index.js":7}],9:[function(require,module,exports){
+},{"./Controllers/_index.js":12,"./Services/_index.js":14}],16:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    canvas.controller('CanvasController', [ '$scope', '$css', function($scope, $css)
+    {
+        $css.bind({ href: 'test.css' }, $scope);
+
+        $scope.test = function()
+        {
+            console.log('test');
+        }
+    }]);
+};
+
+},{}],17:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./CanvasController.js')(canvas);
+};
+
+},{"./CanvasController.js":16}],18:[function(require,module,exports){
+module.exports = function(app)
+{
+    var canvas = angular.module('app.canvas', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(canvas);
+
+    return canvas;
+};
+
+},{"./Controllers/_index.js":17}],19:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
+    {
+        $scope.groups = ModeratorFactory.groups;
+
+        $scope.addGroup = function(newName){
+        	return ModeratorFactory.addGroup(newName);
+        };
+    }]);
+};
+
+},{}],20:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    require('./ModeratorController.js')(moderator);
+};
+
+},{"./ModeratorController.js":19}],21:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    moderator.factory('ModeratorFactory', function()
+    {
+        var moderator = {};
+
+        moderator.groups = [{name:'test1'},{name:'test2'}];
+
+        moderator.addGroup = function(newGroupName){
+    		moderator.groups.push({name:newGroupName});
+        };
+
+        return moderator;
+    });
+
+};
+
+},{}],22:[function(require,module,exports){
+module.exports = function(moderator)
+{
+    require('./ModeratorFactory.js')(moderator);
+};
+
+},{"./ModeratorFactory.js":21}],23:[function(require,module,exports){
+module.exports = function(app)
+{
+    var moderator = angular.module('app.moderator', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(moderator);
+    require('./Services/_index.js')(moderator);
+
+    return moderator;
+};
+
+},{"./Controllers/_index.js":20,"./Services/_index.js":22}],24:[function(require,module,exports){
 module.exports = function(user)
 {
     user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserFactory, UserService, AuthenticationService)
@@ -288,13 +512,13 @@ module.exports = function(user)
     }]);
 };
 
-},{}],10:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(user)
 {
     require('./UserController.js')(user);
 };
 
-},{"./UserController.js":9}],11:[function(require,module,exports){
+},{"./UserController.js":24}],26:[function(require,module,exports){
 module.exports = function(user)
 {
     user.factory('UserFactory', [ 'UserService', 'AuthenticationService', function(UserService, AuthenticationService)
@@ -376,13 +600,13 @@ module.exports = function(user)
     }]);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function(user)
 {
     require('./UserService.js')(user);
 };
 
-},{"./UserService.js":11}],13:[function(require,module,exports){
+},{"./UserService.js":26}],28:[function(require,module,exports){
 module.exports = function(app)
 {
     var user = angular.module('app.user', [ 'app.api' ]);
@@ -393,4 +617,4 @@ module.exports = function(app)
     return user;
 };
 
-},{"./Controllers/_index.js":10,"./Services/_index.js":12}]},{},[3]);
+},{"./Controllers/_index.js":25,"./Services/_index.js":27}]},{},[10]);

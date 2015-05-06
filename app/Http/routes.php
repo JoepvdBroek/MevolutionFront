@@ -13,5 +13,5 @@
 
 Route::get('/', function()
 {
-    return view('template.base');
+    return view('template.admin');
 });

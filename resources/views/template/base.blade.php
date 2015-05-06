@@ -9,13 +9,9 @@
 
     @if (env('APP_DEBUG') == true)
 
-        <link rel="stylesheet" type="text/css" href="dev/css/lib.css" />
-
         @yield('style-debug')
 
     @else
-
-        <link rel="stylesheet" type="text/css" href="assets/css/lib.css" />
 
         @yield('style-non-debug')
 
@@ -31,50 +27,15 @@
     <![endif]-->
 </head>
 <body ng-app="app">
-
 <div id="wrapper">
-    <div id="navigation-wrapper">
-        <div class="toggle-navigation">
-            <i class="fa"></i>
-        </div>
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                    <img class="big" src="assets/img/logo.jpg" alt="Mevolution" />
-                    <img class="small" src="assets/img/logo-small.png" alt="M" />
-                </a>
-            </li>
-            <li>
-                <a href="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a>
-            </li>
-            <li class="active">
-                <a href="develpmentcircle.html"><i class="fa fa-pie-chart"></i> Ontwikkelruimte</a>
-            </li>
-            <li>
-                <a href="canvas.html"><i class="fa fa-briefcase"></i> Portfolio</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-list-alt"></i> Verzamelbak</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-question"></i> Development Spiral</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
-            </li>
-        </ul>
-        <div class="footer">
-            &copy; MeVOLUTION 2015
-        </div>
-    </div>
-
-   <div ng-view>
+    <div ng-view>
         @yield('content')
     </div>
 </div>
 
 @if (env('APP_DEBUG') == true)
 
+    <script>var debug = true;</script>
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
@@ -83,6 +44,7 @@
 
 @else
 
+    <script>var debug = false;</script>
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
     @yield('script-non-debug')

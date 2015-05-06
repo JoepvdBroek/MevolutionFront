@@ -12,7 +12,7 @@ module.exports = function(authentication)
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
 
-                    $location.path('/profile/edit');
+                    $location.path('/canvas');
 
                 }).error(function(status, data)
                 {

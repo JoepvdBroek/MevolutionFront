@@ -25,6 +25,7 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
+
             },
 
             getUserInfo: function ()
@@ -49,6 +50,25 @@ module.exports = function(api)
                     "phone2" : user.phone2,
                     "organization" : user.organization,
                     "roles" : user.roles
+                });
+            }
+        };
+    });
+
+    api.factory('OrganisationService', function($http, API)
+    {
+        return {
+            getOrganisations: function ()
+            {
+                return $http.get(API.url + '/groups/' + sessionStorage.access_token,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
+
                 });
             }
         };
