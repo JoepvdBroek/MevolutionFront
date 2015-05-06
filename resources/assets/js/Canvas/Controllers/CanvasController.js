@@ -1,7 +1,12 @@
 module.exports = function(canvas)
 {
-    canvas.controller('CanvasController', [ '$scope', function($scope)
+    canvas.controller('CanvasController', [ '$scope', '$css', function($scope, $css)
     {
-        console.log('load');
+        $css.bind({ href: 'test.css' }, $scope);
+
+        $scope.test = function()
+        {
+            console.log('test');
+        }
     }]);
 };

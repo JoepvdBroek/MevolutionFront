@@ -10,12 +10,14 @@
     @if (env('APP_DEBUG') == true)
 
         <link rel="stylesheet" type="text/css" href="dev/css/lib.css" />
+        <link rel="stylesheet" type="text/css" href="dev/css/general.css" />
 
         @yield('style-debug')
 
     @else
 
         <link rel="stylesheet" type="text/css" href="assets/css/lib.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/general.css" />
 
         @yield('style-non-debug')
 
@@ -30,10 +32,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="Mevolution">
+<body ng-app="app">
 <div id="wrapper">
-    <div id="navigation-wrapper">
-        <div class="toggle-navigation">
+    <div id="navigation-wrapper" ng-controller="NavigationBarController">
+        <div class="toggle-navigation" ng-click="toggle()">
             <i class="fa"></i>
         </div>
         <ul class="sidebar-nav">
@@ -67,24 +69,25 @@
         </div>
     </div>
 
-    @yield('content')
+    <div ng-view>
+        @yield('content')
+    </div>
 </div>
 
 @if (env('APP_DEBUG') == true)
 
-    <script src="/dev/js/jquery-bootstrap-angular.js"></script>
-    <script src="/dev/js/Angular.js"></script>
-    <script src="/dev/js/api/Route.js"></script>
-    <script src="/dev/js/api/AuthenticationController.js"></script>
-    <script src="/dev/js/api/Authentication.js"></script>
-    <script src="/dev/js/api/Api.js"></script>
+    <script>var debug = true;</script>
+    <script src="dev/js/libs.js"></script>
+    <script src="dev/js/Application.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
 
     @yield('script-debug')
 
 @else
 
-    <script src="/assets/js/jquery-bootstrap-angular.min.js"></script>
+    <script>var debug = false;</script>
+    <script src="assets/js/libs.min.js"></script>
+    <script src="assets/js/Application.min.js"></script>
     @yield('script-non-debug')
 
 @endif

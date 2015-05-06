@@ -4,6 +4,7 @@ module.exports = function(app)
 
     require('./Controllers/_index.js')(admin);
     require('./Services/_index.js')(admin);
+    require('./Directives/_index.js')(admin);
 
     return admin;
 };

@@ -1,21 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(admin)
 {
+
+
     admin.controller('AdminController', [ '$scope', '$location', '$window', 'OrganisationService', 'AdminFactory', function($scope, $location, $window, OrganisationService, AdminFactory)
     {
         var groups = [];
 
         OrganisationService.getOrganisations().success(function(data, status, headers, config)
-                {
-                	groups = data;
+        {
+            groups = data;
 
-                }).error(function(data, status, headers, config)
-                {
-                    console.log(status);
-                    console.log(data);
-                    console.log(headers);
-                    console.log(config);
-                });
+        }).error(function(data, status, headers, config)
+        {
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        });
 
         $scope.allGroups = groups;
     }]);
@@ -24,10 +26,29 @@ module.exports = function(admin)
 },{}],2:[function(require,module,exports){
 module.exports = function(admin)
 {
+    admin.controller('NavigationBarController', [ '$scope', function($scope)
+    {
+        $scope.toggle = function()
+        {
+            angular.element(document.getElementById('wrapper')).toggleClass('unfolded');
+        }
+    }]);
+}
+
+},{}],3:[function(require,module,exports){
+module.exports = function(admin)
+{
     require('./AdminController.js')(admin);
+    require('./NavigationBarController.js')(admin);
 };
 
-},{"./AdminController.js":1}],3:[function(require,module,exports){
+},{"./AdminController.js":1,"./NavigationBarController.js":2}],4:[function(require,module,exports){
+module.exports = function(admin)
+{
+
+};
+
+},{}],5:[function(require,module,exports){
 module.exports = function(admin)
 {
     admin.factory('AdminFactory', function()
@@ -44,24 +65,25 @@ module.exports = function(admin)
 
 };
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = function(admin)
 {
     require('./AdminFactory.js')(admin);
 };
 
-},{"./AdminFactory.js":3}],5:[function(require,module,exports){
+},{"./AdminFactory.js":5}],7:[function(require,module,exports){
 module.exports = function(app)
 {
     var admin = angular.module('app.adminFunctions', [ 'app.api' ]);
 
     require('./Controllers/_index.js')(admin);
     require('./Services/_index.js')(admin);
+    require('./Directives/_index.js')(admin);
 
     return admin;
 };
 
-},{"./Controllers/_index.js":2,"./Services/_index.js":4}],6:[function(require,module,exports){
+},{"./Controllers/_index.js":3,"./Directives/_index.js":4,"./Services/_index.js":6}],8:[function(require,module,exports){
 'use strict';
 
 module.exports = function(api)
@@ -112,7 +134,7 @@ module.exports = function(api)
     });
 };
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function(app)
 {
     var api = angular.module('app.api', []);
@@ -122,8 +144,18 @@ module.exports = function(app)
     return api;
 };
 
-},{"./Api.js":6}],8:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions' ]);
+},{"./Api.js":8}],10:[function(require,module,exports){
+var modules =
+[
+    'ngRoute', 'door3.css',
+    'app.api', 'app.authentication',
+
+    'app.moderator', 'app.adminFunctions',
+
+    'app.canvas'
+];
+
+var app = angular.module('app', modules);
 
 app.config(function($httpProvider)
 {
@@ -141,17 +173,9 @@ var api = require('./Api/_index')(app);
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
 
-app.run(function($rootScope, $location, $window, AuthenticationService)
-{
-    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
-    {
-        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
-        {
-            $location.path("/auth/login");
-        }
-    });
-});
+var canvas = require('./Canvas/_index')(app);
 
+// @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
 {
     $routeProvider.when('/auth/login',
@@ -169,17 +193,33 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
-        /*when('/admin/login',
-         {
-         controller: 'AdminUserCtrl'
-         }).*/
+    .when('/canvas',
+    {
+        templateUrl: '/partials/canvas/spiral.html',
+        controller: 'CanvasController',
+        css:
+        [{
+            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+        }]
+    })
     .otherwise
     ({
         redirectTo: '/'
     });
 }]);
 
-},{"./Admin/_index":5,"./Api/_index":7,"./Authentication/_index":13,"./Moderator/_index":18}],9:[function(require,module,exports){
+app.run(function($rootScope, $location, $window, AuthenticationService)
+{
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
+    {
+        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
+        {
+            $location.path("/auth/login");
+        }
+    });
+});
+
+},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":18,"./Moderator/_index":23}],11:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -206,13 +246,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./AuthenticationController.js')(auth);
 };
 
-},{"./AuthenticationController.js":9}],11:[function(require,module,exports){
+},{"./AuthenticationController.js":11}],13:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.factory('AuthenticationService', function()
@@ -275,13 +315,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./Authentication.js')(auth);
 };
 
-},{"./Authentication.js":11}],13:[function(require,module,exports){
+},{"./Authentication.js":13}],15:[function(require,module,exports){
 module.exports = function(app)
 {
     var auth = angular.module('app.authentication', [ 'app.api' ]);
@@ -292,7 +332,37 @@ module.exports = function(app)
     return auth;
 };
 
-},{"./Controllers/_index.js":10,"./Services/_index.js":12}],14:[function(require,module,exports){
+},{"./Controllers/_index.js":12,"./Services/_index.js":14}],16:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    canvas.controller('CanvasController', [ '$scope', '$css', function($scope, $css)
+    {
+        $css.bind({ href: 'test.css' }, $scope);
+
+        $scope.test = function()
+        {
+            console.log('test');
+        }
+    }]);
+};
+
+},{}],17:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./CanvasController.js')(canvas);
+};
+
+},{"./CanvasController.js":16}],18:[function(require,module,exports){
+module.exports = function(app)
+{
+    var canvas = angular.module('app.canvas', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(canvas);
+
+    return canvas;
+};
+
+},{"./Controllers/_index.js":17}],19:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
@@ -305,13 +375,13 @@ module.exports = function(moderator)
     }]);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorController.js')(moderator);
 };
 
-},{"./ModeratorController.js":14}],16:[function(require,module,exports){
+},{"./ModeratorController.js":19}],21:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.factory('ModeratorFactory', function()
@@ -329,13 +399,13 @@ module.exports = function(moderator)
 
 };
 
-},{}],17:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorFactory.js')(moderator);
 };
 
-},{"./ModeratorFactory.js":16}],18:[function(require,module,exports){
+},{"./ModeratorFactory.js":21}],23:[function(require,module,exports){
 module.exports = function(app)
 {
     var moderator = angular.module('app.moderator', [ 'app.api' ]);
@@ -346,4 +416,4 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":15,"./Services/_index.js":17}]},{},[8]);
+},{"./Controllers/_index.js":20,"./Services/_index.js":22}]},{},[10]);
