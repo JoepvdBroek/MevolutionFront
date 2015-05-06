@@ -30,7 +30,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+
+<body ng-app="Mevolution">
+
 <div id="wrapper">
     <div id="navigation-wrapper">
         <div class="toggle-navigation">
@@ -73,6 +75,12 @@
 @if (env('APP_DEBUG') == true)
 
     <script src="/dev/js/jquery-bootstrap-angular.js"></script>
+
+    <script src="/dev/js/Angular.js"></script>
+    <script src="/dev/js/api/Route.js"></script>
+    <script src="/dev/js/api/AuthenticationController.js"></script>
+    <script src="/dev/js/api/Authentication.js"></script>
+    <script src="/dev/js/api/Api.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
 
     @yield('script-debug')

@@ -14,7 +14,15 @@
     "gulp-newer": "*",
     "gulp-imagemin": "*",
     "gulp-minify-css": "*",
+    "through2": "*",
+    "vinyl": "*",
+    "browserify": "*",
+    "reactify": "*",
     "tiny-lr": "*",
-    "connect-livereload": "*"
+    "connect-livereload": "*",
+
+    "angular": "*",
+    "angular-resource": "*",
+    "angular-route": "*"
   }
 }

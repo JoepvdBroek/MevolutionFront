@@ -11,4 +11,7 @@
 |
 */
 
-Route::controller('/canvas', 'CanvasController');
+Route::get('/', function()
+{
+    return view('template.base');
+});
