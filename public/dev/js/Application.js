@@ -1,24 +1,201 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(admin)
 {
-    admin.controller('AdminController', [ '$scope', '$location', '$window', 'OrganisationService', 'AdminFactory', function($scope, $location, $window, OrganisationService, AdminFactory)
+    admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, OrganisationService, GroupService, UserGroupService, AdminFactory)
     {
-        var groups = [];
 
-        OrganisationService.getOrganisations().success(function(data, status, headers, config)
+        /* *  ADMIN DASH ORGANISATIONS  **/
+        var organisations = [];
+
+        OrganisationService.getOrganisations().then(function(data, status, headers, config)
                 {
-                	groups = data;
+                    for(i=0;i<data.length;i++){
+                        organisations.push(data[i]);
+                    }
+                	// groups = data;
+                    //console.log(groups);
+
+                });
+
+        $scope.allOrganisations = organisations;
+
+        $scope.addOrganisation = function(newName, newColor, newLogo){
+            OrganisationService.postOrganisation(newName, newColor, newLogo).success(function(data, status, headers, config)
+                {
+                    $scope.allOrganisations = [];
+                    OrganisationService.getOrganisations().then(function(data, status, headers, config)
+                    {
+                        for(i=0;i<data.length;i++){
+                            $scope.allOrganisations.push(data[i]);
+                        }
+                    });
+                    $scope.newGroupName = "";
+                    $scope.newGroupColor = "";
+                    $scope.newGroupLogo = "";
 
                 }).error(function(data, status, headers, config)
                 {
-                    console.log(status);
-                    console.log(data);
-                    console.log(headers);
-                    console.log(config);
+                    // console.log(status);
+                    // console.log(data);
+                    // console.log(headers);
+                    // console.log(config);
+                });
+        };
+
+        // submits new groupName
+        $scope.submitNewOrganisationName = function submitNewOrganisationName(newName, organisation){
+            OrganisationService.postNewOrganisationName(newName, organisation._id).then(function(data, status, headers, config)
+                { 
+
+                });
+        };
+
+        /* *  ADMIN DASH GROUPS  **/
+
+        var groups = [];
+        var moderatorsOfOrganisation = [];
+        $scope.allModerators = [];
+
+
+        GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data.length;i++){
+                        groups.push(data[i]);
+                    }
+
                 });
 
         $scope.allGroups = groups;
+
+        $scope.addGroup = function(newName){
+            GroupService.postGroup(newName, $routeParams.organisationid).success(function(data, status, headers, config)
+                {
+                    $scope.allGroups = [];
+                    GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
+                    {
+                        for(i=0;i<data.length;i++){
+                        $scope.allGroups.push(data[i]);
+                    }
+                    });
+                    $scope.newGroupName = "";
+
+                }).error(function(data, status, headers, config)
+                {
+                    // console.log(status);
+                    // console.log(data);
+                    // console.log(headers);
+                    // console.log(config);
+                });
+        };
+
+        GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data.length;i++){
+                        $scope.allModerators.push(data[i]);
+                    }
+
+                });
+
+        $scope.selectionOfModerators = [];
+
+        // when checked, push moderatorid to array, else splice the userid from the array
+        $scope.toggleSelectionOfModerators = function toggleSelection(userId) {
+            var idx = $scope.selectionOfUsers.indexOf(userId);
+
+            // is currently selected
+            if (idx > -1) {
+              $scope.selectionOfModerators.splice(idx, 1);
+            }
+
+            // is newly selected
+            else {
+              $scope.selectionOfModerators.push(userId);
+            }
+
+            console.log($scope.selectionOfModerators);
+        };
+
+        // submits new groupName
+        $scope.submitNewGroupName = function submitNewGroupName(newName, group){
+            console.log($scope.selectionOfModerators);
+            UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
+                { 
+
+                });
+        };
+
+        /* *  ADMIN DASH USERS  **/
+
+        var users = [];
+        var moderators = [];
+        var titleOfGroup = "";
+        // gets users and moderators of group, and push them to array
+        UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data[0].participants.length;i++){
+                        users.push(data[0].participants[i]);   
+                    }
+
+                    for(i=0;i<data[0].moderators.length;i++){
+                        moderators.push(data[0].moderators[i]);     
+                    }
+
+                    titleOfGroup = data[0].title;
+                });
+        
+        $scope.usersOfGroup = users;
+        $scope.moderatorsOfGroup = moderators;
+        $scope.groupTitle = titleOfGroup;
+        
+        var allUsers = [];
+        var moderatorsOfOrganisation = [];
+        // gets all users so they can be displayed when adding users to a group
+        UserGroupService.getAllUsers().then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data.length;i++){
+                        allUsers.push(data[i]);
+                    }
+
+                });
+ 
+        $scope.allMevolutionUsers = allUsers;
+
+        // submit the new userArray(selectionOfUsers) to the group which are checked in the view
+        $scope.submitUsers = function() {
+
+            UserGroupService.pushUsersToGroup($routeParams.groupid, $scope.selectionOfUsers).then(function(data, status, headers, config)
+                { 
+                    UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
+                    {
+                        $scope.usersOfGroup = [];
+                        for(i=0;i<data[0].participants.length;i++){
+                            $scope.usersOfGroup.push(data[0].participants[i]);        
+                        }
+                        console.log($scope.usersOfGroup);
+                    });
+                });
+        }
+
+        $scope.selectionOfUsers = [];
+
+        // when checked, push userid to array, else splice the userid from the array
+        $scope.toggleSelection = function toggleSelection(userId) {
+            var idx = $scope.selectionOfUsers.indexOf(userId);
+
+            // is currently selected
+            if (idx > -1) {
+              $scope.selectionOfUsers.splice(idx, 1);
+            }
+
+            // is newly selected
+            else {
+              $scope.selectionOfUsers.push(userId);
+            }
+
+        };
+
     }]);
+ 
 };
 
 },{}],2:[function(require,module,exports){
@@ -34,10 +211,12 @@ module.exports = function(admin)
     {
         var admin = {};
 
-        //admin.groups = [{name:'test1'},{name:'test2'}];
-       // admin.groups = $
+        admin.organisations = [{name:'test1'},{name:'test2'}];
 
-        // merijncelie.nl::3000/api/groups/
+		admin.addOrganisation = function(newGroupName){
+    		admin.organisations.push({name:newGroupName});
+        };
+
 
         return admin;
     });
@@ -98,14 +277,137 @@ module.exports = function(api)
         return {
             getOrganisations: function ()
             {
-                return $http.get(API.url + '/groups/' + sessionStorage.access_token,
+                return $http.get(API.url + '/organization',
                 {
                     username: 'terry',
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret,
-                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            postOrganisation: function(newName, newColor, newLogo){
+                return $http.post(API.url + '/organization', {name:newName, color:newColor, logo:newLogo},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            postNewOrganisationName: function(newName, organisationId){
+                return $http.put(API.url + '/organization/' + organisationId, {name:newName},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            }
+        };
+    });
+    
+    api.factory('GroupService', function($http, API)
+    {
+        return {
+            getGroups: function (organisationId)
+            {
+                return $http.get(API.url + '/groups?organization='+organisationId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            postGroup: function(newName, organisationId){
+                return $http.post(API.url + '/groups', {title:newName, organization:organisationId},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            getAllModeratorsOfOrganisation: function(organisationId){
+                return $http.get(API.url + '/organization/moderators/' + organisationId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            }
+        };       
+    });
+
+    api.factory('UserGroupService', function($http, API)
+        {
+        return {
+            getGroup: function (groupId)
+            {
+                return $http.get(API.url + '/groups/' + groupId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+             },
+             getAllUsers: function(){
+                return $http.get(API.url + '/users',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            pushUsersToGroup: function(groupId, userArray){
+                return $http.put(API.url + '/groups/' + groupId, {participants:userArray},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            pushNewGroupName: function(groupId, newName, moderatorArray){
+                return $http.put(API.url + '/groups/' + groupId, {title:newName, moderators: moderatorArray},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             }
         };
@@ -167,6 +469,16 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/admin',
     {
         templateUrl: 'partials/admin_dash.html',
+        controller: 'AdminController'
+    })
+    .when('/admin/groups/:organisationid',
+    {
+        templateUrl: 'partials/admin_dash_groups.html',
+        controller: 'AdminController'
+    })
+    .when('/admin/users/:groupid',
+    {
+        templateUrl: 'partials/admin_dash_users.html',
         controller: 'AdminController'
     })
         /*when('/admin/login',
