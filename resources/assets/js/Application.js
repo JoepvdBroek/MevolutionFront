@@ -1,15 +1,4 @@
-var modules =
-[
-    'ngRoute', 'door3.css',
-    'app.api', 'app.authentication',
-
-    'app.moderator', 'app.adminFunctions',
-    'app.timeline',
-
-    'app.canvas'
-]; 
-
-var app = angular.module('app', modules);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions' ]);
 
 app.config(function($httpProvider)
 {
@@ -27,11 +16,17 @@ var api = require('./Api/_index')(app);
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
 
-var timeline = require('./Timeline/_index')(app);
+app.run(function($rootScope, $location, $window, AuthenticationService)
+{
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
+    {
+        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
+        {
+            $location.path("/auth/login");
+        }
+    });
+});
 
-var canvas = require('./Canvas/_index')(app);
-
-// @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
 {
     $routeProvider.when('/auth/login',
@@ -49,33 +44,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
-    .when('/timeline',
-    {
-        templateUrl: '/partials/timeline/timeline.html',
-        controller: 'TimelineController'
-    })
-    .when('/canvas',
-    {
-        templateUrl: '/partials/canvas/spiral.html',
-        controller: 'CanvasController',
-        css:
-        [{
-            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
-        }]
-    })
+        /*when('/admin/login',
+         {
+         controller: 'AdminUserCtrl'
+         }).*/
     .otherwise
     ({
         redirectTo: '/'
     });
 }]);
-
-app.run(function($rootScope, $location, $window, AuthenticationService)
-{
-    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
-    {
-        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
-        {
-            $location.path("/auth/login");
-        }
-    });
-});

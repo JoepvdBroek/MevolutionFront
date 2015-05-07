@@ -23,7 +23,6 @@
 
     "angular": "*",
     "angular-resource": "*",
-    "angular-route": "*",
-    "angular-css": "*"
+    "angular-route": "*"
   }
 }

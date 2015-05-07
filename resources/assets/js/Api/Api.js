@@ -46,25 +46,4 @@ module.exports = function(api)
             }
         };
     });
-
-    api.factory('TimelineService', function($http, API)
-    {
-        return {
-            getCanvases: function ()
-            {
-                console.log("lol");
-                return $http.get(API.url + '/canvas',
-                {
-                    username: 'terry',
-                    password: 'terry',
-                    "grant_type": "password",
-                    "client_id": API.clientId,
-                    "client_secret": API.clientSecret,
-                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
-                }).then(function(data){
-                    return data.data;
-                });
-            }
-        };
-    });
 };
