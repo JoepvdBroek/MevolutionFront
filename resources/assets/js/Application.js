@@ -4,9 +4,10 @@ var modules =
     'app.api', 'app.authentication',
 
     'app.moderator', 'app.adminFunctions',
+    'app.timeline',
 
     'app.canvas'
-];
+]; 
 
 var app = angular.module('app', modules);
 
@@ -25,6 +26,8 @@ var api = require('./Api/_index')(app);
 
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
+
+var timeline = require('./Timeline/_index')(app);
 
 var canvas = require('./Canvas/_index')(app);
 
@@ -45,6 +48,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
+    })
+    .when('/timeline',
+    {
+        templateUrl: '/partials/timeline/timeline.html',
+        controller: 'TimelineController'
     })
     .when('/canvas',
     {

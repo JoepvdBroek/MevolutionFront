@@ -132,6 +132,27 @@ module.exports = function(api)
             }
         };
     });
+
+    api.factory('TimelineService', function($http, API)
+    {
+        return {
+            getCanvases: function ()
+            {
+                console.log("lol");
+                return $http.get(API.url + '/canvas',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            }
+        };
+    });
 };
 
 },{}],9:[function(require,module,exports){
@@ -151,9 +172,10 @@ var modules =
     'app.api', 'app.authentication',
 
     'app.moderator', 'app.adminFunctions',
+    'app.timeline',
 
     'app.canvas'
-];
+]; 
 
 var app = angular.module('app', modules);
 
@@ -172,6 +194,8 @@ var api = require('./Api/_index')(app);
 
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
+
+var timeline = require('./Timeline/_index')(app);
 
 var canvas = require('./Canvas/_index')(app);
 
@@ -192,6 +216,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
+    })
+    .when('/timeline',
+    {
+        templateUrl: '/partials/timeline/timeline.html',
+        controller: 'TimelineController'
     })
     .when('/canvas',
     {
@@ -219,7 +248,7 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
     });
 });
 
-},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":18,"./Moderator/_index":23}],11:[function(require,module,exports){
+},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":18,"./Moderator/_index":23,"./Timeline/_index":26}],11:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -416,4 +445,111 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":20,"./Services/_index.js":22}]},{},[10]);
+},{"./Controllers/_index.js":20,"./Services/_index.js":22}],24:[function(require,module,exports){
+module.exports = function(timeline)
+{
+    timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', function($scope, $location, $window, TimelineService)
+    {
+
+    	$scope.allCanvas  = [ 
+			{ year: "2014", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"}, 
+					{ name: "canvas 2"}, 
+					{ name: "canvas 3"}, 
+					{ name: "canvas 4"}, 
+					{ name: "canvas 5"}, 
+					{ name: "canvas 6"}, 
+					{ name: "canvas 7"}
+				]}
+			]},
+			{ year: "2016", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"}
+				]},
+				{ month: "Februari", canvas: [
+					{ name: "canvas 1"}
+				]}
+			]},
+			{ year: "2019", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"}, 
+					{ name: "canvas 2"},
+				]},
+				{ month: "April", canvas: [
+					{ name: "canvas 1"}, 
+					{ name: "canvas 2"}, 
+					{ name: "canvas 3"}
+				]},
+				{ month: "Juli", canvas: [
+					{ name: "canvas 1"}, 
+					{ name: "canvas 2"}, 
+					{ name: "canvas 3"}, 
+					{ name: "canvas 4"}, 
+					{ name: "canvas 5"}
+				]},
+				{ month: "Oktober", canvas: [
+					{ name: "canvas 1"}, 
+					{ name: "canvas 2"}, 
+					{ name: "canvas 3"}, 
+					{ name: "canvas 4"}
+				]}
+			]},
+			{ year: "2015", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"}
+				]}
+			]}
+			,
+			{ year: "2018", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"}
+				]}
+			]}
+			,
+			{ year: "2017", m: [
+				{ month: "Januari", canvas: [
+					{ name: "canvas 1"},
+					{ name: "canvas 2"},
+					{ name: "canvas 3"}
+				]}
+			]}
+			
+		];
+
+		var canvases = [];
+
+        TimelineService.getCanvases().then(data, status, headers, config)
+        {
+            for(i=0;i<data.length;i++)
+            {
+                canvases.push(data[i]);
+            }
+        }
+
+        $scope.allCanvases = canvases;
+        console.log(canvases);
+
+		$scope.filterFunction = function(element) {
+			return element.name.match(/^Ma/) ? true : false;
+		};
+    }]);
+};
+
+},{}],25:[function(require,module,exports){
+module.exports = function(auth)
+{
+    require('./TimelineController.js')(auth);
+};
+
+},{"./TimelineController.js":24}],26:[function(require,module,exports){
+module.exports = function(app)
+{
+    var auth = angular.module('app.timeline', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(auth);
+
+    return auth;
+};
+
+},{"./Controllers/_index.js":25}]},{},[10]);

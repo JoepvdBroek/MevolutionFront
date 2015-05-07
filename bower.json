@@ -8,10 +8,7 @@
         "bootstrap-wysihtml5": "latest",
         "bootstrap-select": "latest",
         "datetimepicker": "latest",
-<<<<<<< HEAD
         "angular": "latest",
-=======
->>>>>>> master
         "zoomooz": "latest"
     }
 }
