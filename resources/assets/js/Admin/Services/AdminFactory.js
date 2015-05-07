@@ -4,10 +4,12 @@ module.exports = function(admin)
     {
         var admin = {};
 
-        //admin.groups = [{name:'test1'},{name:'test2'}];
-       // admin.groups = $
+        admin.organisations = [{name:'test1'},{name:'test2'}];
 
-        // merijncelie.nl::3000/api/groups/
+		admin.addOrganisation = function(newGroupName){
+    		admin.organisations.push({name:newGroupName});
+        };
+
 
         return admin;
     });
