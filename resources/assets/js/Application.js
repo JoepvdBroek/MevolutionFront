@@ -1,9 +1,9 @@
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions', 'app.timeline' ]);
 
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
-
+ 
 }).config(function($interpolateProvider)
 {
     $interpolateProvider.startSymbol('[[');
@@ -15,6 +15,7 @@ var api = require('./Api/_index')(app);
 
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
+var timline = require('./Timeline/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
 {
@@ -53,6 +54,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/admin_dash_users.html',
         controller: 'AdminController'
+    })
+    .when('/timeline',
+    {
+        templateUrl: 'partials/timeline/timeline.html',
+        controller: 'TimelineController'
     })
         /*when('/admin/login',
          {

@@ -146,7 +146,7 @@ module.exports = function(api)
                 });
             },
             pushUsersToGroup: function(groupId, userArray){
-                return $http.put(API.url + '/groups/' + groupId, {participants:userArray},
+                return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
                 {
                     username: 'terry',
                     password: 'terry',
@@ -168,5 +168,24 @@ module.exports = function(api)
                 });
             }
         };
+    });
+    api.factory('TimelineService', function($http, API)
+        {
+        return {
+            getCanvases: function (groupId)
+            {
+                return $http.get(API.url + '/canvas',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            }
+        }
     });
 };
