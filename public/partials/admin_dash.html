@@ -20,7 +20,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="organisation in allOrganisations" id="{{group._id}}">
-						<td ng-model="groupName"><a ng-click="initOrgId({{organisation._id}})" href="#/admin/groups/{{organisation._id}}">{{ organisation.name }}
+						<td ng-model="groupName"><a href="#/admin/groups/{{organisation._id}}">{{ organisation.name }}
 						</a></td>
 						<td>{{ organisation.color }}</td>
 						<td>{{ organisation.logo }}</td>

@@ -19,7 +19,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="group in allGroups" id="{{group._id}}">
-						<td ng-model="group.groupName"><a ng-click="initGroupId({{group._id}})" href="#/admin/users/{{group._id}}">{{ group.title }}</a></td>
+						<td ng-model="group.groupName"><a href="#/admin/users/{{group._id}}">{{ group.title }}</a></td>
 						<td><p ng-repeat="moderator in group.moderators">{{moderator.firstName}}</p></td>
 						<td></td>
 						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{group._id}}"><span class="glyphicon glyphicon-cog"></span></button></td>
