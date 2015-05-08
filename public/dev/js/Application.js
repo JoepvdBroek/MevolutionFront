@@ -26,19 +26,28 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
-            }
+            },
             register: function (username, password, email, firstname, middlename, surname)
             {
-                return $http.post(API.url + '/oauth/token',
+                return $http.post(API.url + '/users',
                 {
                     username: username,
                     password: password,
                     email: email,
-                    firstname: firstname,
-                    middlename: middlename,
-                    surname: surname,
-                    "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    firstName: firstname,
+                    middleName: middlename,
+                    surName: surname
+                });
+            },
+            checkUsername: function (username)
+            {
+                return $http.get(API.url + '/users/username/' + username,
+                {
+                    headers: 
+                    {
+                    'x-key': API.key,
+                    'Authorization': 'Bearer ' + sessionStorage.access_token
+                    }
                 });
             }
         };
@@ -118,7 +127,7 @@ module.exports = function(authentication)
                     AuthenticationService.isAuthenticated = true;
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
-                    $window.sessionStorage.username = username;
+                    $window.sessionStorage.username = data.username;
 
                     $location.path('/canvas');
 
@@ -129,38 +138,58 @@ module.exports = function(authentication)
                 });
             }
         };
-    }]);
-};
-/*
-//register -----------------------------------------------------------------------------------
-},{"./Api/_index":2,"./Authentication/_index":8}],4:[function(require,module,exports){
-module.exports = function(authentication)
-{
-    authentication.controller('RegisterController', [ '$scope', '$location', '$window', 'RegisterService', 'AuthenticationService', function($scope, $location, $window, RegisterService, AuthenticationService)
-    {
-        $scope.signUp = function signUp(username, password1, password2, email, firstname, middlename, surname)
+        $scope.register = function register(username, password1, password2, email, firstname, middlename,surname)
         {
-            if (username != null && password1 != null && password2 != null && email != null && firstname != null && lastname != null)
+            if (username != null && password1 != null && password2 != null && email != null && firstname != null && surname != null)
             {
-                if (password1 === password2)
+                UserService.checkUsername(username).success(function(data)
                 {
-                    var password = password1;
-                    registerService.signUp(username, password, email, firstname, middlename, surname).success(function(data)
+                
+                    if (data == false)
                     {
-                        $location.path('/login');
+                        if (password1 === password2)
+                        {
+                            var password = password1;
+                            UserService.register(username, password, email, firstname, middlename, surname).success(function(data)
+                            {
+                                alert("Gebruiker: " + username + " is aangemaakt");
+                                $location.path('/auth/login');
 
-                    }).error(function(status, data)
+                            }).error(function(status, data)
+                            {
+                                console.log(status);
+                                console.log(data);
+                            });
+                        }
+                    }
+                });
+            }
+        };
+        $scope.checkUsername = function checkUsername(username)
+        {
+            if (username != null)
+            {
+                UserService.checkUsername(username).success(function(data)
+                {
+                    console.log(data);
+                    if (data == true) 
                     {
-                        console.log(status);
-                        console.log(data);
-                    });
-                }
+                        alert("gebruikersnaam: " + username + " is al in gebruik");
+                    } else 
+                    {
+                        alert("gebruikersnaam: " + username + " is beschikbaar");
+                    }   
+                    return data;
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
             }
         };
     }]);
 };
-*/
-
 
 },{}],5:[function(require,module,exports){
 module.exports = function(auth)

@@ -25,19 +25,28 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret
                 });
-            }
+            },
             register: function (username, password, email, firstname, middlename, surname)
             {
-                return $http.post(API.url + '/oauth/token',
+                return $http.post(API.url + '/users',
                 {
-                    username: username,
+                    userName: username,
                     password: password,
                     email: email,
-                    firstname: firstname,
-                    middlename: middlename,
-                    surname: surname,
-                    "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    firstName: firstname,
+                    middleName: middlename,
+                    surName: surname
+                });
+            },
+            checkUsername: function (username)
+            {
+                return $http.get(API.url + '/users/username/' + username,
+                {
+                    headers: 
+                    {
+                    'x-key': API.key,
+                    'Authorization': 'Bearer ' + sessionStorage.access_token
+                    }
                 });
             }
         };

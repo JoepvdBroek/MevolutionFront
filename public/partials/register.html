@@ -115,6 +115,13 @@
     margin-top: 20px;
 }
 
+#username_check{
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin-top: 5px;
+}
+
 #information-wrapper{
     color: #FFF;
     width: 300px;
@@ -194,15 +201,16 @@
 
         <form id="loginform-wrapper" role="form" ng-controller="AuthenticationController">
             <span id="form-title">Registreren</span>
-            <input type="text" class="form-control" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username" required>
-            <input type="password" class="form-control" id="input-password1" placeholder="Wachtwoord" ng-model="user.password1" required>
-            <input type="password" class="form-control" id="input-password2" placeholder="Wachtwoord" ng-model="user.password2" required>
-            <input type="email" class="form-control" id="input-email" placeholder="Email" ng-model="user.email" required>
-            <input type="text" class="form-control" id="input-firstname" placeholder="Voornaam" ng-model="user.firstname" required>
+            <input type="text" class="form-control" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username" >
+            <button id="username_check" class="form-control" ng-click="checkUsername(user.username)">Controleer gebruikersnaam</button>
+            <input type="password" class="form-control" id="input-password1" placeholder="Wachtwoord" ng-model="user.password1" >
+            <input type="password" class="form-control" id="input-password2" placeholder="Wachtwoord" ng-model="user.password2" >
+            <input type="email" class="form-control" id="input-email" placeholder="Email" ng-model="user.email" >
+            <input type="text" class="form-control" id="input-firstname" placeholder="Voornaam" ng-model="user.firstname" >
             <input type="text" class="form-control" id="input-middlename" placeholder="Tussenvoegsel" ng-model="user.middlename">
-            <input type="text" class="form-control" id="input-surname" placeholder="Achternaam" ng-model="user.surname" required>
+            <input type="text" class="form-control" id="input-surname" placeholder="Achternaam" ng-model="user.surname" >
 
-            <input id="submit-register" type="submit" ng-click="signIn(user.username, user.password)" value="Registreren"/>
+            <input id="submit-register" type="submit" ng-click="register(user.username, user.password1, user.password2, user.email, user.firstname, user.middlename, user.surname)" value="Registreren"/>
 
 </form>
 
