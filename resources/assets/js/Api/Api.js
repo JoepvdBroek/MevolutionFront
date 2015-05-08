@@ -28,6 +28,31 @@ module.exports = function(api)
 
             },
 
+            register: function (username, password, email, firstname, middlename, surname)
+            {
+                return $http.post(API.url + '/users',
+                {
+                    userName: username,
+                    password: password,
+                    email: email,
+                    firstName: firstname,
+                    middleName: middlename,
+                    surName: surname
+                });
+            },
+
+            checkUsername: function (username)
+            {
+                return $http.get(API.url + '/users/username/' + username,
+                {
+                    headers: 
+                    {
+                        'x-key': API.key,
+                        'Authorization': 'Bearer ' + sessionStorage.access_token
+                    }
+                });
+            },
+
             getUserInfo: function ()
             {
                 return $http.get(API.url + '/users/@me');
@@ -85,9 +110,9 @@ module.exports = function(api)
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret,
                     headers: {'Authorization': 'Bearer' + sessionStorage.access_token}
-
                 });
             }
+            
         };
     });
 };
