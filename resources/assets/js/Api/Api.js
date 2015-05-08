@@ -32,7 +32,7 @@ module.exports = function(api)
             {
                 return $http.post(API.url + '/users',
                 {
-                    userName: username,
+                    username: username,
                     password: password,
                     email: email,
                     firstName: firstname,

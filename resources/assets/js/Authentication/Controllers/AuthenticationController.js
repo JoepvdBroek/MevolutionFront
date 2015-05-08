@@ -21,5 +21,57 @@ module.exports = function(authentication)
                 });
             }
         };
+
+        $scope.register = function register(username, password1, password2, email, firstname, middlename,surname)
+        {
+            if (username != null && password1 != null && password2 != null && email != null && firstname != null && surname != null)
+            {
+                UserService.checkUsername(username).success(function(data)
+                {
+                
+                    if (data == false)
+                    {
+                        if (password1 === password2)
+                        {
+                            var password = password1;
+                            UserService.register(username, password, email, firstname, middlename, surname).success(function(data)
+                            {
+                                alert("Gebruiker: " + username + " is aangemaakt");
+                                $location.path('/auth/login');
+
+                            }).error(function(status, data)
+                            {
+                                console.log(status);
+                                console.log(data);
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        $scope.checkUsername = function checkUsername(username)
+        {
+            if (username != null)
+            {
+                UserService.checkUsername(username).success(function(data)
+                {
+                    console.log(data);
+                    if (data == true) 
+                    {
+                        alert("gebruikersnaam: " + username + " is al in gebruik");
+                    } else 
+                    {
+                        alert("gebruikersnaam: " + username + " is beschikbaar");
+                    }   
+                    return data;
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            }
+        };
     }]);
 };

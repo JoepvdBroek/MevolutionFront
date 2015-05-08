@@ -39,6 +39,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/login.html',
         controller: 'AuthenticationController'
     })
+    .when('/auth/register',
+    {
+        templateUrl: 'partials/register.html',
+        controller: 'AuthenticationController'
+    })
     .when('/profile',
     {
         templateUrl: 'partials/user/profile.html',

@@ -118,7 +118,7 @@ module.exports = function(api)
             {
                 return $http.post(API.url + '/users',
                 {
-                    userName: username,
+                    username: username,
                     password: password,
                     email: email,
                     firstName: firstname,
@@ -255,6 +255,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/login.html',
         controller: 'AuthenticationController'
     })
+    .when('/auth/register',
+    {
+        templateUrl: 'partials/register.html',
+        controller: 'AuthenticationController'
+    })
     .when('/profile',
     {
         templateUrl: 'partials/user/profile.html',
@@ -324,6 +329,58 @@ module.exports = function(authentication)
                     $window.sessionStorage.refresh_token = data.refresh_token;
 
                     $location.path('/canvas');
+
+                }).error(function(status, data)
+                {
+                    console.log(status);
+                    console.log(data);
+                });
+            }
+        };
+
+        $scope.register = function register(username, password1, password2, email, firstname, middlename,surname)
+        {
+            if (username != null && password1 != null && password2 != null && email != null && firstname != null && surname != null)
+            {
+                UserService.checkUsername(username).success(function(data)
+                {
+                
+                    if (data == false)
+                    {
+                        if (password1 === password2)
+                        {
+                            var password = password1;
+                            UserService.register(username, password, email, firstname, middlename, surname).success(function(data)
+                            {
+                                alert("Gebruiker: " + username + " is aangemaakt");
+                                $location.path('/auth/login');
+
+                            }).error(function(status, data)
+                            {
+                                console.log(status);
+                                console.log(data);
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        $scope.checkUsername = function checkUsername(username)
+        {
+            if (username != null)
+            {
+                UserService.checkUsername(username).success(function(data)
+                {
+                    console.log(data);
+                    if (data == true) 
+                    {
+                        alert("gebruikersnaam: " + username + " is al in gebruik");
+                    } else 
+                    {
+                        alert("gebruikersnaam: " + username + " is beschikbaar");
+                    }   
+                    return data;
 
                 }).error(function(status, data)
                 {
