@@ -56,6 +56,16 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
+    .when('/admin/groups/:organisationid',
+    {
+        templateUrl: 'partials/admin_dash_groups.html',
+        controller: 'AdminController'
+    })
+    .when('/admin/users/:groupid',
+    {
+        templateUrl: 'partials/admin_dash_users.html',
+        controller: 'AdminController'
+    })
     .otherwise
     ({
         redirectTo: '/'

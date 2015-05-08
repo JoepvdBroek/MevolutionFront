@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Mevolution</title>
+    
+    <script src="dev/js/jquery-2.1.3.min.js"></script>
+    <script src="dev/js/jquery-ui.js"></script>
+    <script src="dev/js/bootstrap.min.js"></script>
+
 
     @if (env('APP_DEBUG') == true)
 
         @yield('style-debug')
-
+        
     @else
 
         @yield('style-non-debug')
@@ -39,14 +44,15 @@
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
     <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
-
     @yield('script-debug')
 
 @else
 
     <script>var debug = false;</script>
+
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
+
     @yield('script-non-debug')
 
 @endif
