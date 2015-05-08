@@ -17,10 +17,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="user in usersOfGroup" id="[[user._id]]">
-						<td>[[ user.firstName ]]</td>
-						<td>[[ user.middleName ]]</td>
-						<td>[[ user.surName ]]</td>
+					<tr ng-repeat="user in usersOfGroup" id="{{user._id}}">
+						<td>{{ user.firstName }}</td>
+						<td>{{ user.middleName }}</td>
+						<td>{{ user.surName }}</td>
 						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid"><span class="glyphicon glyphicon-cog"></span></button></td>
 					</tr>
 				</tbody>
@@ -66,9 +66,9 @@
 						  <input
 						    type="checkbox"
 						    name="selectedUsers[]"
-						    value="[[userObject._id]"
+						    value="{{userObject._id]"
 						    ng-checked="selectionOfUsers.indexOf(userObject._id) > -1"
-						    ng-click="toggleSelection(userObject._id)"> [[userObject.username]]
+						    ng-click="toggleSelection(userObject._id)"> {{userObject.username}}
 						</label>
 					  </div>
 					  <div class="modal-footer">
@@ -95,9 +95,9 @@
 						  <input
 						    type="checkbox"
 						    name="selectedUsers[]"
-						    value="[[moderator._id]"
+						    value="{{moderator._id]"
 						    ng-checked="selection.indexOf(moderator._id) > -1"
-						    ng-click="toggleSelection(moderator._id)"> [[moderator.username]]
+						    ng-click="toggleSelection(moderator._id)"> {{moderator.username}}
 						</label>
 					  </div>
 					  <div class="modal-footer">
