@@ -14,11 +14,11 @@ app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
 
-}).config(function($interpolateProvider)
+})/*.config(function($interpolateProvider)
 {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
-});
+})*/;
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);
@@ -48,11 +48,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/canvas',
     {
-        templateUrl: '/partials/canvas/spiral.html',
+        templateUrl: '/partials/canvas/canvas.html',
         controller: 'CanvasController',
         css:
         [{
-            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+             href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css',
+             bustCache: true
         }]
     })
     .otherwise

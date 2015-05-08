@@ -161,11 +161,11 @@ app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
 
-}).config(function($interpolateProvider)
+})/*.config(function($interpolateProvider)
 {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
-});
+})*/;
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);
@@ -195,11 +195,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/canvas',
     {
-        templateUrl: '/partials/canvas/spiral.html',
+        templateUrl: '/partials/canvas/canvas.html',
         controller: 'CanvasController',
         css:
         [{
-            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+             href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css',
+             bustCache: true
         }]
     })
     .otherwise
@@ -219,7 +220,7 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
     });
 });
 
-},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":18,"./Moderator/_index":23}],11:[function(require,module,exports){
+},{"./Admin/_index":7,"./Api/_index":9,"./Authentication/_index":15,"./Canvas/_index":20,"./Moderator/_index":25}],11:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -337,12 +338,7 @@ module.exports = function(canvas)
 {
     canvas.controller('CanvasController', [ '$scope', '$css', function($scope, $css)
     {
-        $css.bind({ href: 'test.css' }, $scope);
 
-        $scope.test = function()
-        {
-            console.log('test');
-        }
     }]);
 };
 
@@ -353,16 +349,35 @@ module.exports = function(canvas)
 };
 
 },{"./CanvasController.js":16}],18:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    canvas.factory('CanvasService', function($http, API)
+    {
+        API.factory('CanvasService', function($http)
+        {
+            console.log('hoi');
+        });
+    });
+};
+
+},{}],19:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./Canvas.js')(canvas);
+};
+
+},{"./Canvas.js":18}],20:[function(require,module,exports){
 module.exports = function(app)
 {
     var canvas = angular.module('app.canvas', [ 'app.api' ]);
 
     require('./Controllers/_index.js')(canvas);
+    require('./Services/_index.js')(canvas);
 
     return canvas;
 };
 
-},{"./Controllers/_index.js":17}],19:[function(require,module,exports){
+},{"./Controllers/_index.js":17,"./Services/_index.js":19}],21:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
@@ -375,13 +390,13 @@ module.exports = function(moderator)
     }]);
 };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorController.js')(moderator);
 };
 
-},{"./ModeratorController.js":19}],21:[function(require,module,exports){
+},{"./ModeratorController.js":21}],23:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.factory('ModeratorFactory', function()
@@ -399,13 +414,13 @@ module.exports = function(moderator)
 
 };
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorFactory.js')(moderator);
 };
 
-},{"./ModeratorFactory.js":21}],23:[function(require,module,exports){
+},{"./ModeratorFactory.js":23}],25:[function(require,module,exports){
 module.exports = function(app)
 {
     var moderator = angular.module('app.moderator', [ 'app.api' ]);
@@ -416,4 +431,4 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":20,"./Services/_index.js":22}]},{},[10]);
+},{"./Controllers/_index.js":22,"./Services/_index.js":24}]},{},[10]);

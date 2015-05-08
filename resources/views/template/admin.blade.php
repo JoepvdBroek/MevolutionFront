@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html ng-app="app">
+<head >
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="app">
+<body>
 <div id="wrapper">
     <div id="navigation-wrapper" ng-controller="NavigationBarController">
         <div class="toggle-navigation" ng-click="toggle()">
@@ -69,9 +69,9 @@
         </div>
     </div>
 
-    <div ng-view>
+    <ng-view>
         @yield('content')
-    </div>
+    </ng-view>
 </div>
 
 @if (env('APP_DEBUG') == true)

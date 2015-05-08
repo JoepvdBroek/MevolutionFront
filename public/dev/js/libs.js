@@ -20,7 +20,7 @@
   // Config
   angularCSS.config(['$logProvider', function ($logProvider) {
     // Turn off/on in order to see console logs during dev mode
-    $logProvider.debugEnabled(false);
+    $logProvider.debugEnabled(true);
   }]);
 
   // Provider
