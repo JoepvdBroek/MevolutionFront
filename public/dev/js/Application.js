@@ -27,6 +27,20 @@ module.exports = function(api)
                     "client_secret": API.clientSecret
                 });
             }
+            register: function (username, password, email, firstname, middlename, surname)
+            {
+                return $http.post(API.url + '/oauth/token',
+                {
+                    username: username,
+                    password: password,
+                    email: email,
+                    firstname: firstname,
+                    middlename: middlename,
+                    surname: surname,
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret
+                });
+            }
         };
     });
 };
@@ -75,6 +89,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: '/partials/login.html',
         controller: 'AuthenticationController'
     })
+    .when('/auth/register',
+    {
+        templateUrl: '/partials/register.html',
+        controller: 'AuthenticationController'
+    })
         /*when('/admin/login',
          {
          controller: 'AdminUserCtrl'
@@ -99,6 +118,7 @@ module.exports = function(authentication)
                     AuthenticationService.isAuthenticated = true;
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
+                    $window.sessionStorage.username = username;
 
                     $location.path('/canvas');
 
@@ -111,6 +131,36 @@ module.exports = function(authentication)
         };
     }]);
 };
+/*
+//register -----------------------------------------------------------------------------------
+},{"./Api/_index":2,"./Authentication/_index":8}],4:[function(require,module,exports){
+module.exports = function(authentication)
+{
+    authentication.controller('RegisterController', [ '$scope', '$location', '$window', 'RegisterService', 'AuthenticationService', function($scope, $location, $window, RegisterService, AuthenticationService)
+    {
+        $scope.signUp = function signUp(username, password1, password2, email, firstname, middlename, surname)
+        {
+            if (username != null && password1 != null && password2 != null && email != null && firstname != null && lastname != null)
+            {
+                if (password1 === password2)
+                {
+                    var password = password1;
+                    registerService.signUp(username, password, email, firstname, middlename, surname).success(function(data)
+                    {
+                        $location.path('/login');
+
+                    }).error(function(status, data)
+                    {
+                        console.log(status);
+                        console.log(data);
+                    });
+                }
+            }
+        };
+    }]);
+};
+*/
+
 
 },{}],5:[function(require,module,exports){
 module.exports = function(auth)

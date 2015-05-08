@@ -26,6 +26,20 @@ module.exports = function(api)
                     "client_secret": API.clientSecret
                 });
             }
+            register: function (username, password, email, firstname, middlename, surname)
+            {
+                return $http.post(API.url + '/oauth/token',
+                {
+                    username: username,
+                    password: password,
+                    email: email,
+                    firstname: firstname,
+                    middlename: middlename,
+                    surname: surname,
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret
+                });
+            }
         };
     });
 };
