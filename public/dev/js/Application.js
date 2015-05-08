@@ -134,10 +134,27 @@ module.exports = function(api)
                     "zipCode" : user.zipCode,
                     "phone1" : user.phone1,
                     "phone2" : user.phone2,
-                    "organization" : user.organization,
-                    "roles" : user.roles
+                    // "organization" : user.organization,
+                    // "roles" : user.roles
                 });
-            }
+            },
+
+            sentPasswordReset: function (user)
+            {
+                return $http.post(API.url + 'users/forgot',
+                {
+                    'email' : user.email
+                });
+            },
+
+            changePassword: function (password)
+            {
+                return $http.post(API.url + 'users/' + user._id,
+                {
+                    'password' : password
+                });
+            },
+
         };
     });
 
@@ -218,6 +235,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/user/profile.html',
         controller: 'UserController'
     })
+    .when('/profile/password',
+    {
+        templateUrl: 'partials/user/password.html',
+        controller: 'UserController'
+    })
         /*when('/admin/login',
          {
          controller: 'AdminUserCtrl'
@@ -234,11 +256,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/canvas',
     {
-        templateUrl: '/partials/canvas/spiral.html',
+        templateUrl: 'partials/canvas/spiral.html',
         controller: 'CanvasController',
         css:
         [{
-            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+            href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.css'
         }]
     })
 
@@ -315,9 +337,10 @@ module.exports = function(authentication)
             {
                 config.headers = config.headers || {};
 
-                if ($window.sessionStorage.token)
+                if ($window.sessionStorage.refresh_token)
                 {
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
+                    AuthenticationService.isAuthenticated = true;
                 }
 
                 config.headers["x-key"] = API.key;
@@ -465,17 +488,17 @@ module.exports = function(user)
     {
         $scope.editmode = false;
         $scope.user = {};
-        getUserInfo();  
+        getUserInfo(); 
 
         function switchEditmodeOff(){
             $scope.editmode = false;
         }
 
-        $scope.switchToEditmode = function(){
+        $scope.switchToEditmode = function switchToEditmode(){
             $scope.editmode = true;
         }     
 
-        $scope.updateUserInfo = function()
+        $scope.updateUserInfo = function updateUserInfo()
         {
             if (AuthenticationService.isAuthenticated)
             {
@@ -492,6 +515,21 @@ module.exports = function(user)
                 console.log('not authenticated');
             }
         };
+
+        $scope.changePassword = function changePassword(password){
+            if(password != null && password.old != null && password.new != null && password.repeat != null){
+                console.log('old: ' +password.old);
+                console.log('new: ' +password.new);
+                console.log('repeat: ' +password.repeat);
+                if(password.new == password.repeat){
+                    //TODO: maak call naar nog niet bestaande route met nieuw en oud wachtwoord
+                } else {
+                    alert('nieuw wachtwoord komt niet overeen');
+                }
+            } else {
+                alert('vul alsjeblieft alle velden in');
+            }
+        }
 
         function getUserInfo(){
             if (AuthenticationService.isAuthenticated)

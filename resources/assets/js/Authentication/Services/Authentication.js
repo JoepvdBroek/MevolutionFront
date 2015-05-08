@@ -18,9 +18,10 @@ module.exports = function(authentication)
             {
                 config.headers = config.headers || {};
 
-                if ($window.sessionStorage.token)
+                if ($window.sessionStorage.refresh_token)
                 {
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
+                    AuthenticationService.isAuthenticated = true;
                 }
 
                 config.headers["x-key"] = API.key;

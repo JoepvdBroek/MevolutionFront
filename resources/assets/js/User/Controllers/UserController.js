@@ -4,17 +4,17 @@ module.exports = function(user)
     {
         $scope.editmode = false;
         $scope.user = {};
-        getUserInfo();  
+        getUserInfo(); 
 
         function switchEditmodeOff(){
             $scope.editmode = false;
         }
 
-        $scope.switchToEditmode = function(){
+        $scope.switchToEditmode = function switchToEditmode(){
             $scope.editmode = true;
         }     
 
-        $scope.updateUserInfo = function()
+        $scope.updateUserInfo = function updateUserInfo()
         {
             if (AuthenticationService.isAuthenticated)
             {
@@ -31,6 +31,21 @@ module.exports = function(user)
                 console.log('not authenticated');
             }
         };
+
+        $scope.changePassword = function changePassword(password){
+            if(password != null && password.old != null && password.new != null && password.repeat != null){
+                console.log('old: ' +password.old);
+                console.log('new: ' +password.new);
+                console.log('repeat: ' +password.repeat);
+                if(password.new == password.repeat){
+                    //TODO: maak call naar nog niet bestaande route met nieuw en oud wachtwoord
+                } else {
+                    alert('nieuw wachtwoord komt niet overeen');
+                }
+            } else {
+                alert('vul alsjeblieft alle velden in');
+            }
+        }
 
         function getUserInfo(){
             if (AuthenticationService.isAuthenticated)

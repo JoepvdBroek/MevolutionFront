@@ -48,10 +48,27 @@ module.exports = function(api)
                     "zipCode" : user.zipCode,
                     "phone1" : user.phone1,
                     "phone2" : user.phone2,
-                    "organization" : user.organization,
-                    "roles" : user.roles
+                    // "organization" : user.organization,
+                    // "roles" : user.roles
                 });
-            }
+            },
+
+            sentPasswordReset: function (user)
+            {
+                return $http.post(API.url + 'users/forgot',
+                {
+                    'email' : user.email
+                });
+            },
+
+            changePassword: function (password)
+            {
+                return $http.post(API.url + 'users/' + user._id,
+                {
+                    'password' : password
+                });
+            },
+
         };
     });
 

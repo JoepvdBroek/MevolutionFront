@@ -44,6 +44,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/user/profile.html',
         controller: 'UserController'
     })
+    .when('/profile/password',
+    {
+        templateUrl: 'partials/user/password.html',
+        controller: 'UserController'
+    })
         /*when('/admin/login',
          {
          controller: 'AdminUserCtrl'
@@ -60,11 +65,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/canvas',
     {
-        templateUrl: '/partials/canvas/spiral.html',
+        templateUrl: 'partials/canvas/spiral.html',
         controller: 'CanvasController',
         css:
         [{
-            href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css'
+            href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.css'
         }]
     })
 
