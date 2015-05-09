@@ -202,10 +202,23 @@ module.exports = function(admin)
 },{}],2:[function(require,module,exports){
 module.exports = function(admin)
 {
+    admin.controller('NavigationBarController', [ '$scope', function($scope)
+    {
+        $scope.toggle = function()
+        {
+            angular.element(document.getElementById('wrapper')).toggleClass('unfolded');
+        }
+    }]);
+}
+
+},{}],3:[function(require,module,exports){
+module.exports = function(admin)
+{
     require('./AdminController.js')(admin);
+    require('./NavigationBarController.js')(admin);
 };
 
-},{"./AdminController.js":1}],3:[function(require,module,exports){
+},{"./AdminController.js":1,"./NavigationBarController.js":2}],4:[function(require,module,exports){
 module.exports = function(admin)
 {
     admin.factory('AdminFactory', function()
@@ -224,13 +237,13 @@ module.exports = function(admin)
 
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = function(admin)
 {
     require('./AdminFactory.js')(admin);
 };
 
-},{"./AdminFactory.js":3}],5:[function(require,module,exports){
+},{"./AdminFactory.js":4}],6:[function(require,module,exports){
 module.exports = function(app)
 {
     var admin = angular.module('app.adminFunctions', [ 'app.api' ]);
@@ -241,7 +254,7 @@ module.exports = function(app)
     return admin;
 };
 
-},{"./Controllers/_index.js":2,"./Services/_index.js":4}],6:[function(require,module,exports){
+},{"./Controllers/_index.js":3,"./Services/_index.js":5}],7:[function(require,module,exports){
 'use strict';
 
 module.exports = function(api)
@@ -444,7 +457,7 @@ module.exports = function(api)
     });
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = function(app)
 {
     var api = angular.module('app.api', []);
@@ -454,12 +467,23 @@ module.exports = function(app)
     return api;
 };
 
-},{"./Api.js":6}],8:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions', 'app.timeline' ]);
+},{"./Api.js":7}],9:[function(require,module,exports){
+var modules =
+[
+    'ngRoute', 'door3.css',
+    'app.api', 'app.authentication',
+
+    'app.moderator', 'app.adminFunctions',
+
+    'app.canvas'
+];
+
+var app = angular.module('app', modules);
 
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
+
 });
 
 var authentication = require('./Authentication/_index')(app);
@@ -467,19 +491,10 @@ var api = require('./Api/_index')(app);
 
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
-var timline = require('./Timeline/_index')(app);
 
-app.run(function($rootScope, $location, $window, AuthenticationService)
-{
-    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
-    {
-        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
-        {
-            $location.path("/auth/login");
-        }
-    });
-});
+var canvas = require('./Canvas/_index')(app);
 
+// @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
 {
     $routeProvider.when('/auth/login',
@@ -497,7 +512,6 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
-
     .when('/canvas',
     {
         templateUrl: '/partials/canvas/canvas.html',
@@ -508,7 +522,6 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
-
     .when('/admin/groups/:organisationid',
     {
         templateUrl: 'partials/admin_dash_groups.html',
@@ -519,23 +532,25 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash_users.html',
         controller: 'AdminController'
     })
-    .when('/timeline',
-    {
-        templateUrl: 'partials/timeline/timeline.html',
-        controller: 'TimelineController'
-    })
-        /*when('/admin/login',
-         {
-         controller: 'AdminUserCtrl'
-         }).*/
     .otherwise
     ({
         redirectTo: '/'
     });
 }]);
 
+app.run(function($rootScope, $location, $window, AuthenticationService)
+{
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
+    {
+        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
+        {
+            $location.path("/auth/login");
+        }
+    });
+});
 
-},{"./Admin/_index":5,"./Api/_index":7,"./Authentication/_index":13,"./Moderator/_index":18,"./Timeline/_index":21}],9:[function(require,module,exports){
+
+},{"./Admin/_index":6,"./Api/_index":8,"./Authentication/_index":14,"./Canvas/_index":19,"./Moderator/_index":24}],10:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -562,13 +577,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./AuthenticationController.js')(auth);
 };
 
-},{"./AuthenticationController.js":9}],11:[function(require,module,exports){
+},{"./AuthenticationController.js":10}],12:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.factory('AuthenticationService', function()
@@ -631,13 +646,13 @@ module.exports = function(authentication)
     }]);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(auth)
 {
     require('./Authentication.js')(auth);
 };
 
-},{"./Authentication.js":11}],13:[function(require,module,exports){
+},{"./Authentication.js":12}],14:[function(require,module,exports){
 module.exports = function(app)
 {
     var auth = angular.module('app.authentication', [ 'app.api' ]);
@@ -648,7 +663,69 @@ module.exports = function(app)
     return auth;
 };
 
-},{"./Controllers/_index.js":10,"./Services/_index.js":12}],14:[function(require,module,exports){
+},{"./Controllers/_index.js":11,"./Services/_index.js":13}],15:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    canvas.controller('CanvasController', [ '$scope', '$css', '$sce', 'CanvasService', function($scope, $css, $sce, CanvasService)
+    {
+        $scope.fases = [];
+
+        CanvasService.getCanvas('553f9914c757d2c505273250').success(function(data)
+        {
+            $scope.fases = data.fases;
+        });
+
+        $scope.trustSrc = function(src)
+        {
+            return $sce.trustAsResourceUrl(src);
+        };
+    }]);
+};
+
+
+},{}],16:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./CanvasController.js')(canvas);
+};
+
+},{"./CanvasController.js":15}],17:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    //canvas.factory('CanvasService', function($http, API)
+    //{
+    //    API.factory('CanvasService', function($http)
+    //    {
+    //        return {
+    //
+    //            getTest: function()
+    //            {
+    //                console.log('hi');
+    //            }
+    //        }
+    //    });
+    //});
+};
+
+},{}],18:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./Canvas.js')(canvas);
+};
+
+},{"./Canvas.js":17}],19:[function(require,module,exports){
+module.exports = function(app)
+{
+    var canvas = angular.module('app.canvas', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(canvas);
+    require('./Services/_index.js')(canvas);
+
+    return canvas;
+};
+
+
+},{"./Controllers/_index.js":16,"./Services/_index.js":18}],20:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
@@ -661,13 +738,13 @@ module.exports = function(moderator)
     }]);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorController.js')(moderator);
 };
 
-},{"./ModeratorController.js":14}],16:[function(require,module,exports){
+},{"./ModeratorController.js":20}],22:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.factory('ModeratorFactory', function()
@@ -685,13 +762,13 @@ module.exports = function(moderator)
 
 };
 
-},{}],17:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorFactory.js')(moderator);
 };
 
-},{"./ModeratorFactory.js":16}],18:[function(require,module,exports){
+},{"./ModeratorFactory.js":22}],24:[function(require,module,exports){
 module.exports = function(app)
 {
     var moderator = angular.module('app.moderator', [ 'app.api' ]);
@@ -702,148 +779,4 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":15,"./Services/_index.js":17}],19:[function(require,module,exports){
-module.exports = function(timeline)
-{
-    timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', function($scope, $location, $window, TimelineService)
-    {
-
-    	
-
-  //   	$scope.allCanvas  = [ 
-		// 	{ year: "2014", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"},  
-		// 			{ name: "canvas 5"}, 
-		// 			{ name: "canvas 6"}, 
-		// 			{ name: "canvas 7"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2016", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]},
-		// 		{ month: "Februari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2019", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"},
-		// 		]},
-		// 		{ month: "April", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}
-		// 		]},
-		// 		{ month: "Juli", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"}, 
-		// 			{ name: "canvas 5"}
-		// 		]},
-		// 		{ month: "Oktober", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2015", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]}
-		// 	,
-		// 	{ year: "2018", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]}
-		// 	,
-		// 	{ year: "2017", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"},
-		// 			{ name: "canvas 2"},
-		// 			{ name: "canvas 3"}
-		// 		]}
-		// 	]}
-			
-		// ];
-
-		var canvases = []; 
-
-        TimelineService.getCanvases().then(function(data, status, headers, config)
-        {
-        	var date1 = '24-05-2015';
-
-            	var cyear = date1.substring(6, 10);
-            	var cmonth = date1.substring(3, 5);
-
-            for(i=0;i<data.length;i++)
-            {
-            	console.log(data);
-
-            	if (canvases === undefined || canvases.length == 0) {
-            		canvases.push({'year':cyear, 'm':[{'month':cmonth, 'canvas':[{'name':'titel'}]}]});
-            	}else{
-            		for(var j=0;j<canvases.length;j++){
-	        			if(canvases[j]['year'] == cyear){
-	        				if (canvases[j]['m'] === undefined || canvases[j]['m'].length == 0) {
-	        					canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
-	        				}else{
-			            		for(var k=0;k<canvases[j]['m'].length;k++){
-			            			if(canvases[j]['m'][k]['month'] == cmonth){
-			            				canvases[j]['m'][k]['canvas'].push({'name':data[i]['title']});
-			            			}else{
-			            				//change month to data month
-			            				//add canvases
-			            				canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
-
-			            			}
-			            		}
-			            	}
-		            	}else{
-		            		canvases.push({'year':cyear, 'm':[]});
-		            	}
-	        		}	            	
-	            }
-
-                //canvases.push(data[i]);
-                //console.log(data[i]);
-
-            }
-            $scope.allCanvas = canvases;
-
-        });
-        
-
-
-		$scope.filterFunction = function(element) {
-			return element.name.match(/^Ma/) ? true : false;
-		};
-    }]);
-};
-
-},{}],20:[function(require,module,exports){
-module.exports = function(timeline)
-{
-    require('./TimelineController.js')(timeline);
-}; 
-
-},{"./TimelineController.js":19}],21:[function(require,module,exports){
-module.exports = function(app)
-{
-    var auth = angular.module('app.timeline', [ 'app.api' ]);
-
-    require('./Controllers/_index.js')(auth);
-
-    return auth;
-};
-
-},{"./Controllers/_index.js":20}]},{},[8]);
+},{"./Controllers/_index.js":21,"./Services/_index.js":23}]},{},[9]);
