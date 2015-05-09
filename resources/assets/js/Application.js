@@ -3,17 +3,7 @@ var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'a
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
-
- 
-}).config(function($interpolateProvider)
-
-
-})/*.config(function($interpolateProvider)
->>>>>>> master
-{
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-})*/;
+});
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);

@@ -1,3 +1,21 @@
-<div class="container-fluid content">
-
+<div class="container-fluid mv-canvas content zoomViewport" ng-controller="CanvasController">
+    <div class="zoomContainer">
+        <div class="row">
+            <div ng-repeat="fase in fases" class="col-xs-6 mv-spiral-section zoomTarget" data-targetsize="0.95" data-closeclick="true">
+                <h2 class="title">{{ fase.fase }}</h2>
+                <div ng-repeat="object in fase.objects" class="object {{ object.object.type }}" style="top: {{ object.yPosition + 150 }}px;left: {{ object.xPosition + 150 }}px;">
+                    <ng-switch on="object.object.type">
+                        <div ng-switch-when="video">
+                            <video width="50" height="50" poster="" controls>
+                                <source src="{{ trustSrc(object.object.video.replace('localhost', 'merijncelie.nl')) }}" type="video/mp4" />
+                            </video>
+                        </div>
+                        <div ng-switch-when="text">
+                            Hoi
+                        </div>
+                    </ng-switch>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

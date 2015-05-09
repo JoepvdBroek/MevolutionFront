@@ -10,8 +10,6 @@ module.exports = function(api)
         clientSecret: 'Web123456'
     });
 
-    api.factory('TestService', function(){ return {}});
-
     api.factory('UserService', function($http, API)
     {
         return { // <-- Fuck javascript
@@ -188,5 +186,16 @@ module.exports = function(api)
                 });
             }
         }
+    });
+    api.factory('CanvasService', function($http, API)
+    {
+        return {
+
+            getCanvas: function(canvasId)
+            {
+                return $http.get(API.url + '/canvas/' + canvasId, {});
+            }
+        };
+
     });
 };

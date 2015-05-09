@@ -198,6 +198,7 @@ module.exports = function(admin)
  
 };
 
+
 },{}],2:[function(require,module,exports){
 module.exports = function(admin)
 {
@@ -252,8 +253,6 @@ module.exports = function(api)
         clientId: 'WebV1',
         clientSecret: 'Web123456'
     });
-
-    api.factory('TestService', function(){ return {}});
 
     api.factory('UserService', function($http, API)
     {
@@ -432,6 +431,17 @@ module.exports = function(api)
             }
         }
     });
+    api.factory('CanvasService', function($http, API)
+    {
+        return {
+
+            getCanvas: function(canvasId)
+            {
+                return $http.get(API.url + '/canvas/' + canvasId, {});
+            }
+        };
+
+    });
 };
 
 },{}],7:[function(require,module,exports){
@@ -450,11 +460,6 @@ var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'a
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
- 
-}).config(function($interpolateProvider)
-{
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
 });
 
 var authentication = require('./Authentication/_index')(app);
@@ -492,6 +497,18 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
+
+    .when('/canvas',
+    {
+        templateUrl: '/partials/canvas/canvas.html',
+        controller: 'CanvasController',
+        css:
+        [{
+             href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css',
+             bustCache: true
+        }]
+    })
+
     .when('/admin/groups/:organisationid',
     {
         templateUrl: 'partials/admin_dash_groups.html',
@@ -516,6 +533,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         redirectTo: '/'
     });
 }]);
+
 
 },{"./Admin/_index":5,"./Api/_index":7,"./Authentication/_index":13,"./Moderator/_index":18,"./Timeline/_index":21}],9:[function(require,module,exports){
 module.exports = function(authentication)
@@ -571,7 +589,7 @@ module.exports = function(authentication)
             {
                 config.headers = config.headers || {};
 
-                if ($window.sessionStorage.token)
+                if ($window.sessionStorage.access_token)
                 {
                     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.access_token;
                 }

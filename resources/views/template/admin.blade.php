@@ -7,10 +7,6 @@
 
     <title>Mevolution</title>
 
-    <script src="dev/js/jquery-2.1.3.min.js"></script>
-    <script src="dev/js/jquery-ui.js"></script>
-    <script src="dev/js/bootstrap.min.js"></script>
-
     @if (env('APP_DEBUG') == true)
 
         <link rel="stylesheet" type="text/css" href="dev/css/lib.css" />
@@ -77,6 +73,8 @@
         @yield('content')
     </ng-view>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 @if (env('APP_DEBUG') == true)
 
