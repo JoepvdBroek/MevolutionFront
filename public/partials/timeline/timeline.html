@@ -9,21 +9,21 @@
 	    </form>
 	    <div class="paal"></div>
 	    <div>
-	    	[[allCanvases]]
+	    	{{allCanvases}}
 	    </div>
 	    <div class="timeline">
 			<div ng-repeat="y in allCanvas | filter:query | orderBy:'year':true" >
-				<div class="tag-year">[[ y.year ]]</div>
+				<div class="tag-year">{{ y.year }}</div>
 
 				<div ng-repeat="m in y.m" class="month">
 					<div class="align-hrz">
-						<div class="tag-month">[[ m.month ]]</div>
+						<div class="tag-month">{{ m.month }}</div>
 						<div class="hrz-line"></div>
 					</div>
 					
 					<div class="canvas-holder">	
 						<div ng-repeat="canvas in m.canvas" class="cvs_item">
-							[[ canvas.name ]]
+							{{ canvas.name }}
 					    </div>
 				    </div>
 			    </div>
