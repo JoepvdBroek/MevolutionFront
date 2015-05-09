@@ -27,6 +27,7 @@
     "angular-css": "*",
 
     "jquery": "2.1.*",
-    "bootstrap": "*"
+    "bootstrap": "*",
+    "jquery-colorbox": "*"
   }
 }
