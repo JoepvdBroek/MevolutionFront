@@ -169,10 +169,11 @@ module.exports = function(api)
             }
         };
     });
+
     api.factory('TimelineService', function($http, API)
         {
         return {
-            getCanvases: function (groupId)
+            getCanvases: function ()
             {
                 return $http.get(API.url + '/canvas',
                 {

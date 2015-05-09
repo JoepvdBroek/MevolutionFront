@@ -389,7 +389,7 @@ module.exports = function(api)
                 });
             },
             pushUsersToGroup: function(groupId, userArray){
-                return $http.put(API.url + '/groups/' + groupId, {participants:userArray},
+                return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
                 {
                     username: 'terry',
                     password: 'terry',
@@ -412,6 +412,26 @@ module.exports = function(api)
             }
         };
     });
+
+    api.factory('TimelineService', function($http, API)
+        {
+        return {
+            getCanvases: function ()
+            {
+                return $http.get(API.url + '/canvas',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            }
+        }
+    });
 };
 
 },{}],7:[function(require,module,exports){
@@ -425,12 +445,12 @@ module.exports = function(app)
 };
 
 },{"./Api.js":6}],8:[function(require,module,exports){
-var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions' ]);
+var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'app.moderator', 'app.adminFunctions', 'app.timeline' ]);
 
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
-
+ 
 }).config(function($interpolateProvider)
 {
     $interpolateProvider.startSymbol('[[');
@@ -442,6 +462,7 @@ var api = require('./Api/_index')(app);
 
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
+var timline = require('./Timeline/_index')(app);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)
 {
@@ -481,6 +502,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash_users.html',
         controller: 'AdminController'
     })
+    .when('/timeline',
+    {
+        templateUrl: 'partials/timeline/timeline.html',
+        controller: 'TimelineController'
+    })
         /*when('/admin/login',
          {
          controller: 'AdminUserCtrl'
@@ -491,7 +517,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     });
 }]);
 
-},{"./Admin/_index":5,"./Api/_index":7,"./Authentication/_index":13,"./Moderator/_index":18}],9:[function(require,module,exports){
+},{"./Admin/_index":5,"./Api/_index":7,"./Authentication/_index":13,"./Moderator/_index":18,"./Timeline/_index":21}],9:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -658,4 +684,148 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":15,"./Services/_index.js":17}]},{},[8]);
+},{"./Controllers/_index.js":15,"./Services/_index.js":17}],19:[function(require,module,exports){
+module.exports = function(timeline)
+{
+    timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', function($scope, $location, $window, TimelineService)
+    {
+
+    	
+
+  //   	$scope.allCanvas  = [ 
+		// 	{ year: "2014", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"}, 
+		// 			{ name: "canvas 2"}, 
+		// 			{ name: "canvas 3"}, 
+		// 			{ name: "canvas 4"},  
+		// 			{ name: "canvas 5"}, 
+		// 			{ name: "canvas 6"}, 
+		// 			{ name: "canvas 7"}
+		// 		]}
+		// 	]},
+		// 	{ year: "2016", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"}
+		// 		]},
+		// 		{ month: "Februari", canvas: [
+		// 			{ name: "canvas 1"}
+		// 		]}
+		// 	]},
+		// 	{ year: "2019", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"}, 
+		// 			{ name: "canvas 2"},
+		// 		]},
+		// 		{ month: "April", canvas: [
+		// 			{ name: "canvas 1"}, 
+		// 			{ name: "canvas 2"}, 
+		// 			{ name: "canvas 3"}
+		// 		]},
+		// 		{ month: "Juli", canvas: [
+		// 			{ name: "canvas 1"}, 
+		// 			{ name: "canvas 2"}, 
+		// 			{ name: "canvas 3"}, 
+		// 			{ name: "canvas 4"}, 
+		// 			{ name: "canvas 5"}
+		// 		]},
+		// 		{ month: "Oktober", canvas: [
+		// 			{ name: "canvas 1"}, 
+		// 			{ name: "canvas 2"}, 
+		// 			{ name: "canvas 3"}, 
+		// 			{ name: "canvas 4"}
+		// 		]}
+		// 	]},
+		// 	{ year: "2015", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"}
+		// 		]}
+		// 	]}
+		// 	,
+		// 	{ year: "2018", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"}
+		// 		]}
+		// 	]}
+		// 	,
+		// 	{ year: "2017", m: [
+		// 		{ month: "Januari", canvas: [
+		// 			{ name: "canvas 1"},
+		// 			{ name: "canvas 2"},
+		// 			{ name: "canvas 3"}
+		// 		]}
+		// 	]}
+			
+		// ];
+
+		var canvases = []; 
+
+        TimelineService.getCanvases().then(function(data, status, headers, config)
+        {
+        	var date1 = '24-05-2015';
+
+            	var cyear = date1.substring(6, 10);
+            	var cmonth = date1.substring(3, 5);
+
+            for(i=0;i<data.length;i++)
+            {
+            	console.log(data);
+
+            	if (canvases === undefined || canvases.length == 0) {
+            		canvases.push({'year':cyear, 'm':[{'month':cmonth, 'canvas':[{'name':'titel'}]}]});
+            	}else{
+            		for(var j=0;j<canvases.length;j++){
+	        			if(canvases[j]['year'] == cyear){
+	        				if (canvases[j]['m'] === undefined || canvases[j]['m'].length == 0) {
+	        					canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
+	        				}else{
+			            		for(var k=0;k<canvases[j]['m'].length;k++){
+			            			if(canvases[j]['m'][k]['month'] == cmonth){
+			            				canvases[j]['m'][k]['canvas'].push({'name':data[i]['title']});
+			            			}else{
+			            				//change month to data month
+			            				//add canvases
+			            				canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
+
+			            			}
+			            		}
+			            	}
+		            	}else{
+		            		canvases.push({'year':cyear, 'm':[]});
+		            	}
+	        		}	            	
+	            }
+
+                //canvases.push(data[i]);
+                //console.log(data[i]);
+
+            }
+            $scope.allCanvas = canvases;
+
+        });
+        
+
+
+		$scope.filterFunction = function(element) {
+			return element.name.match(/^Ma/) ? true : false;
+		};
+    }]);
+};
+
+},{}],20:[function(require,module,exports){
+module.exports = function(timeline)
+{
+    require('./TimelineController.js')(timeline);
+}; 
+
+},{"./TimelineController.js":19}],21:[function(require,module,exports){
+module.exports = function(app)
+{
+    var auth = angular.module('app.timeline', [ 'app.api' ]);
+
+    require('./Controllers/_index.js')(auth);
+
+    return auth;
+};
+
+},{"./Controllers/_index.js":20}]},{},[8]);
