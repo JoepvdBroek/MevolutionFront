@@ -5,3 +5,5 @@
 /storage/logs
 /storage/framework
 composer.lock
+/public/dev/
+/public/assets/

@@ -3,12 +3,17 @@ var app = angular.module('app', [ 'ngRoute', 'app.api', 'app.authentication', 'a
 app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
+
  
 }).config(function($interpolateProvider)
+
+
+})/*.config(function($interpolateProvider)
+>>>>>>> master
 {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
-});
+})*/;
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);
@@ -45,6 +50,18 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
+
+    .when('/canvas',
+    {
+        templateUrl: '/partials/canvas/canvas.html',
+        controller: 'CanvasController',
+        css:
+        [{
+             href: debug == true ? '/dev/css/canvas.css' : '/assets/css/canvas.css',
+             bustCache: true
+        }]
+    })
+
     .when('/admin/groups/:organisationid',
     {
         templateUrl: 'partials/admin_dash_groups.html',

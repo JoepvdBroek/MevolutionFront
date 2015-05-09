@@ -52,6 +52,7 @@
 
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
+
     @yield('script-non-debug')
 
 @endif

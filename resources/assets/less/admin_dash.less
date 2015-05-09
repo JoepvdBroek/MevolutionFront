@@ -3,6 +3,11 @@
 body { height:100%;background-color:#f0f1f0; }
 html { height:100%; }
 
+#wrapper {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
 input { outline:none !important; }
 textarea { outline:none !important; }
 
@@ -154,6 +159,25 @@ label { font-size:15px;color:#899197;margin:0 0 10px 0; }
 .moderator_list {
   float: left;
   width: 150px;
+}
+
+.modal-dialog {
+	left: 0% !important;
+}
+
+.userholder {
+	width: 500px;
+}
+
+.userholder label {
+	float: left;
+	width: 150px;
+	height: 20px;
+}
+
+.back-button {
+	margin-left: 55px;
+    margin-top: 15px;
 }
 
 .ng-invalid.ng-dirty {
