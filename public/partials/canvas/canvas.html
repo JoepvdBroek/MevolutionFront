@@ -6,9 +6,12 @@
                 <div ng-repeat="object in fase.objects" class="object {{ object.object.type }}" style="top: {{ object.yPosition + 150 }}px;left: {{ object.xPosition + 150 }}px;">
                     <ng-switch on="object.object.type">
                         <div ng-switch-when="video">
-                            <video width="50" height="50" poster="" controls>
-                                <source src="{{ trustSrc(object.object.video.replace('localhost', 'merijncelie.nl')) }}" type="video/mp4" />
-                            </video>
+                            <a href="#video{{ object.object._id }}">Video</a>
+                            <div id="video{{ object.object._id }}" ng-cloak>
+                                <video width="50" height="50" poster="" controls>
+                                    <source src="{{ trustSrc(object.object.video.replace('localhost', 'merijncelie.nl')) }}" type="video/mp4" />
+                                </video>
+                            </div>
                         </div>
                         <div ng-switch-when="text">
                             Hoi
