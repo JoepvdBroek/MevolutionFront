@@ -1,0 +1,138 @@
+<link rel="stylesheet" href="assets/css/edituser.min.css" type="text/css" />
+
+<div ng-controller="UserController">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="title-header col-md-10">
+            <h1>Profielgegevens</h1>
+            <div class="divider"></div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row "> 
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <form>
+            <div class="row"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputFile">Pasfoto</label><br />
+                        <img src="assets/img/placeholder-photo.png" alt="Pasfoto" />
+                        <br /><br />
+                        <div id="uploadbutton" ng-show="editmode">
+                            <div class="btn btn-default" onclick="document.getElementById('photo-file').click();">
+                                Kies foto
+                            </div>
+                            <input type="file" id="photo-file">
+                            <p class="help-block">Kies een pasfoto met de afmetingen 150x240 pixels.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="non-editmode" ng-hide="editmode">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="profile-row">
+                                    Naam
+                                </div>
+                                <div class="profile-row">
+                                    Straat
+                                </div>
+                                <div class="profile-row">
+                                    Woonplaats
+                                </div>
+                                <div class="profile-row">
+                                    Postcode
+                                </div>
+                                <div class="profile-row">
+                                    E-mailadres
+                                </div>
+                                <div class="profile-row">
+                                    Telefoonummer 1
+                                </div>
+                                <div class="profile-row">
+                                    Telefoonummer 2
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="profile-row">
+                                    <b>[[user.firstName]] [[user.middleName]] [[user.surName]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.street]] [[user.houseNumber]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.city]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.zipCode]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.email]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.phone1]]</b>
+                                </div>
+                                <div class="profile-row">
+                                    <b>[[user.phone2]]</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="editmode-button" ng-click="switchToEditmode()" class="btn btn-default">Wijzig gegevens</button>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div id="editmode" ng-show="editmode">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Voornaam</label>
+                            <input type="text" class="form-control" id="name" ng-model="user.firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Tussenvoegsel(s)</label>
+                            <input type="text" class="form-control" id="lastname" ng-model="user.middleName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Achternaam</label>
+                            <input type="text" class="form-control" id="lastname" ng-model="user.surName">
+                        </div>
+                        <div class="form-group">
+                            <label for="streetname">Straat</label>
+                            <input type="text" class="form-control" id="streetname" ng-model="user.street">
+                        </div>
+                        <div class="form-group">
+                            <label for="streetnumber">Huisnummer</label>
+                            <input type="text" class="form-control" id="streetnumber" ng-model="user.houseNumber">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="city">Woonplaats</label>
+                            <input type="text" class="form-control" id="city" ng-model="user.city">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipcode">Postcode</label>
+                            <input type="text" class="form-control" id="zipcode" ng-model="user.zipCode">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail adres</label>
+                            <input type="text" class="form-control" id="email" ng-model="user.email">
+                        </div>
+                        <div class="form-group">
+                            <label for="phonenumber1">Telefoon nummer 1</label>
+                            <input type="text" class="form-control" id="phonenumber1" ng-model="user.phone1">
+                        </div>
+                        <div class="form-group">
+                            <label for="phonenumber2">Telefoon nummer 2</label>
+                            <input type="text" class="form-control" id="phonenumber2" ng-model="user.phone2" >
+                        </div>
+
+                        <button type="submit" id="editprofile-button" ng-click="updateUserInfo()" class="btn btn-default">Opslaan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>

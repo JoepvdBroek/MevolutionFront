@@ -1,8 +1,9 @@
+
 var modules =
 [
     'ngRoute', 'door3.css',
     'app.api', 'app.authentication',
-
+    'app.user',
     'app.moderator', 'app.adminFunctions',
 
     'app.timeline',
@@ -19,8 +20,10 @@ app.config(function($httpProvider)
 });
 
 var authentication = require('./Authentication/_index')(app);
+
 var api = require('./Api/_index')(app);
 
+var user = require('./User/_index')(app);
 var admin = require('./Admin/_index')(app);
 var moderator = require('./Moderator/_index')(app);
 
@@ -35,6 +38,21 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/login.html',
         controller: 'AuthenticationController'
+    })
+    .when('/auth/register',
+    {
+        templateUrl: 'partials/register.html',
+        controller: 'AuthenticationController'
+    })
+    .when('/profile',
+    {
+        templateUrl: 'partials/user/profile.html',
+        controller: 'UserController'
+    })
+    .when('/profile/password',
+    {
+        templateUrl: 'partials/user/password.html',
+        controller: 'UserController'
     })
     .when('/moderator',
     {
@@ -75,6 +93,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     ({
         redirectTo: '/'
     });
+
 }]);
 
 app.run(function($rootScope, $location, $window, AuthenticationService)

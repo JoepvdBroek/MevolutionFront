@@ -1,12 +1,14 @@
 {
-  "name": "Mevolution",
-  "dependencies": {
-    "bootstrap": "latest",
-    "fontawesome": "latest",
-    "datatables": "latest",
-    "bootstrap-wysihtml5": "latest",
-    "bootstrap-select": "latest",
-    "datetimepicker": "latest",
-    "zoomooz": "latest"
-  }
+    "name": "Mevolution",
+    "dependencies":
+    {
+        "bootstrap": "latest",
+        "fontawesome": "latest",
+        "datatables": "latest",
+        "bootstrap-wysihtml5": "latest",
+        "bootstrap-select": "latest",
+        "datetimepicker": "latest",
+        "angular": "latest",
+        "zoomooz": "latest"
+    }
 }

@@ -3,6 +3,10 @@
     background-color: #ffffff;
 }
 
+#wrapper a {
+    color: #FFF;
+}
+
 #login-header .circle {
     border-radius: 50%;
     width:250px;
@@ -69,18 +73,26 @@
     color: #257CA6;
     background: #FFF;
     outline: 0;
-    margin-top: 5px;
-    webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
 }
 
-#registerLink {
-    text-align: center;
-    padding-top: 25px;
-    display: block;
+#input-username{
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom: none;
 }
 
+#input-password{
+    -webkit-border-bottom-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -moz-border-radius-bottomright: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
 
 #left,
 #right{
@@ -165,29 +177,3 @@
     clear: both;
 }
 </style>
-
-<div id="wrapper">
-    <div id="login-header">
-        <!-- <img id="header-image" src="assets/img/login-header.png" alt="Mevolution" />  -->
-        <div class="circle"></div>
-        <div id="circle-container">
-            <div class="quarter top-left"></div>
-            <div class="quarter top-right"></div>
-            <div class="quarter bottom-left"></div>
-            <div class="quarter bottom-right"></div>
-        </div>
-        <div class="clearer"></div>
-        <div id="overlay">
-            <img id="header-image" src="assets/img/title.jpg" alt="Mevolution" />
-        </div>
-    </div>
-
-    <form id="loginform-wrapper" role="form" ng-controller="AuthenticationController">
-        <input type="text" class="form-control" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username">
-        <input type="password" class="form-control" id="input-password" placeholder="Wachtwoord" ng-model="user.password">
-
-        <input id="submit-login" type="submit" ng-click="signIn(user.username, user.password)" value="Inloggen"/>
-
-        <a id="registerLink" href="#/auth/register" >Registreren</a>
-    </form>
-</div>
