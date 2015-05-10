@@ -173,7 +173,7 @@ module.exports = function(api)
         return {
             getCanvases: function ()
             {
-                return $http.get(API.url + '/canvas',
+                return $http.get(API.url + '/canvas?orderBy=createdDate',
                 {
                     username: 'terry',
                     password: 'terry',

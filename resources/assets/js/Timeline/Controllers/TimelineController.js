@@ -1,77 +1,76 @@
 module.exports = function(timeline)
 {
-    timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', function($scope, $location, $window, TimelineService)
+    timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', '$anchorScroll', '$route', function($scope, $location, $window, TimelineService, $anchorScroll, $route)
     {
-    	var originalcanvases = []
+
 		var canvases = []; 
+		var rawcanvas = [];
 
         TimelineService.getCanvases().then(function(data, status, headers, config)
-        {
-        	var date1 = '24-05-2015';
+        {        	
 
-            	var cyear = date1.substring(6, 10);
-            	var cmonth = date1.substring(3, 5);
-
-
-            for(i=0;i<data.length;i++)
+            for(var i=0;i<data.length;i++)
             {
-            	originalcanvases.push(data[i]);
 
-            	//check if any canvas in local array
-            	if (canvases === undefined || canvases.length == 0) {
+            	var cyear = data[i]['createdDate'].substring(0, 4);
+            	var cmonth = data[i]['createdDate'].substring(5, 7);
 
-            		//push the values in the array
-            		canvases.push({'year':cyear, 'm':[{'month':monthsConverse(cmonth), 'canvas':[{'name':'titel'}]}]});
-            	}else{
+            	addYear(data[i], cyear, cmonth);
 
-            		//loop through available canvases in local array
-            		for(var j=0;j<canvases.length;j++){
-
-            			//check if the year is already present in the local array
-	        			if(canvases[j]['year'] == cyear){
-
-	        				//check if any months in local array
-	        				if (canvases[j]['m'] === undefined || canvases[j]['m'].length == 0) {
-	        					
-	        					
-	        					//push the month in the array
-	        					canvases[j]['m'].push({'month':monthsConverse(cmonth), 'canvas':[]});
-	        				}else{
-	        					console.log(monthsConverse(cmonth));
-	        					//loop through all available months in local array
-			            		for(var k=0;k<canvases[j]['m'].length;k++){
-
-			            			//check if month exists
-			            			if(canvases[j]['m'][k]['month'] == monthsConverse(cmonth)){
-
-			            				//push canvas to this month
-			            				canvases[j]['m'][k]['canvas'].push({'name':data[i]['title']});
-			            			}else{
-			            				//change month to data month
-			            				//add canvases
-			            				canvases[j]['m'].push({'month':monthsConverse(cmonth), 'canvas':[]});
-
-			            			}
-			            		}
-			            	}
-		            	}else{
-		            		canvases.push({'year':cyear, 'm':[]});
-		            	}
-	        		}	            	
-	            }
-
+            	rawcanvas = data;
             }
-            $scope.allCanvas = canvases;
 
+            $scope.allCanvas = canvases;	
         });
 
-		$scope.allOriginalCanvases = originalcanvases;
+        $scope.allOriginalCanvases = rawcanvas;
+
+        function addYear(data, year, month){
+        	if(canvases === undefined || canvases.length == 0){
+
+        		canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]}]});
+        	}else{
+
+        		for(var j=0;j<canvases.length;j++){ 
+        			if(canvases[j]['year'] != year){
+        				canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]}]});
+        				break;
+        			}else{
+
+        				for(k=0;k<canvases[j]['m'].length;k++){
+	        				if(canvases[j]['m'][k]['month'] != monthsConverse(month)){
+	        					canvases[j]['m'].push({'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]});
+	        					break;
+	        				}else{
+	        					canvases[j]['m'][k]['canvas'].push({'title':data['title'], 'type':data['type']});
+	        				}
+	        			}
+        			}
+        		}
+        	}
+        };
+
+        $scope.scrollTo = function(id1, id2) {
+
+        	if(id2 === undefined){
+        		id2="";
+        	}
+
+		    var old = $location.hash();
+		    $location.hash(""+id1+id2);
+		    $anchorScroll();
+		    $location.hash(old);
+		};
+
 
         $scope.addCanvas = function(newName, type){
 
+        	$('#create-canvas').modal('hide');
+        	$('.modal-backdrop').remove();
+        	
+
             TimelineService.postCanvas(newName, type).success(function(data, status, headers, config)
                 {
-                	console.log("lol");
                     $scope.allOriginalCanvases = [];
                     TimelineService.getCanvases().then(function(data, status, headers, config)
                     {
@@ -83,12 +82,15 @@ module.exports = function(timeline)
                     $scope.canvasType = "";
                     $scope.canvasTags = "";
 
+                    $route.reload();
+
+
                 }).error(function(data, status, headers, config)
                 {
-                    console.log(status);
-                    console.log(data);
-                    console.log(headers);
-                    console.log(config);
+                    //console.log(status);
+                    //console.log(data);
+                    //console.log(headers);
+                    //console.log(config);
                 });
         };
         
@@ -137,6 +139,6 @@ module.exports = function(timeline)
 				return "December";
 				break;
 			}
-		}
+		};
     }]);
 };
