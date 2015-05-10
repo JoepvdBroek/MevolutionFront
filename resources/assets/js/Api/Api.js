@@ -184,6 +184,17 @@ module.exports = function(api)
                 }).then(function(data){
                     return data.data;
                 });
+            },
+            postCanvas: function(newName, type){
+                return $http.post(API.url + '/canvas', {title:newName, type:type},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             }
         }
     });

@@ -2,75 +2,7 @@ module.exports = function(timeline)
 {
     timeline.controller('TimelineController', [ '$scope', '$location', '$window', 'TimelineService', function($scope, $location, $window, TimelineService)
     {
-
-    	
-
-  //   	$scope.allCanvas  = [ 
-		// 	{ year: "2014", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"},  
-		// 			{ name: "canvas 5"}, 
-		// 			{ name: "canvas 6"}, 
-		// 			{ name: "canvas 7"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2016", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]},
-		// 		{ month: "Februari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2019", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"},
-		// 		]},
-		// 		{ month: "April", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}
-		// 		]},
-		// 		{ month: "Juli", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"}, 
-		// 			{ name: "canvas 5"}
-		// 		]},
-		// 		{ month: "Oktober", canvas: [
-		// 			{ name: "canvas 1"}, 
-		// 			{ name: "canvas 2"}, 
-		// 			{ name: "canvas 3"}, 
-		// 			{ name: "canvas 4"}
-		// 		]}
-		// 	]},
-		// 	{ year: "2015", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]}
-		// 	,
-		// 	{ year: "2018", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"}
-		// 		]}
-		// 	]}
-		// 	,
-		// 	{ year: "2017", m: [
-		// 		{ month: "Januari", canvas: [
-		// 			{ name: "canvas 1"},
-		// 			{ name: "canvas 2"},
-		// 			{ name: "canvas 3"}
-		// 		]}
-		// 	]}
-			
-		// ];
-
+    	var originalcanvases = []
 		var canvases = []; 
 
         TimelineService.getCanvases().then(function(data, status, headers, config)
@@ -80,25 +12,44 @@ module.exports = function(timeline)
             	var cyear = date1.substring(6, 10);
             	var cmonth = date1.substring(3, 5);
 
+
             for(i=0;i<data.length;i++)
             {
-            	console.log(data);
+            	originalcanvases.push(data[i]);
 
+            	//check if any canvas in local array
             	if (canvases === undefined || canvases.length == 0) {
-            		canvases.push({'year':cyear, 'm':[{'month':cmonth, 'canvas':[{'name':'titel'}]}]});
+
+            		//push the values in the array
+            		canvases.push({'year':cyear, 'm':[{'month':monthsConverse(cmonth), 'canvas':[{'name':'titel'}]}]});
             	}else{
+
+            		//loop through available canvases in local array
             		for(var j=0;j<canvases.length;j++){
+
+            			//check if the year is already present in the local array
 	        			if(canvases[j]['year'] == cyear){
+
+	        				//check if any months in local array
 	        				if (canvases[j]['m'] === undefined || canvases[j]['m'].length == 0) {
-	        					canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
+	        					
+	        					
+	        					//push the month in the array
+	        					canvases[j]['m'].push({'month':monthsConverse(cmonth), 'canvas':[]});
 	        				}else{
+	        					console.log(monthsConverse(cmonth));
+	        					//loop through all available months in local array
 			            		for(var k=0;k<canvases[j]['m'].length;k++){
-			            			if(canvases[j]['m'][k]['month'] == cmonth){
+
+			            			//check if month exists
+			            			if(canvases[j]['m'][k]['month'] == monthsConverse(cmonth)){
+
+			            				//push canvas to this month
 			            				canvases[j]['m'][k]['canvas'].push({'name':data[i]['title']});
 			            			}else{
 			            				//change month to data month
 			            				//add canvases
-			            				canvases[j]['m'].push({'month':cmonth, 'canvas':[]});
+			            				canvases[j]['m'].push({'month':monthsConverse(cmonth), 'canvas':[]});
 
 			            			}
 			            		}
@@ -109,18 +60,83 @@ module.exports = function(timeline)
 	        		}	            	
 	            }
 
-                //canvases.push(data[i]);
-                //console.log(data[i]);
-
             }
             $scope.allCanvas = canvases;
 
         });
+
+		$scope.allOriginalCanvases = originalcanvases;
+
+        $scope.addCanvas = function(newName, type){
+
+            TimelineService.postCanvas(newName, type).success(function(data, status, headers, config)
+                {
+                	console.log("lol");
+                    $scope.allOriginalCanvases = [];
+                    TimelineService.getCanvases().then(function(data, status, headers, config)
+                    {
+                        for(i=0;i<data.length;i++){
+                            $scope.allOriginalCanvases.push(data[i]);
+                        }
+                    });
+                    $scope.newCanvasName = "";
+                    $scope.canvasType = "";
+                    $scope.canvasTags = "";
+
+                }).error(function(data, status, headers, config)
+                {
+                    console.log(status);
+                    console.log(data);
+                    console.log(headers);
+                    console.log(config);
+                });
+        };
         
 
 
 		$scope.filterFunction = function(element) {
 			return element.name.match(/^Ma/) ? true : false;
 		};
+
+		function monthsConverse(month){
+			switch(month){
+				case "01":
+				return "Januari";
+				break;
+				case "02":
+				return "Februari";
+				break;
+				case "03":
+				return "Maart";
+				break;
+				case "04":
+				return "April";
+				break;
+				case "05":
+				return "Mei";
+				break;
+				case "06":
+				return "Juni";
+				break;
+				case "07":
+				return "Juli";
+				break;
+				case "08":
+				return "Augustus";
+				break;
+				case "09":
+				return "September";
+				break;
+				case "10":
+				return "Oktober";
+				break;
+				case "11":
+				return "November";
+				break;
+				case "12":
+				return "December";
+				break;
+			}
+		}
     }]);
 };
