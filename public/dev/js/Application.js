@@ -512,7 +512,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
-    .when('/canvas',
+    .when('/canvas/:canvasid?',
     {
         templateUrl: '/partials/canvas/canvas.html',
         controller: 'CanvasController',
@@ -550,7 +550,7 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
 });
 
 
-},{"./Admin/_index":6,"./Api/_index":8,"./Authentication/_index":14,"./Canvas/_index":21,"./Moderator/_index":26}],10:[function(require,module,exports){
+},{"./Admin/_index":6,"./Api/_index":8,"./Authentication/_index":14,"./Canvas/_index":22,"./Moderator/_index":27}],10:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -734,10 +734,27 @@ module.exports = function(canvas)
 },{}],18:[function(require,module,exports){
 module.exports = function(canvas)
 {
-    require('./Colorbox.js')(canvas);
+    canvas.directive('zoomtarget', function()
+    {
+        return {
+
+            restrict: 'AC',
+            link: function(scope, element, attrs)
+            {
+                $(element).zoomTarget();
+            }
+        }
+    });
 };
 
-},{"./Colorbox.js":17}],19:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./Colorbox.js')(canvas);
+    require('./ZoomTarget.js')(canvas);
+};
+
+},{"./Colorbox.js":17,"./ZoomTarget.js":18}],20:[function(require,module,exports){
 module.exports = function(canvas)
 {
     //canvas.factory('CanvasService', function($http, API)
@@ -755,13 +772,13 @@ module.exports = function(canvas)
     //});
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(canvas)
 {
     require('./Canvas.js')(canvas);
 };
 
-},{"./Canvas.js":19}],21:[function(require,module,exports){
+},{"./Canvas.js":20}],22:[function(require,module,exports){
 module.exports = function(app)
 {
     var canvas = angular.module('app.canvas', [ 'app.api' ]);
@@ -774,7 +791,7 @@ module.exports = function(app)
 };
 
 
-},{"./Controllers/_index.js":16,"./Directives/_index.js":18,"./Services/_index.js":20}],22:[function(require,module,exports){
+},{"./Controllers/_index.js":16,"./Directives/_index.js":19,"./Services/_index.js":21}],23:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
@@ -787,13 +804,13 @@ module.exports = function(moderator)
     }]);
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorController.js')(moderator);
 };
 
-},{"./ModeratorController.js":22}],24:[function(require,module,exports){
+},{"./ModeratorController.js":23}],25:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.factory('ModeratorFactory', function()
@@ -811,13 +828,13 @@ module.exports = function(moderator)
 
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorFactory.js')(moderator);
 };
 
-},{"./ModeratorFactory.js":24}],26:[function(require,module,exports){
+},{"./ModeratorFactory.js":25}],27:[function(require,module,exports){
 module.exports = function(app)
 {
     var moderator = angular.module('app.moderator', [ 'app.api' ]);
@@ -828,4 +845,4 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":23,"./Services/_index.js":25}]},{},[9]);
+},{"./Controllers/_index.js":24,"./Services/_index.js":26}]},{},[9]);
