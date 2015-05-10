@@ -550,7 +550,7 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
 });
 
 
-},{"./Admin/_index":6,"./Api/_index":8,"./Authentication/_index":14,"./Canvas/_index":19,"./Moderator/_index":24}],10:[function(require,module,exports){
+},{"./Admin/_index":6,"./Api/_index":8,"./Authentication/_index":14,"./Canvas/_index":21,"./Moderator/_index":26}],10:[function(require,module,exports){
 module.exports = function(authentication)
 {
     authentication.controller('AuthenticationController', [ '$scope', '$location', '$window', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserService, AuthenticationService)
@@ -692,6 +692,54 @@ module.exports = function(canvas)
 },{"./CanvasController.js":15}],17:[function(require,module,exports){
 module.exports = function(canvas)
 {
+    canvas.directive('colorbox', function($compile)
+    {
+        return {
+
+            restrict: 'AC',
+            link: function(scope, element, attrs)
+            {
+                element.click('bind', function(e)
+                {
+                    e.preventDefault();
+
+                    var cb = $.colorbox
+                    ({
+                        href: attrs.colorbox,
+                        onComplete: function()
+                        {
+                            var s = scope.$parent;
+
+                            s.$apply(function()
+                            {
+                                var content = $('#cboxLoadedContent');
+                                $compile(content)(s);
+
+                                setTimeout(function()
+                                {
+                                    $('#video' + s.object.object._id)[0].load();
+
+                                }, 1);
+                            });
+                        }
+                    });
+                });
+
+                //$(element).colorbox(attrs.colorbox);
+            }
+        }
+    });
+};
+
+},{}],18:[function(require,module,exports){
+module.exports = function(canvas)
+{
+    require('./Colorbox.js')(canvas);
+};
+
+},{"./Colorbox.js":17}],19:[function(require,module,exports){
+module.exports = function(canvas)
+{
     //canvas.factory('CanvasService', function($http, API)
     //{
     //    API.factory('CanvasService', function($http)
@@ -707,25 +755,26 @@ module.exports = function(canvas)
     //});
 };
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(canvas)
 {
     require('./Canvas.js')(canvas);
 };
 
-},{"./Canvas.js":17}],19:[function(require,module,exports){
+},{"./Canvas.js":19}],21:[function(require,module,exports){
 module.exports = function(app)
 {
     var canvas = angular.module('app.canvas', [ 'app.api' ]);
 
     require('./Controllers/_index.js')(canvas);
     require('./Services/_index.js')(canvas);
+    require('./Directives/_index.js')(canvas);
 
     return canvas;
 };
 
 
-},{"./Controllers/_index.js":16,"./Services/_index.js":18}],20:[function(require,module,exports){
+},{"./Controllers/_index.js":16,"./Directives/_index.js":18,"./Services/_index.js":20}],22:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', function($scope, $location, $window, ModeratorFactory)
@@ -738,13 +787,13 @@ module.exports = function(moderator)
     }]);
 };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorController.js')(moderator);
 };
 
-},{"./ModeratorController.js":20}],22:[function(require,module,exports){
+},{"./ModeratorController.js":22}],24:[function(require,module,exports){
 module.exports = function(moderator)
 {
     moderator.factory('ModeratorFactory', function()
@@ -762,13 +811,13 @@ module.exports = function(moderator)
 
 };
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(moderator)
 {
     require('./ModeratorFactory.js')(moderator);
 };
 
-},{"./ModeratorFactory.js":22}],24:[function(require,module,exports){
+},{"./ModeratorFactory.js":24}],26:[function(require,module,exports){
 module.exports = function(app)
 {
     var moderator = angular.module('app.moderator', [ 'app.api' ]);
@@ -779,4 +828,4 @@ module.exports = function(app)
     return moderator;
 };
 
-},{"./Controllers/_index.js":21,"./Services/_index.js":23}]},{},[9]);
+},{"./Controllers/_index.js":23,"./Services/_index.js":25}]},{},[9]);
