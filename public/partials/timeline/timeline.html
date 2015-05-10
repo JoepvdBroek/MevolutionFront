@@ -4,7 +4,7 @@
 	    <div class="paal"></div>
 
 	    <div class="timeline">
-			<div ng-repeat="y in allCanvas | filter:query | orderBy:'year':true" >
+			<div ng-repeat="y in allCanvas | orderBy:'year':true" >
 				<div class="tag-year" id="{{y.year}}">{{ y.year }}</div>
 
 				<div ng-repeat="m in y.m" class="month">
@@ -17,7 +17,7 @@
 						<div class="month-header">
 							<div class="tag-month">{{ m.month }}</div>
 						</div>	
-						<a href="#/canvas" ng-repeat="canvas in m.canvas" class="cvs_item">
+						<a href="#/canvas" ng-repeat="canvas in m.canvas | filter:query" class="cvs_item">
 							{{ canvas.title }}
 					    </a>
 				    </div>
