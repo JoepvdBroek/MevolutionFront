@@ -111,7 +111,7 @@ module.exports = function(admin)
               $scope.selectionOfModerators.push(userId);
             }
 
-            console.log($scope.selectionOfModerators);
+            //console.log($scope.selectionOfModerators);
         };
 
         // submits new groupName
@@ -170,7 +170,7 @@ module.exports = function(admin)
                         for(i=0;i<data[0].participants.length;i++){
                             $scope.usersOfGroup.push(data[0].participants[i]);        
                         }
-                        console.log($scope.usersOfGroup);
+                        //console.log($scope.usersOfGroup);
                     });
                 });
         }
