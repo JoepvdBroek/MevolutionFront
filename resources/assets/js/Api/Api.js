@@ -173,7 +173,7 @@ module.exports = function(api)
         return {
             getCanvases: function ()
             {
-                return $http.get(API.url + '/canvas',
+                return $http.get(API.url + '/canvas?orderBy=createdDate',
                 {
                     username: 'terry',
                     password: 'terry',
@@ -183,6 +183,17 @@ module.exports = function(api)
                     headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 }).then(function(data){
                     return data.data;
+                });
+            },
+            postCanvas: function(newName, type){
+                return $http.post(API.url + '/canvas', {title:newName, type:type},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             }
         }

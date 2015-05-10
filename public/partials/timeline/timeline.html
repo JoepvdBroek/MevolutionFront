@@ -1,74 +1,132 @@
-
-
-
 <div ng-controller="TimelineController" class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
-		<form class="form-inline">
-      		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
-	    </form>
 	    <div class="paal"></div>
-	    <div>
-	    	[[allCanvases]]
-	    </div>
+
 	    <div class="timeline">
-			<div ng-repeat="y in allCanvas | filter:query | orderBy:'year':true" >
-				<div class="tag-year">[[ y.year ]]</div>
+			<div ng-repeat="y in allCanvas | orderBy:'year':true" >
+				<div class="tag-year" id="{{y.year}}">{{ y.year }}</div>
 
 				<div ng-repeat="m in y.m" class="month">
 					<div class="align-hrz">
-						<div class="tag-month">[[ m.month ]]</div>
 						<div class="hrz-line"></div>
+						<div class="hrz-line-dotted"></div>
 					</div>
 					
-					<div class="canvas-holder">	
-						<div ng-repeat="canvas in m.canvas" class="cvs_item">
-							[[ canvas.name ]]
-					    </div>
+					<div class="canvas-holder" id="{{y.year}}{{ m.month }}">
+						<div class="month-header">
+							<div class="tag-month">{{ m.month }}</div>
+						</div>	
+						<a href="#/canvas" ng-repeat="canvas in m.canvas | filter:query" class="cvs_item">
+							{{ canvas.title }}
+					    </a>
 				    </div>
 			    </div>
 		    </div>
 	    </div>
-	    </div>
-    <div class="col-md-2"></div>
+    </div>
+    <div class="timeline-options">
+    	<button type="button" class="btn btn-success" id="btn-create-canvas" data-toggle="modal" data-target="#create-canvas">Creeer een nieuw canvas</button>
+    </div>
+	<form class="form-horizontal timeline-filters" role="form">
+		<div class="form-group">
+			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Zoeken</label>
+      		<input ng-model="query" id="input-timeline-search" type="text" placeholder="Filter op" class="form-control timeline-search" autofocus>
+		</div>
+		<div>
+			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Snelmenu</label>
+			</br></br>
+			<div ng-repeat="y in allCanvas" class="quick-scroll">
+				<a ng-click="scrollTo(y.year)">{{ y.year }}</a>
+				<div ng-repeat="m in y.m" class="month">
+					&nbsp;&nbsp;&nbsp;<a ng-click="scrollTo(y.year, m.month)" >{{ m.month }}</a>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="modal fade" id="create-canvas" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Creeer een nieuw canvas</h4>
+				</div>
+				<div class="modal-body">
+					<form novalidate ng-submit="addCanvas(newCanvasName, canvasType)">
+						<div class="form-group">
+							<label for="recipient-name" class="control-label">Naam canvas:</label>
+							<input type="text" class="form-control" id="recipient-name" ng-model="newCanvasName">
+						</div>
+						<div class="form-group">
+							<label for="canvas-type">Type:</label>
+							<select class="form-control" id="canvas-type" ng-model="canvasType">
+								<option>ontwikkelruimte</option>
+								<option>portfolio</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="control-label">Tags:</label>
+							<textarea class="form-control" id="message-text" ng-model="canvasTags" disabled="true"></textarea>
+						</div>
+						<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+					<button type="submit" class="btn btn-primary">Creeer canvas</button>
+				</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 </div>
+
+
+
+
+
 
 <style>
 	.row, .ng-scope, .col-md-8{
 		height:100%;
 	}
 	.cvs_item {
-	  background: green;
-	  width: 150px;
-	  height: 120px;
-	  text-align: center;
-	  display: inline-block;
-	  margin: 0 5px 10px 5px;
+		background: rgb(249, 249, 249);
+		width: 150px;
+		height: 120px;
+		text-align: center;
+		float:left;
+		margin: 5px;
+		border-radius: 2px;
 	}
 
 	.tag-year{
-		background: black;
-		padding: 21px 25px 19px 15px;
+		background: #6f8593;
+		padding: 21px 25px 19px 16px;
 		border-radius: 100px;
-		width: 60px;
+		width: 66px;
 		color: white;
+		border: 3px solid white;
 	}
 
 	.tag-month{
 		text-align: center;
+		padding-top: 10px;
+		font-size: 20px;
 	}
 	.paal{
-		width:5px;
-		height:100%;
-		margin-left:28px;
-		top:0;
+		width: 4px;
+		height: 100%;
+		margin-left: 32px;
+		top: 0;
 		position: fixed;
-		background: black;
+		background: #6f8593;
 		z-index: 0;
 	}
 	.timeline{
 		position: relative;
 		z-index: 1;
+		margin-top:50px;
 	}
 
 	#wrapper{
@@ -76,10 +134,18 @@
 		overflow-x:hidden;
 	}
 	.hrz-line{
-		width: 100px;
-		height: 5px;
-		background: black;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		border: 2px solid white;
+		background: #74B2DA;
 		display: inline-block;
+		margin-left: -9px;
+	}
+	.hrz-line-dotted{
+		width: 80px;
+		border-bottom: 2px dashed #74B2DA;
+		margin: -15px 0 0 12px;
 	}
 	.align-hrz{
 		float:left;
@@ -88,6 +154,57 @@
 	}
 
 	.canvas-holder{
-		  margin-left: 133px;
+		margin-left: 133px;
+		max-width:640px;
+		box-shadow: 0px 1px 2px rgba(0,0,0,.3);
+	}
+
+	.canvas-holder:after { 
+		content: " ";
+		display: block;
+		height:0;
+		clear: both;
+	}
+
+	.row, .col-md-8 {
+		width:auto;
+	}
+
+	.month-header{
+		width: auto;
+		height: 50px;
+		margin-bottom: 5px;
+		background: #74B2DA;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+	}
+
+	.timeline-options{
+		position: absolute;
+		right: 35px;
+		top: 20px;
+		width: 348px;
+		background: rgb(253, 253, 253);
+		padding: 20px 50px;
+		box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+	}
+	.timeline-filters{
+		position: absolute;
+		right: 35px;
+		top: 105px;
+		background: rgb(253, 253, 253);
+		padding: 20px 50px;
+		box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+	}
+
+	.timeline-search{
+		
+	}
+	#timeline-label{
+		left:-30px;
+	}
+
+	#btn-create-canvas{
+		width: 243px;
 	}
 </style>
