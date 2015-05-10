@@ -54,6 +54,10 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/user/password.html',
         controller: 'UserController'
     })
+    .when('/profile/forgot', {
+        templateUrl: 'partials/user/forgot.html',
+        controller: 'UserController'
+    })
     .when('/moderator',
     {
         templateUrl: 'partials/moderator_dash.html',

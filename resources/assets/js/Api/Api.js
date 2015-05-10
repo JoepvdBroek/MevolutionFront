@@ -76,11 +76,19 @@ module.exports = function(api)
                 });
             },
 
-            sentPasswordReset: function (user)
+            sentPasswordReset: function (email)
             {
-                return $http.post(API.url + 'users/forgot',
+                return $http.post(API.url + '/users/forgot',
                 {
-                    'email' : user.email
+                    'email' : email
+                });
+            },
+
+            setNewPassword: function (token, password)
+            {
+                return $http.post(API.url + '/users/reset/' + token,
+                {
+                    'password' : password
                 });
             },
 
