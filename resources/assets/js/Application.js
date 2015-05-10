@@ -14,11 +14,7 @@ app.config(function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
 
-})/*.config(function($interpolateProvider)
-{
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-})*/;
+});
 
 var authentication = require('./Authentication/_index')(app);
 var api = require('./Api/_index')(app);

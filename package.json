@@ -24,6 +24,10 @@
     "angular": "*",
     "angular-resource": "*",
     "angular-route": "*",
-    "angular-css": "*"
+    "angular-css": "*",
+
+    "jquery": "2.1.*",
+    "bootstrap": "*",
+    "jquery-colorbox": "*"
   }
 }
