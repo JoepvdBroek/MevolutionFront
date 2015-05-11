@@ -95,7 +95,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .otherwise
     ({
-        redirectTo: '/'
+        redirectTo: '/auth/login'
     });
 
 }]);
