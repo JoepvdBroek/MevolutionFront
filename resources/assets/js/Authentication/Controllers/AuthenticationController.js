@@ -16,7 +16,6 @@ module.exports = function(authentication)
 
                 }).error(function(status, data)
                 {
-                    alert("De door u gegeven inloggegevens zijn niet correct.");
                     console.log(status);
                     console.log(data);
                 });
