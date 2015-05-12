@@ -45,6 +45,12 @@
                     <img class="small" src="assets/img/logo-small.png" alt="M" />
                 </a>
             </li>
+            <li ng-repeat="item in menu">
+                <a href="{{ item.href }}">
+                    <i class="fa {{ item.faClass }}"></i> {{ item.text }}
+                </a>
+            </li>
+            [[--
             <li>
                 <a href="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
@@ -63,6 +69,7 @@
             <li>
                 <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
             </li>
+            --]]
         </ul>
         <div class="footer">
             &copy; MeVOLUTION 2015
@@ -81,7 +88,7 @@
     <script>var debug = true;</script>
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
-    <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
+    <script src="//[[ Request::server('SERVER_NAME') ]]:4003/livereload.js"></script>
 
     @yield('script-debug')
 
