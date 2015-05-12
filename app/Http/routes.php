@@ -11,6 +11,10 @@
 |
 */
 
+Blade::setRawTags('[!!', '!!]');
+Blade::setContentTags('[[', ']]');
+Blade::setEscapedContentTags('[[[', ']]]');
+
 Route::get('/', function()
 {
     return view('template.admin');
