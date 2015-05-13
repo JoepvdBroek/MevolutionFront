@@ -50,7 +50,7 @@
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
                 </a>
             </li>
-            [[--
+
             <li>
                 <a href="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
@@ -69,7 +69,7 @@
             <li>
                 <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
             </li>
-            --]]
+
         </ul>
         <div class="footer">
             &copy; MeVOLUTION 2015
