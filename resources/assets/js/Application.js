@@ -66,7 +66,8 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/admin',
     {
         templateUrl: 'partials/admin_dash.html',
-        controller: 'AdminController'
+        controller: 'AdminController',
+        controllerAs: 'admin'
     })
     .when('/canvas/:canvasid?',
     {
@@ -81,12 +82,14 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/admin/groups/:organisationid',
     {
         templateUrl: 'partials/admin_dash_groups.html',
-        controller: 'AdminController'
+        controller: 'AdminController',
+        controllerAs: 'admin'
     })
     .when('/admin/users/:groupid',
     {
         templateUrl: 'partials/admin_dash_users.html',
-        controller: 'AdminController'
+        controller: 'AdminController',
+        controllerAs: 'admin'
     })
     .when('/timeline',
     {
