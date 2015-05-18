@@ -7,8 +7,9 @@ var modules =
     'app.moderator', 'app.adminFunctions',
 
     'app.timeline',
+    'app.bucket',
 
-    'app.canvas'
+    'app.canvas',
 ];
 
 var app = angular.module('app', modules);
@@ -30,6 +31,7 @@ var moderator = require('./Moderator/_index')(app);
 var canvas = require('./Canvas/_index')(app);
 
 var timeline = require('./Timeline/_index')(app);
+var bucket = require('./Bucket/_index')(app);
 
 // @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
@@ -92,6 +94,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/timeline/timeline.html',
         controller: 'TimelineController'
+    })
+    .when('/bucket',
+    {
+        templateUrl: 'partials/bucket.html',
+        controller: 'BucketController'
     })
     .when('/', 
     {
