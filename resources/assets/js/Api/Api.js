@@ -56,6 +56,13 @@ module.exports = function(api)
                 return $http.get(API.url + '/users/@me');
             },
 
+            getUser: function (user)
+            {
+                return $http.get(API.url + '/users/' + user).then(function(data) {
+                    return data.data;
+                });
+            },
+
             updateUser: function (user)
             {
                 return $http.put(API.url + '/users/' + user._id,
@@ -307,6 +314,27 @@ module.exports = function(api)
             {
                 return $http.get(API.url + '/canvas/' + canvasId, {});
             }
+        };
+
+    });
+
+    api.factory('BucketService', function($http, API)
+    {
+        return {
+
+            getBucket: function()
+            {
+                return $http.get(API.url + '/objects/', {}).then(function(data) {
+                    return data.data;
+                });
+            }/*,
+
+            deleteItem: function(id)
+            {
+                return $http.delete(API.url + '/objects/' + id , {}).then(function(data) {
+                    return data.data;
+                });
+            }*/
         };
 
     });

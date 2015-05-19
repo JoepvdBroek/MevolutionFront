@@ -27,7 +27,6 @@ module.exports = function(admin)
                     //console.log(groups);
 
                 });
-
         $scope.allOrganisations = organisations;
 
         $scope.addOrganisation = function(newName, newColor, newLogo){
