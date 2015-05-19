@@ -28,6 +28,8 @@
 
     "jquery": "2.1.*",
     "bootstrap": "*",
-    "jquery-colorbox": "*"
+    "jquery-colorbox": "*",
+    "jquery-bridget": "*",
+    "draggabilly": "*"
   }
 }

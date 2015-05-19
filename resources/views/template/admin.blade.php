@@ -63,6 +63,7 @@
             <li>
                 <a href="#"><i class="fa fa-list-alt"></i> Verzamelbak</a>
             </li>
+            </li>
             <li>
                 <a href="#"><i class="fa fa-question"></i> Development Spiral</a>
             </li>
@@ -80,8 +81,6 @@
         @yield('content')
     </ng-view>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 @if (env('APP_DEBUG') == true)
 

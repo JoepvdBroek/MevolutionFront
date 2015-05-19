@@ -68,7 +68,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash.html',
         controller: 'AdminController'
     })
-    .when('/canvas/:canvasid?',
+    .when('/canvas/:canvasid',
     {
         templateUrl: 'partials/canvas/canvas.html',
         controller: 'CanvasController',
