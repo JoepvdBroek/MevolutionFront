@@ -9,7 +9,7 @@ module.exports = function(canvas)
             {
                 var draggabilly = scope.$eval(attrs.draggabilly);
 
-                $(element).draggabilly(draggabilly);
+                $draggabilly = $(element).draggabilly(draggabilly);
             }
         }
     });

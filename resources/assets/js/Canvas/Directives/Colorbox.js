@@ -11,6 +11,16 @@ module.exports = function(canvas)
 
                 element.click('bind', function(e)
                 {
+                    if (e.preventDefault)
+                    {
+                        e.preventDefault();
+                    }
+
+                    if (e.preventPropagation)
+                    {
+                        e.preventPropagation();
+                    }
+
                     var cb = angular.extend({}, colorbox,
                     {
                         href: colorbox.href,
@@ -27,6 +37,8 @@ module.exports = function(canvas)
                     });
 
                     var cb = $.colorbox(cb);
+
+                    return false;
                 });
 
                 //$(element).colorbox(attrs.colorbox);
