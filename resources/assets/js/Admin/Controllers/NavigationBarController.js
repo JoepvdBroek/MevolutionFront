@@ -17,6 +17,16 @@ module.exports = function(admin)
             href: '#/admin',
             text: 'Admin',
             faClass: 'fa-briefcase'
+        },
+        {
+            href: '#/bucket',
+            text: 'Bucket',
+            faClass: 'fa-inbox'
+        },
+        {
+            href: '#/profile',
+            text: 'Profiel',
+            faClass: 'fa-user'
         }];
 
         $scope.toggle = function()

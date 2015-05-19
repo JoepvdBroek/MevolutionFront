@@ -1,0 +1,6 @@
+<div ng-controller="AudioController as audio">
+    <audio controls class="audio{{ object.object._id }}">
+        <source ng-src="{{ trustSrc(object.object.audio) }}" type="{{ object.object.mimetype }}">
+        Your browser does not support the audio element.
+    </audio>
+</div>

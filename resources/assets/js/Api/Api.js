@@ -56,6 +56,13 @@ module.exports = function(api)
                 return $http.get(API.url + '/users/@me');
             },
 
+            getUser: function (user)
+            {
+                return $http.get(API.url + '/users/' + user).then(function(data) {
+                    return data.data;
+                });
+            },
+
             updateUser: function (user)
             {
                 return $http.put(API.url + '/users/' + user._id,
@@ -219,8 +226,32 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            getAllUsersOfOrganisation: function(orgId){
+                return $http.get(API.url + '/organization/users/' + orgId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
             pushUsersToGroup: function(groupId, userArray){
                 return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            makeUserModerator: function(userId){
+                return $http.put(API.url + '/users/role/' + userId, {roles:'moderator'}, 
                 {
                     username: 'terry',
                     password: 'terry',
@@ -283,6 +314,27 @@ module.exports = function(api)
             {
                 return $http.get(API.url + '/canvas/' + canvasId, {});
             }
+        };
+
+    });
+
+    api.factory('BucketService', function($http, API)
+    {
+        return {
+
+            getBucket: function()
+            {
+                return $http.get(API.url + '/objects/', {}).then(function(data) {
+                    return data.data;
+                });
+            }/*,
+
+            deleteItem: function(id)
+            {
+                return $http.delete(API.url + '/objects/' + id , {}).then(function(data) {
+                    return data.data;
+                });
+            }*/
         };
 
     });

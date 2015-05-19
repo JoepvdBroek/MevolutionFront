@@ -37,22 +37,24 @@
             width: 50px;
             height: 50px;
             background-color: #ddd;
-            border-radius: 5px;
+            border-radius: 25px;
             position: absolute;
 
-            a
+            &.video, &.audio, &.text
             {
-                padding: 18px 26px 16px 10px;
-            }
+                text-align: center;
 
-            &.video
-            {
                 i
                 {
-                    padding: 15px 0 0 8px;
+                    padding-top: 15px;
                     color: #000;
                     font-size: 14pt;
                 }
+            }
+
+            &.picture
+            {
+                background-size: cover;
             }
         }
     }

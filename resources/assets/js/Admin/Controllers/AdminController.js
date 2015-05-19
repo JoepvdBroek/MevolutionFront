@@ -1,7 +1,19 @@
 module.exports = function(admin)
 {
-    admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, OrganisationService, GroupService, UserGroupService, AdminFactory)
+    admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', '$rootScope', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, $rootScope, OrganisationService, GroupService, UserGroupService, AdminFactory)
     {
+
+        var history = [];
+
+        $rootScope.$on('$routeChangeSuccess', function() {
+            console.log('routeChange');
+            history.push($location.$$path);
+        });
+
+        $rootScope.back = function () {
+            var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
+            $location.path(prevUrl);
+        };
 
         /* *  ADMIN DASH ORGANISATIONS  **/
         var organisations = [];
@@ -15,7 +27,6 @@ module.exports = function(admin)
                     //console.log(groups);
 
                 });
-
         $scope.allOrganisations = organisations;
 
         $scope.addOrganisation = function(newName, newColor, newLogo){
@@ -53,8 +64,10 @@ module.exports = function(admin)
 
         var groups = [];
         var moderatorsOfOrganisation = [];
-        $scope.allModerators = [];
+        var usersOfOrganisation = [];
 
+        $scope.allModerators = [];
+        $scope.usersOfOrganisation = [];
 
         GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
                 {
@@ -116,11 +129,45 @@ module.exports = function(admin)
 
         // submits new groupName
         $scope.submitNewGroupName = function submitNewGroupName(newName, group){
-            console.log($scope.selectionOfModerators);
             UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
                 { 
 
                 });
+        };
+
+        UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data.length;i++){
+                        $scope.usersOfOrganisation.push(data[i]);
+                    }
+
+                });
+
+        $scope.selectedUsersToMakeModerator = [];
+
+        // when checked, push moderatorid to array, else splice the userid from the array
+        $scope.toggleSelectionOfUsersMakingModerator = function toggleSelection(userId) {
+            var idx = $scope.selectedUsersToMakeModerator.indexOf(userId);
+
+            // is currently selected
+            if (idx > -1) {
+              $scope.selectedUsersToMakeModerator.splice(idx, 1);
+            }
+
+            // is newly selected
+            else {
+              $scope.selectedUsersToMakeModerator.push(userId);
+            }
+
+            console.log($scope.selectedUsersToMakeModerator);
+        };
+
+        // submits new moderatorlist
+        $scope.submitNewModeratorList = function submitNewModeratorList(){
+            for(i = 0; i < $scope.selectedUsersToMakeModerator.length; i++){
+                //console.log($scope.selectedUsersToMakeModerator[i]);
+                UserGroupService.makeUserModerator($scope.selectedUsersToMakeModerator[i]);
+            }
         };
 
         /* *  ADMIN DASH USERS  **/
