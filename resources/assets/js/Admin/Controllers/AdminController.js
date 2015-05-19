@@ -54,8 +54,8 @@ module.exports = function(admin)
         };
 
         // submits new groupName
-        $scope.submitNewOrganisationName = function submitNewOrganisationName(newName, organisation){
-            OrganisationService.postNewOrganisationName(newName, organisation._id).then(function(data, status, headers, config)
+        $scope.submitNewOrganisationName = function submitNewOrganisationName(newName, newColor, organisation){
+            OrganisationService.postNewOrganisationName(newName, newColor, organisation._id).then(function(data, status, headers, config)
                 { 
 
                 });

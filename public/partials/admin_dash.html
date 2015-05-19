@@ -36,14 +36,16 @@
 			<div class="modal fade" ng-repeat="organisation in allOrganisations" id="settingsid{{organisation._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="newOrganisationName" novalidate ng-submit="newOrganisationName.$valid && submitNewOrganisationName(organisation.name, organisation)">
+				<form name="newOrganisationName" novalidate ng-submit="newOrganisationName.$valid && submitNewOrganisationName(organisation.name, organisation.color, organisation)">
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
 				  </div>
 				  <div class="modal-body input-f-wrapper">
 						<label>Organisatie naam</label>
-						<input type="text" ng-model="organisation.name" />
+						<input type="text" ng-model="organisation.name" /> </br>
+						<label>Organisatie kleur</label>
+						<input type="text" ng-model="organisation.color" />
 				  </div>
 
 				  <div class="modal-footer">

@@ -131,8 +131,8 @@ module.exports = function(api)
                     headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             },
-            postNewOrganisationName: function(newName, organisationId){
-                return $http.put(API.url + '/organization/' + organisationId, {name:newName},
+            postNewOrganisationName: function(newName, newColor, organisationId){
+                return $http.put(API.url + '/organization/' + organisationId, {name:newName, color:newColor},
                 {
                     username: 'terry',
                     password: 'terry',
