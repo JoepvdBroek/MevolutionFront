@@ -26,23 +26,24 @@ module.exports = function(timeline)
         $scope.allOriginalCanvases = rawcanvas;
 
         function addYear(data, year, month){
+
         	if(canvases === undefined || canvases.length == 0){
 
-        		canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]}]});
+        		canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type'], 'id': data['_id']}]}]});
         	}else{
 
         		for(var j=0;j<canvases.length;j++){ 
         			if(canvases[j]['year'] != year){
-        				canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]}]});
+        				canvases.push({'year': year, 'm': [{'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type'], 'id': data['_id']}]}]});
         				break;
         			}else{
 
         				for(k=0;k<canvases[j]['m'].length;k++){
 	        				if(canvases[j]['m'][k]['month'] != monthsConverse(month)){
-	        					canvases[j]['m'].push({'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type']}]});
+	        					canvases[j]['m'].push({'month': monthsConverse(month), 'canvas': [{'title':data['title'], 'type':data['type'], 'id': data['_id']}]});
 	        					break;
 	        				}else{
-	        					canvases[j]['m'][k]['canvas'].push({'title':data['title'], 'type':data['type']});
+	        					canvases[j]['m'][k]['canvas'].push({'title':data['title'], 'type':data['type'], 'id': data['_id']});
 	        				}
 	        			}
         			}

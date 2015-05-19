@@ -93,9 +93,13 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/timeline/timeline.html',
         controller: 'TimelineController'
     })
+    .when('/', 
+    {
+        templateUrl: 'partials/index.html'
+    })
     .otherwise
     ({
-        redirectTo: '/'
+        redirectTo: '/auth/login'
     });
 
 }]);
