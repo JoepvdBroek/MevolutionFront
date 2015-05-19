@@ -219,8 +219,32 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            getAllUsersOfOrganisation: function(orgId){
+                return $http.get(API.url + '/organization/users/' + orgId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
             pushUsersToGroup: function(groupId, userArray){
                 return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            makeUserModerator: function(userId){
+                return $http.put(API.url + '/users/role/' + userId, {roles:'moderator'}, 
                 {
                     username: 'terry',
                     password: 'terry',

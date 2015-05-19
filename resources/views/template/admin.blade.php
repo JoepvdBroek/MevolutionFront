@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="app">
-<head >
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,27 +50,6 @@
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
                 </a>
             </li>
-            <!--
-            <li>
-                <a href="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a>
-            </li>
-            <li class="active">
-                <a href="develpmentcircle.html"><i class="fa fa-pie-chart"></i> Ontwikkelruimte</a>
-            </li>
-            <li>
-                <a href="canvas.html"><i class="fa fa-briefcase"></i> Portfolio</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-list-alt"></i> Verzamelbak</a>
-            </li>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-question"></i> Development Spiral</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-support"></i> Over MeVOLUTION</a>
-            </li>
-            -->
         </ul>
         <div class="footer">
             &copy; MeVOLUTION 2015
