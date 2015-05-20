@@ -1,6 +1,6 @@
 module.exports = function(canvas)
 {
-    canvas.directive('colorbox', function($compile)
+    canvas.directive('colorbox', [ '$compile', function($compile)
     {
         return {
 
@@ -44,5 +44,5 @@ module.exports = function(canvas)
                 //$(element).colorbox(attrs.colorbox);
             }
         }
-    });
+    }]);
 };
