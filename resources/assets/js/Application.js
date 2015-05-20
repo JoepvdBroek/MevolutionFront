@@ -1,4 +1,3 @@
-
 var modules =
 [
     'ngRoute', 'door3.css',
@@ -9,16 +8,15 @@ var modules =
     'app.timeline',
     'app.bucket',
 
-    'app.canvas',
+    'app.canvas'
 ];
 
 var app = angular.module('app', modules);
 
-app.config(function($httpProvider)
+app.config([ '$httpProvider', function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
-
-});
+}]);
 
 var authentication = require('./Authentication/_index')(app);
 
@@ -77,7 +75,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         controller: 'CanvasController',
         css:
         [{
-             href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.css',
+             href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.min.css',
              bustCache: true
         }]
     })
@@ -114,7 +112,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 
 }]);
 
-app.run(function($rootScope, $location, $window, AuthenticationService)
+app.run([ '$rootScope', '$location', '$window', 'AuthenticationService', function($rootScope, $location, $window, AuthenticationService)
 {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
     {
@@ -123,4 +121,4 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
             $location.path("/auth/login");
         }
     });
-});
+}]);
