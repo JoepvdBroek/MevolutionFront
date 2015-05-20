@@ -10,7 +10,7 @@ module.exports = function(api)
         clientSecret: 'Web123456'
     });
 
-    api.factory('UserService', function($http, API)
+    api.factory('UserService', [ '$http', 'API', function($http, API)
     {
         return { // <-- Fuck javascript
             login: function (username, password)
@@ -56,6 +56,13 @@ module.exports = function(api)
                 return $http.get(API.url + '/users/@me');
             },
 
+            getUser: function (user)
+            {
+                return $http.get(API.url + '/users/' + user).then(function(data) {
+                    return data.data;
+                });
+            },
+
             updateUser: function (user)
             {
                 return $http.put(API.url + '/users/' + user._id,
@@ -70,7 +77,7 @@ module.exports = function(api)
                     "city" : user.city,
                     "zipCode" : user.zipCode,
                     "phone1" : user.phone1,
-                    "phone2" : user.phone2,
+                    "phone2" : user.phone2
                     // "organization" : user.organization,
                     // "roles" : user.roles
                 });
@@ -101,9 +108,9 @@ module.exports = function(api)
             },
 
         };
-    });
+    }]);
 
-    api.factory('OrganisationService', function($http, API)
+    api.factory('OrganisationService', [ '$http', 'API', function($http, API)
     {
         return {
             getOrganisations: function ()
@@ -143,9 +150,9 @@ module.exports = function(api)
                 });
             }
         };
-    });
+    }]);
     
-    api.factory('GroupService', function($http, API)
+    api.factory('GroupService', [ '$http', 'API', function($http, API)
     {
         return {
             getGroups: function (organisationId)
@@ -187,9 +194,9 @@ module.exports = function(api)
                 });
             }
         };       
-    });
+    }]);
 
-    api.factory('UserGroupService', function($http, API)
+    api.factory('UserGroupService', [ '$http', 'API', function($http, API)
         {
         return {
             getGroup: function (groupId)
@@ -267,9 +274,9 @@ module.exports = function(api)
             }
             
         };
-    });
+    }]);
 
-    api.factory('TimelineService', function($http, API)
+    api.factory('TimelineService', [ '$http', 'API', function($http, API)
         {
         return {
             getCanvases: function ()
@@ -298,8 +305,9 @@ module.exports = function(api)
                 });
             }
         }
-    });
-    api.factory('CanvasService', function($http, API)
+    }]);
+
+    api.factory('CanvasService', [ '$http', 'API', function($http, API)
     {
         return {
 
@@ -309,5 +317,26 @@ module.exports = function(api)
             }
         };
 
-    });
+    }]);
+
+    api.factory('BucketService', [ '$http', 'API', function($http, API)
+    {
+        return {
+
+            getBucket: function()
+            {
+                return $http.get(API.url + '/objects/', {}).then(function(data) {
+                    return data.data;
+                });
+            }/*,
+
+            deleteItem: function(id)
+            {
+                return $http.delete(API.url + '/objects/' + id , {}).then(function(data) {
+                    return data.data;
+                });
+            }*/
+        };
+
+    }]);
 };

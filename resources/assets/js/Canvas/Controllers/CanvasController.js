@@ -1,10 +1,10 @@
 module.exports = function(canvas)
 {
-    canvas.controller('CanvasController', [ '$scope', '$css', '$sce', 'CanvasService', function($scope, $css, $sce, CanvasService)
+    canvas.controller('CanvasController', [ '$scope', '$css', '$sce', '$routeParams', 'CanvasService', function($scope, $css, $sce, $routeParams, CanvasService)
     {
         $scope.fases = [];
 
-        CanvasService.getCanvas('553f9914c757d2c505273250').success(function(data)
+        CanvasService.getCanvas($routeParams.canvasid).success(function(data)
         {
             $scope.fases = data.fases;
         });

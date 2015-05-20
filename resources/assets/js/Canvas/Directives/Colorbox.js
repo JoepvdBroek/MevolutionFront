@@ -1,19 +1,29 @@
 module.exports = function(canvas)
 {
-    canvas.directive('colorbox', function($compile)
+    canvas.directive('colorbox', [ '$compile', function($compile)
     {
         return {
 
             restrict: 'AC',
             link: function(scope, element, attrs)
             {
+                var colorbox = scope.$eval(attrs.colorbox);
+
                 element.click('bind', function(e)
                 {
-                    e.preventDefault();
+                    if (e.preventDefault)
+                    {
+                        e.preventDefault();
+                    }
 
-                    var cb = $.colorbox
-                    ({
-                        href: attrs.colorbox,
+                    if (e.preventPropagation)
+                    {
+                        e.preventPropagation();
+                    }
+
+                    var cb = angular.extend({}, colorbox,
+                    {
+                        href: colorbox.href,
                         onComplete: function()
                         {
                             var s = scope.$parent;
@@ -22,19 +32,17 @@ module.exports = function(canvas)
                             {
                                 var content = $('#cboxLoadedContent');
                                 $compile(content)(s);
-
-                                setTimeout(function()
-                                {
-                                    $('#video' + s.object.object._id)[0].load();
-
-                                }, 1);
                             });
                         }
                     });
+
+                    var cb = $.colorbox(cb);
+
+                    return false;
                 });
 
                 //$(element).colorbox(attrs.colorbox);
             }
         }
-    });
+    }]);
 };

@@ -9,6 +9,7 @@
         "bootstrap-select": "latest",
         "datetimepicker": "latest",
         "angular": "latest",
-        "zoomooz": "latest"
+        "zoomooz": "latest",
+	"draggabilly": "latest"
     }
 }

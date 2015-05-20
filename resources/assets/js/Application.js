@@ -1,4 +1,3 @@
-
 var modules =
 [
     'ngRoute', 'door3.css',
@@ -7,17 +6,17 @@ var modules =
     'app.moderator', 'app.adminFunctions',
 
     'app.timeline',
+    'app.bucket',
 
     'app.canvas'
 ];
 
 var app = angular.module('app', modules);
 
-app.config(function($httpProvider)
+app.config([ '$httpProvider', function($httpProvider)
 {
     $httpProvider.interceptors.push('TokenInterceptor');
-
-});
+}]);
 
 var authentication = require('./Authentication/_index')(app);
 
@@ -30,6 +29,7 @@ var moderator = require('./Moderator/_index')(app);
 var canvas = require('./Canvas/_index')(app);
 
 var timeline = require('./Timeline/_index')(app);
+var bucket = require('./Bucket/_index')(app);
 
 // @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
@@ -69,13 +69,13 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         controller: 'AdminController',
         controllerAs: 'admin'
     })
-    .when('/canvas/:canvasid?',
+    .when('/canvas/:canvasid',
     {
         templateUrl: 'partials/canvas/canvas.html',
         controller: 'CanvasController',
         css:
         [{
-             href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.css',
+             href: debug == true ? 'dev/css/canvas.css' : 'assets/css/canvas.min.css',
              bustCache: true
         }]
     })
@@ -96,18 +96,23 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/timeline/timeline.html',
         controller: 'TimelineController'
     })
+    .when('/bucket',
+    {
+        templateUrl: 'partials/bucket.html',
+        controller: 'BucketController'
+    })
     .when('/', 
     {
         templateUrl: 'partials/index.html'
     })
     .otherwise
     ({
-        redirectTo: '/'
+        redirectTo: '/auth/login'
     });
 
 }]);
 
-app.run(function($rootScope, $location, $window, AuthenticationService)
+app.run([ '$rootScope', '$location', '$window', 'AuthenticationService', function($rootScope, $location, $window, AuthenticationService)
 {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
     {
@@ -116,4 +121,4 @@ app.run(function($rootScope, $location, $window, AuthenticationService)
             $location.path("/auth/login");
         }
     });
-});
+}]);
