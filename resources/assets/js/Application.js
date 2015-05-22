@@ -60,8 +60,14 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/moderator',
     {
-        templateUrl: 'partials/moderator_dash.html',
-        controller: 'ModeratorController'
+        templateUrl: 'partials/moderator/moderator_dash.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/admin',
     {

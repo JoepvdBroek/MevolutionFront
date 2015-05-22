@@ -1,0 +1,28 @@
+<div id="wrap">
+	<div class="container">
+		<div class="panel-style space">
+			<h2>Welkom {{ user.username }}</h2>
+			<h3 class="heading-title">Alle leerlijnen van de organisatie</h3>
+			
+			<table class="table simple">
+				<thead>
+					<tr>
+						<th>Plaatje</th>
+						<th>Titel</th>
+						<th>Kleur</th>		
+					</tr>
+				</thead>
+				<!-- @TODO id is _id of learning from DB -->
+				<tbody ng-repeat="learning in learnings" id="{{learning.title}}">
+					<tr>
+						<td>{{learning.image}}</td>
+						<td>{{learning.title}}</td>
+						<td>{{learning.color}}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div><!-- /.container -->
+</div>
+    

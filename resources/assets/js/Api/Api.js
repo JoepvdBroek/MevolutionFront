@@ -276,6 +276,14 @@ module.exports = function(api)
         };
     }]);
 
+    api.factory('LearningFactory', [ '$http', 'API', function($http, API)
+        {
+        return {
+            
+            
+        };
+    }]);
+
     api.factory('TimelineService', [ '$http', 'API', function($http, API)
         {
         return {
