@@ -22,7 +22,7 @@ module.exports = function(moderator)
 
         UserService.getUserInfo().then(function(data, status, headers, config){
         	$scope.user = data.data[0];
-        	console.log($scope.user);
+        	//console.log($scope.user);
         });
 
 

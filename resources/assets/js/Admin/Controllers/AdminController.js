@@ -6,7 +6,7 @@ module.exports = function(admin)
         var history = [];
 
         $rootScope.$on('$routeChangeSuccess', function() {
-            console.log('routeChange');
+            //console.log('routeChange');
             history.push($location.$$path);
         });
 
