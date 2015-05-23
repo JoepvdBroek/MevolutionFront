@@ -36,13 +36,23 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 {
     $routeProvider.when('/auth/login',
     {
-        templateUrl: 'partials/login.html',
-        controller: 'AuthenticationController'
+        templateUrl: 'partials/authentication/login.html',
+        controller: 'AuthenticationController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/login.css' : 'assets/css/login.min.css',
+             bustCache: true
+        }]
     })
     .when('/auth/register',
     {
-        templateUrl: 'partials/register.html',
-        controller: 'AuthenticationController'
+        templateUrl: 'partials/authentication/register.html',
+        controller: 'AuthenticationController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/register.css' : 'assets/css/register.min.css',
+             bustCache: true
+        }]
     })
     .when('/profile',
     {
@@ -65,12 +75,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/moderator',
     {
-        templateUrl: 'partials/moderator_dash.html',
+        templateUrl: 'partials/moderator/moderator_dash.html',
         controller: 'ModeratorController'
     })
     .when('/admin',
     {
-        templateUrl: 'partials/admin_dash.html',
+        templateUrl: 'partials/admin/admin_dash.html',
         controller: 'AdminController',
         controllerAs: 'admin'
     })
@@ -86,13 +96,13 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/admin/groups/:organisationid',
     {
-        templateUrl: 'partials/admin_dash_groups.html',
+        templateUrl: 'partials/admin/admin_dash_groups.html',
         controller: 'AdminController',
         controllerAs: 'admin'
     })
     .when('/admin/users/:groupid',
     {
-        templateUrl: 'partials/admin_dash_users.html',
+        templateUrl: 'partials/admin/admin_dash_users.html',
         controller: 'AdminController',
         controllerAs: 'admin'
     })
