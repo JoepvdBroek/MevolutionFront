@@ -45,13 +45,26 @@ module.exports = function(authentication)
 
             responseError: function(rejection)
             {
-                if (rejection != null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated))
+                //ALs je wel ingelogd bent maar waarschijnlijk de api tijd is verlopen
+                if(rejection != null && rejection.status === 401 && ($window.sessionStorage.access_token || AuthenticationService.isAuthenticated))
+                {
+                    //TODO: acces_denied pagina aanmaken en naar verwijzen.
+
+                    delete $window.sessionStorage.token;
+
+                    AuthenticationService.isAuthenticated = false;
+                    
+                    $location.path("/auth/login");
+                }
+
+                //Als je nog niet ingelogd bent 
+                else if (rejection != null && rejection.status === 401)
                 {
                     delete $window.sessionStorage.token;
 
                     AuthenticationService.isAuthenticated = false;
 
-                    $location.path("/login");
+                    $location.path("/auth/login");
                 }
 
                 return $q.reject(rejection);

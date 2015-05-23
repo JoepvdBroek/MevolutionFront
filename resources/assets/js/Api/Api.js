@@ -99,11 +99,11 @@ module.exports = function(api)
                 });
             },
 
-            changePassword: function (password)
+            changePassword: function (user)
             {
-                return $http.post(API.url + 'users/' + user._id,
+                return $http.put(API.url + '/users/' + user._id,
                 {
-                    'password' : password
+                    'password' : user.password
                 });
             },
 

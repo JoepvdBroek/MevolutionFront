@@ -47,16 +47,21 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/profile',
     {
         templateUrl: 'partials/user/profile.html',
-        controller: 'UserController'
+        controller: 'UserController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/edituser.css' : 'assets/css/edituser.min.css',
+             bustCache: true
+        }]
     })
     .when('/profile/password',
     {
         templateUrl: 'partials/user/password.html',
-        controller: 'UserController'
+        controller: 'ChangePasswordController'
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
-        controller: 'UserController'
+        controller: 'ForgotPasswordController'
     })
     .when('/moderator',
     {
