@@ -2,52 +2,55 @@
 	<div class="container">
 		<div class="panel-style space">
 			<h2>Welkom {{ user.username }}</h2>
-			<h3 class="heading-title">Alle leerlijnen van {{ user.organization.name }}</h3>
+			<h3 class="heading-title">Niveaus</h3>
 			
 			<table class="table simple">
 				<thead>
 					<tr>
-						<th>Plaatje</th>
 						<th>Titel</th>
-						<th>Kleur</th>		
+						<th>Beschrijving</th>
+						<th>Sectie</th>		
 					</tr>
 				</thead>
 				<!-- @TODO id is _id of learning from DB -->
-				<tbody ng-repeat="learning in learnings" id="{{learning.title}}">
+				<tbody ng-repeat="niveau in niveaus" id="{{niveau.title}}">
 					<tr>
-						<td>{{learning.image}}</td>
-						<td><a href="#/moderator/{{learning._id}}">{{learning.title}}</a></td>
-						<td>{{learning.color}}</td>
+						<td>{{niveau.title}}</td>
+						<td>{{niveau.description}}</td>
+						<td>{{niveau.section}}</td>
 						<th>Instellingen</th>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}"><span class="glyphicon glyphicon-cog"></span></button></td>
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}"><span class="glyphicon glyphicon-cog"></span></button></td>
 					</tr>
 				</tbody>
 			</table>
 
 			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span>Nieuwe leerlijn toevoegen</button>
+				<button class="btn blue" data-toggle="modal" data-target="#newNiveau"><span class="glyphicon glyphicon-plus"></span>Nieuw niveau toevoegen</button>
 			</div>
 
 			<!-- Modal Add Learning -->
-			<div class="modal fade" id="newLearning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="newNiveau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-					<form name="learningForm" novalidate ng-submit="learningForm.$valid && addLearning(newTitle, newColor)">
+					<form name="niveauForm" novalidate ng-submit="niveauForm.$valid && addNiveau(newTitle, newDescription, newSection)">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe leerlijn toe aan {{ user.organization.name }}</h4>
+						<h4 class="modal-title" id="myModalLabel">Voeg een nieuw niveau toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
 						
 						<input type="text" placeholder="Naam" ng-model="newTitle" required />
 						</br>
 					
-						<input type="text" placeholder="Kleurcode" ng-model="newColor" required />
+						<input type="text" placeholder="Beschrijving" ng-model="newDescription" required />
+						</br>
+
+						<input type="text" placeholder="Sectie" ng-model="newSection" required />
 
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue">Leerlijn aanmaken</button>
+						<button type="submit" class="btn blue">Niveau aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -55,19 +58,23 @@
 			</div><!-- /.modal -->
 
 			<!-- Modal Edit Learning -->
-			<div class="modal fade" ng-repeat="learning in learnings" id="settingsid{{learning._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" ng-repeat="niveau in niveaus" id="settingsid{{niveau._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learning.title, learning.color, learning)">
+				<form name="editNiveauForm" novalidate ng-submit="editNiveauForm.$valid && editNiveau(niveau.title, niveau.description, niveau.section, niveau)">
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
 				  </div>
 				  <div class="modal-body input-f-wrapper">
-						<label>Naam leerlijn</label>
-						<input type="text" ng-model="learning.title" /> </br>
-						<label>Kleurcode</label>
-						<input type="text" ng-model="learning.color" />
+						<label>Titel niveau</label>
+						<input type="text" ng-model="niveau.title" />
+
+						<label>Beschrijving niveau</label>
+						<input type="text" ng-model="niveau.description" />
+
+						<label>Sectie niveau</label>
+						<input type="text" ng-model="niveau.section" />
 				  </div>
 
 				  <div class="modal-footer">

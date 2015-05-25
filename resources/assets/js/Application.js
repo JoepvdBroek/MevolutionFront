@@ -69,6 +69,17 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
+    .when('/moderator/:learningid',
+    {
+        templateUrl: 'partials/moderator/moderator_dash_niveau.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
+    })
     .when('/admin',
     {
         templateUrl: 'partials/admin/admin_dash.html',
