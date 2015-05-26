@@ -16,8 +16,8 @@
 
     @else
 
-        <link rel="stylesheet" type="text/css" href="assets/css/lib.css" />
-        <link rel="stylesheet" type="text/css" href="assets/css/general.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/general.min.css" />
 
         @yield('style-non-debug')
 

@@ -1,6 +1,6 @@
 module.exports = function(canvas)
 {
-    canvas.directive('draggabilly', function($compile)
+    canvas.directive('draggabilly', [ '$compile', function($compile)
     {
         return {
 
@@ -12,5 +12,5 @@ module.exports = function(canvas)
                 $draggabilly = $(element).draggabilly(draggabilly);
             }
         }
-    });
+    }]);
 };
