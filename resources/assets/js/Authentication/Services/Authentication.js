@@ -35,12 +35,12 @@ module.exports = function(authentication)
 
             response: function (response)
             {
-                if (response != null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated)
+                if (response != null && response.status == 200 && $window.sessionStorage.access_token/* && !AuthenticationService.isAuthenticated*/)
                 {
                     AuthenticationService.isAuthenticated = true;
+                    $window.sessionStorage.last_activity = new Date().getTime();//reset last_activity
+                    console.log('reset last_activity');
                 }
-
-                $window.sessionStorage.last_activity = new Date().getTime();//reset last_activity
 
                 return response || $q.when(response);
             },
@@ -52,7 +52,9 @@ module.exports = function(authentication)
                 {
                     //TODO: acces_denied pagina aanmaken en naar verwijzen.
 
-                    delete $window.sessionStorage.token;
+                    delete $window.sessionStorage.access_token;
+                    delete $window.sessionStorage.refresh_token;
+                    delete $window.sessionStorage.last_activity;
 
                     AuthenticationService.isAuthenticated = false;
                     
@@ -62,7 +64,9 @@ module.exports = function(authentication)
                 //Als je nog niet ingelogd bent 
                 else if (rejection != null && rejection.status === 401)
                 {
-                    delete $window.sessionStorage.token;
+                    delete $window.sessionStorage.access_token;
+                    delete $window.sessionStorage.refresh_token;
+                    delete $window.sessionStorage.last_activity;
 
                     AuthenticationService.isAuthenticated = false;
 

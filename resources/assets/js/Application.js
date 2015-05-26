@@ -68,10 +68,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/user/password.html',
         controller: 'ChangePasswordController'
+        //erft css al van de /profile route
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
         controller: 'ForgotPasswordController'
+        //erft css al van de /profile route
     })
     .when('/moderator',
     {

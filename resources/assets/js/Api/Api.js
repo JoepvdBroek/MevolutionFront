@@ -15,7 +15,7 @@ module.exports = function(api)
             refreshTokenIfNeeded: function(){
                 if($window.sessionStorage.last_activity)
                 {
-                    console.log(new Date().getTime() - $window.sessionStorage.last_activity)
+                    console.log('tijd in ms van laatste activiteit: '+ (new Date().getTime() - $window.sessionStorage.last_activity));
                     if((new Date().getTime() - $window.sessionStorage.last_activity) >= 3600000)
                     {
                         $http.post(API.url + '/oauth/token',
