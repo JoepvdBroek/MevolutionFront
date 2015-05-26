@@ -314,9 +314,18 @@ module.exports = function(api)
             getCanvas: function(canvasId)
             {
                 return $http.get(API.url + '/canvas/' + canvasId, {});
+            },
+
+            updateCanvasObjectPosition: function(canvasId, objectId, fase, x, y)
+            {
+                return $http.put(API.url + '/canvas/' + canvasId + '/objects/' + objectId,
+                {
+                    fase: fase,
+                    xPosition: x,
+                    yPosition: y
+                });
             }
         };
-
     }]);
 
     api.factory('BucketService', [ '$http', 'API', function($http, API)
