@@ -38,15 +38,20 @@ module.exports = function(moderator)
         };
 
         $scope.deleteLearning = function(learningId, index){
-            LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
-                $scope.learnings.splice(index, 1);
-            });
+            if(confirm("Weet u zeker dat u deze leerlijn wilt verwijderen?")){
+                LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
+                    $scope.learnings.splice(index, 1);
+                });
+            }
         };
 
         /* *  MODERATOR NIVEAUS **/
         if(typeof($routeParams.learningid) != "undefined"){
             NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
                 $scope.niveaus = data;
+                LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                    $scope.learningName = data.title;
+                });
             });
         }
 
@@ -69,9 +74,11 @@ module.exports = function(moderator)
         };
 
         $scope.deleteNiveau = function(niveauId, index){
-            NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
-                $scope.niveaus.splice(index, 1);
-            });
+            if(confirm("Weet u zeker dat u dit niveau wilt verwijderen?")){
+                NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
+                    $scope.niveaus.splice(index, 1);
+                });
+            } 
         };
 
     }]);
