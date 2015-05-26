@@ -69,7 +69,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
-    .when('/moderator/:learningid',
+    .when('/moderator/:orgid/:learningid',
     {
         templateUrl: 'partials/moderator/moderator_dash_niveau.html',
         controller: 'ModeratorController',

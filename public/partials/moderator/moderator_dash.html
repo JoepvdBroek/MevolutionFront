@@ -9,17 +9,17 @@
 					<tr>
 						<th>Plaatje</th>
 						<th>Titel</th>
-						<th>Kleur</th>		
+						<th>Kleur</th>
+						<th>Instellingen</th>	
 					</tr>
 				</thead>
 				<!-- @TODO id is _id of learning from DB -->
-				<tbody ng-repeat="learning in learnings" id="{{learning.title}}">
+				<tbody ng-repeat="learning in learnings" id="{{learning._id}}">
 					<tr>
 						<td>{{learning.image}}</td>
-						<td><a href="#/moderator/{{learning._id}}">{{learning.title}}</a></td>
+						<td><a href="#/moderator/{{ user.organization._id }}/{{learning._id}}">{{learning.title}}</a></td>
 						<td>{{learning.color}}</td>
-						<th>Instellingen</th>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}"><span class="glyphicon glyphicon-cog"></span></button></td>
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}"><span class="glyphicon glyphicon-cog"></span></button><button class="btn red second_button" ng-click="deleteLearning(learning._id, $index)">Verwijder</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -39,9 +39,11 @@
 					  </div>
 					  <div class="modal-body input-f-wrapper">
 						
+						<label>Leerlijn titel:</label>
 						<input type="text" placeholder="Naam" ng-model="newTitle" required />
 						</br>
-					
+						
+						<label>Leerlijn kleur:</label>
 						<input type="text" placeholder="Kleurcode" ng-model="newColor" required />
 
 					  </div>

@@ -15,10 +15,15 @@ module.exports = function(moderator)
                 });
         });
 
+        $scope.orgId = organisationId;
+
         $scope.addLearning = function(newTitle, newColor){
-            LearningFactory.postLearning(organisationId, newTitle, newColor).then(function(data, status, headers, config)
+            LearningFactory.postLearning(organisationId, newTitle, newColor).success(function(data, status, headers, config)
                 {
-                   $scope.learnings.push(data);
+                    LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
+                    {
+                        $scope.learnings = data;
+                    });
 
                 }).error(function(data, status, headers, config)
                 {
@@ -40,16 +45,17 @@ module.exports = function(moderator)
 
         /* *  MODERATOR NIVEAUS **/
         if(typeof($routeParams.learningid) != "undefined"){
-            NiveauFactory.getNiveausOfLearning(organisationId, $routeParams.learningid).then(function(data, status, headers, config){
+            NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
                 $scope.niveaus = data;
-            });       
+            });
         }
 
         $scope.addNiveau = function(newTitle, newDescription, newSection){
-            NiveauFactory.postNiveau(organisationId, $routeParams.learningid, newTitle, newDescription, newSection).then(function(data, status, headers, config)
+            NiveauFactory.postNiveau($routeParams.orgid, $routeParams.learningid, newTitle, newDescription, newSection).success(function(data, status, headers, config)
             {
-               $scope.niveaus.push(data);
-
+                NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                    $scope.niveaus = data;
+                });
             }).error(function(data, status, headers, config)
             {
 
@@ -57,13 +63,13 @@ module.exports = function(moderator)
         };
 
         $scope.editNiveau = function(newTitle, newDescription, newSection, niveau){
-            NiveauFactory.editNiveau(organisationId, $routeParams.learningid, niveau._id, newTitle, newDescription, newSection).then(function(data, status, headers, config){
+            NiveauFactory.editNiveau($routeParams.orgid, $routeParams.learningid, niveau._id, newTitle, newDescription, newSection).then(function(data, status, headers, config){
 
             });
         };
 
         $scope.deleteNiveau = function(niveauId, index){
-            LearningFactory.deleteLearning(organisationId, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
+            NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
                 $scope.niveaus.splice(index, 1);
             });
         };

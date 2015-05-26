@@ -309,7 +309,7 @@ module.exports = function(api)
                 });
             },
             deleteLearning: function(organisationId, learningId){
-                return $http.delete(API.url + '/organization/' + orgId + '/leerlijn/' + learningId, {},
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId, {},
                 {
                     "grant_type": "password",
                     "client_id": API.clientId,
@@ -363,7 +363,7 @@ module.exports = function(api)
                 });
             },
             deleteNiveau: function(organisationId, learningId, niveauId){
-                return $http.delete(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau/' + niveauId, {},
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId + '/niveau/' + niveauId, {},
                 {
                     "grant_type": "password",
                     "client_id": API.clientId,

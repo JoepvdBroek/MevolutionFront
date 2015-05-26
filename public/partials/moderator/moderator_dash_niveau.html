@@ -9,17 +9,17 @@
 					<tr>
 						<th>Titel</th>
 						<th>Beschrijving</th>
-						<th>Sectie</th>		
+						<th>Sectie</th>
+						<th>Instellingen</th>		
 					</tr>
 				</thead>
 				<!-- @TODO id is _id of learning from DB -->
-				<tbody ng-repeat="niveau in niveaus" id="{{niveau.title}}">
+				<tbody ng-repeat="niveau in niveaus" id="{{niveau._id}}">
 					<tr>
 						<td>{{niveau.title}}</td>
 						<td>{{niveau.description}}</td>
-						<td>{{niveau.section}}</td>
-						<th>Instellingen</th>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}"><span class="glyphicon glyphicon-cog"></span></button></td>
+						<td>{{niveau.section}}</td>			
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}"><span class="glyphicon glyphicon-cog"></span></button><button class="btn red second_button" ng-click="deleteNiveau(niveau._id, $index)">Verwijder</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -69,9 +69,11 @@
 				  <div class="modal-body input-f-wrapper">
 						<label>Titel niveau</label>
 						<input type="text" ng-model="niveau.title" />
+						</br>
 
 						<label>Beschrijving niveau</label>
 						<input type="text" ng-model="niveau.description" />
+						</br>
 
 						<label>Sectie niveau</label>
 						<input type="text" ng-model="niveau.section" />
