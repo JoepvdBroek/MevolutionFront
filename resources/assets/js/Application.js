@@ -4,6 +4,7 @@ var modules =
     'app.api', 'app.authentication',
     'app.user',
     'app.moderator', 'app.adminFunctions',
+    'app.leerlingDash',
 
     'app.timeline',
     'app.bucket',
@@ -30,6 +31,8 @@ var canvas = require('./Canvas/_index')(app);
 
 var timeline = require('./Timeline/_index')(app);
 var bucket = require('./Bucket/_index')(app);
+
+var leerlingDash = require('./Leerling_dash/_index')(app);
 
 // @todo Maybe create a general app file for this kind of stuff
 app.config([ '$locationProvider', '$routeProvider', function($location, $routeProvider)
@@ -90,6 +93,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/admin_dash_users.html',
         controller: 'AdminController',
         controllerAs: 'admin'
+    })
+    .when('/leerling_dash',
+    {
+        templateUrl: 'partials/leerling_dash/leerling_dash.html',
+        controller: 'LeerlingdashController'
     })
     .when('/timeline',
     {
