@@ -33,13 +33,11 @@ module.exports = function(user)
         };
 
         function getUserInfo(){
-            console.log("getUserInfo()");
             /*if (AuthenticationService.isAuthenticated)
             {*/
                 UserService.getUserInfo().success(function(data)
                 {
                     $scope.user = data[0];
-                    console.log(data);
                     
                 }).error(function(status, data)
                 {

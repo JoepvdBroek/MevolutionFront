@@ -40,6 +40,8 @@ module.exports = function(authentication)
                     AuthenticationService.isAuthenticated = true;
                 }
 
+                $window.sessionStorage.last_activity = new Date().getTime();//reset last_activity
+
                 return response || $q.when(response);
             },
 
