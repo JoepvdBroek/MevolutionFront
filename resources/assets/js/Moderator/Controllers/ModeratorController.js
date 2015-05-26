@@ -1,6 +1,6 @@
 module.exports = function(moderator)
 {
-    moderator.controller('ModeratorController', [ '$scope', '$location', '$window', 'ModeratorFactory', 'LearningFactory', 'NiveauFactory', 'UserService', function($scope, $location, $window, ModeratorFactory, LearningFactory, NiveauFactory, UserService)
+    moderator.controller('ModeratorController', [ '$scope', '$location', '$window', '$routeParams', 'ModeratorFactory', 'LearningFactory', 'NiveauFactory', 'UserService', function($scope, $location, $window, $routeParams, ModeratorFactory, LearningFactory, NiveauFactory, UserService)
     {
         /* *  MODERATOR LEARNINGS **/
 
@@ -39,8 +39,7 @@ module.exports = function(moderator)
         };
 
         /* *  MODERATOR NIVEAUS **/
-
-        if($routeParams.learningid != ""){
+        if(typeof($routeParams.learningid) != "undefined"){
             NiveauFactory.getNiveausOfLearning(organisationId, $routeParams.learningid).then(function(data, status, headers, config){
                 $scope.niveaus = data;
             });       
