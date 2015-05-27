@@ -138,8 +138,8 @@ module.exports = function(api)
                     headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             },
-            postNewOrganisationName: function(newName, organisationId){
-                return $http.put(API.url + '/organization/' + organisationId, {name:newName},
+            postNewOrganisationName: function(newName, newColor, organisationId){
+                return $http.put(API.url + '/organization/' + organisationId, {name:newName, color:newColor},
                 {
                     username: 'terry',
                     password: 'terry',
@@ -273,6 +273,115 @@ module.exports = function(api)
                 });
             }
             
+        };
+    }]);
+
+    api.factory('LearningFactory', [ '$http', 'API', function($http, API)
+        {
+        return {
+            getLearningsOfOrganisation: function(orgId){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            getLearning: function(orgId, learningId){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId,
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            postLearning: function(orgId, newTitle, newColor){
+                return $http.post(API.url + '/organization/' + orgId + '/leerlijn', {title:newTitle, color:newColor},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            editLearning: function(orgId, learningId, newTitle, newColor){
+                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId, {title:newTitle, color: newColor},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            deleteLearning: function(organisationId, learningId){
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId, {},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            }
+        };
+    }]);
+
+    api.factory('NiveauFactory', [ '$http', 'API', function($http, API)
+        {
+        return {
+            getNiveausOfLearning: function(orgId, learningId){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
+            postNiveau: function(orgId, learningId, newTitle, newDescription, newSection){
+                return $http.post(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau', 
+                    {
+                        title: newTitle, 
+                        description: newDescription,
+                        section: newSection
+                    },
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            editNiveau: function(orgId, learningId, niveauId, newTitle, newDescription, newSection){
+                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau/' + niveauId, 
+                    {
+                        title: newTitle, 
+                        description: newDescription,
+                        section: newSection
+                    },
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            deleteNiveau: function(organisationId, learningId, niveauId){
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId + '/niveau/' + niveauId, {},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            }
         };
     }]);
 

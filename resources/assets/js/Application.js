@@ -60,14 +60,36 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/moderator',
     {
-        templateUrl: 'partials/moderator_dash.html',
-        controller: 'ModeratorController'
+        templateUrl: 'partials/moderator/moderator_dash.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
+    })
+    .when('/moderator/:orgid/:learningid',
+    {
+        templateUrl: 'partials/moderator/moderator_dash_niveau.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/admin',
     {
-        templateUrl: 'partials/admin_dash.html',
+        templateUrl: 'partials/admin/admin_dash.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/canvas/:canvasid',
     {
@@ -81,15 +103,25 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/admin/groups/:organisationid',
     {
-        templateUrl: 'partials/admin_dash_groups.html',
+        templateUrl: 'partials/admin/admin_dash_groups.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/admin/users/:groupid',
     {
-        templateUrl: 'partials/admin_dash_users.html',
+        templateUrl: 'partials/admin/admin_dash_users.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/timeline',
     {
