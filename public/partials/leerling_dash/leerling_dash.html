@@ -1,33 +1,42 @@
-<link rel="stylesheet" href="assets/css/timeline.min.css" type="text/css" />
-<div ng-controller="TimelineController" class="row">
+<link rel="stylesheet" href="assets/css/leerlijn-dash.min.css" type="text/css" />
+<div ng-controller="LeerlingdashController" class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
-	    <div class="paal"></div>
-
 	    <div class="timeline">
-			<div ng-repeat="y in allCanvas | orderBy:'year':true" >
-				<div class="tag-year" id="{{y.year}}">{{ y.year }}</div>
-
-				<div ng-repeat="m in y.m" class="month">
-					<div class="align-hrz">
-						<div class="hrz-line"></div>
-						<div class="hrz-line-dotted"></div>
+			<div class="leerlijn-container" ng-repeat="leerlijn in leerlijnen" >
+				<div class="leerlijn-title">{{leerlijn.name}}</div>
+				
+				<div class="levelbar" ng-click="collapse(leerlijn.name)">
+					<div class="level-type" ng-repeat="level in leerlijn.levels" style="width:{{100/leerlijn.levels.length}}%;">
+						<div ng-if="level.objects.length">
+					    	<div style="width:100%;height:20px;background:lime;"></div>
+					    </div>
 					</div>
-					
-					<div class="canvas-holder" id="{{y.year}}{{ m.month }}">
-						<div class="month-header">
-							<div class="tag-month">{{ m.month }}</div>
-						</div>
-                        <span ng-repeat="canvas in m.canvas | filter:query">
-                            <a href="#/canvas/{{ canvas.id }}" class="cvs_item">
-                                {{ canvas.title }}
-                            </a>
-                        </span>
-				    </div>
+				</div>
+
+
+				<div class="leerlijn-holder {{leerlijn.name}}" ng-repeat="level in leerlijn.levels">
+					<div ng-if="level.objects.length">				
+						<div>{{level.name}}</div>
+						<div class="level-header"></div>
+		                <span class=" leerlijn-objects" ng-repeat="object in level.objects">
+		                    <div class="leerlijn-object">
+		                   		<div class="object-stroke"></div>
+		                        <a href="" class="object-item">
+		                            <i class="fa {{object.icon}}" />
+		                        </a>
+		                    </div>
+		                </span>
+	                </div>
 			    </div>
+
 		    </div>
 	    </div>
     </div>
+
+
+
+<!--
     <div class="timeline-options">
     	<button type="button" class="btn btn-success" id="btn-create-canvas" data-toggle="modal" data-target="#create-canvas">Creeer een nieuw canvas</button>
     </div>
@@ -83,3 +92,6 @@
 		</div>
 	</div>
 </div>
+
+
+-->
