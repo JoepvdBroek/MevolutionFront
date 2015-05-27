@@ -10,6 +10,8 @@
     <script src="dev/js/jquery-2.1.3.min.js"></script>
     <script src="dev/js/jquery-ui.js"></script>
     <script src="dev/js/bootstrap.min.js"></script>
+    <script src="jquery.dataTables.min.js"></script>
+    <script src="angular-datatables.min.js"></script>
 
 
     @if (env('APP_DEBUG') == true)

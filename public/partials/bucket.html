@@ -7,25 +7,44 @@
 		<div class="panel-style space">
 			<h3 class="heading-title">Verzamelbak</h3>
 			
-			<table datatable="" id="bucketTable" class="table simple	">
+			<table datatable="" id="bucketTable" class="table simple">
 				<thead>
 					<tr>
 						<th>Type</th>
-						<th>Object</th>		
-						<th>Feedback</th>
+						<th>Object</th>
 						<th>Delete</th>				
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="object in fullBucket" id="{{object._id}}">
-						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}"></span></td>
+
+
+						<ng-switch on="object.type">
+						<div ng-switch-when="video"><td>1</td></div>
+						<div ng-switch-when="picture"><td>2</td></div>
+
+						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>-->
+						<td ng-model="objectType">{{object.type}}</span></td>
+
+
 						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}" target="_blank">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
-						<td ng-model="objectFeedback">{{ object.feedbackOwner[0] !== "" ?  "No feedback" : object.feedbackOwner[0] }}</td>
-						<td><button><span class="glyphicon glyphicon-trash"></span></button></td>
+						<!--<td ng-model="objectSubject">{{object.subject}}</td> -->
+						<td><button ng-click="deleteItem(object._id)"><span class="glyphicon glyphicon-trash"></span></button></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+
+		<div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+
+			</div>
+		</div>
+
+
+
+
+
 	</div><!-- /.container -->
 </div>
     

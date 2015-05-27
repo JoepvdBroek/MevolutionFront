@@ -1,0 +1,62 @@
+<link rel="stylesheet" type="text/css" href="dev/css/admin_dash.css" />
+<!-- Bootstrap core CSS -->
+<link href="dev/css/bootstrap.min.css" rel="stylesheet">
+
+<div id="wrap" ng-controller="InboxController">
+	<div class="container">
+		<div id="groupSelector">
+			<ul>
+				<li ng-repeat="group in groups" id="{{group._id}}"><span ng-click="getStudents(group._id)">{{group.title}}</span></li>
+			</ul>
+		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<div id="studentSelector">
+			<ul>
+				<li ng-repeat="student in studentList"><span ng-click="getInbox(student._id)">{{student.firstName}} {{student.middleName}} {{student.surName}}</span></li>
+			</ul>
+		</div>
+
+
+
+
+		<div class="panel-style space">
+			<h3 class="heading-title">Inbox</h3>
+			
+			<table datatable="" id="inboxTable" class="table simple	">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Object</th>	
+						<th>Delete</th>				
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
+						<td></td>
+
+						
+
+
+
+
+
+
+
+
+
+						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}"></span></td>-->
+						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>
+						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}" target="_blank">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
+						<td><button ng-click="deleteItem(object._id)"><span class="glyphicon glyphicon-trash"></span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div><!-- /.container -->
+</div>
+    

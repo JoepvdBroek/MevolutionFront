@@ -328,14 +328,20 @@ module.exports = function(api)
                 return $http.get(API.url + '/objects/', {}).then(function(data) {
                     return data.data;
                 });
-            }/*,
+            },
 
             deleteItem: function(id)
             {
                 return $http.delete(API.url + '/objects/' + id , {}).then(function(data) {
                     return data.data;
                 });
-            }*/
+            },
+
+            getInbox: function(id){
+                return $http.get(API.url + '/objects/inbox/' + id, {}).then(function(data) {
+                    return data.data;
+                });
+            }
         };
 
     }]);

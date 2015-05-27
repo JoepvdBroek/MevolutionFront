@@ -6,8 +6,7 @@ var modules =
     'app.moderator', 'app.adminFunctions',
 
     'app.timeline',
-    'app.bucket',
-
+    'app.bucket', 
     'app.canvas'
 ];
 
@@ -100,6 +99,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/bucket.html',
         controller: 'BucketController'
+    })
+    .when('/inbox',
+    {
+        templateUrl: 'partials/inbox.html',
+        controller: 'InboxController'
     })
     .when('/', 
     {
