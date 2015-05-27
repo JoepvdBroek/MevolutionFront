@@ -18,12 +18,12 @@
 				<tbody>
 					<tr ng-repeat="object in fullBucket" id="{{object._id}}">
 
-
+<!--
 						<ng-switch on="object.type">
 						<div ng-switch-when="video"><td>1</td></div>
 						<div ng-switch-when="picture"><td>2</td></div>
-
-						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>-->
+-->
+						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>-->
 						<td ng-model="objectType">{{object.type}}</span></td>
 
 

@@ -4,8 +4,7 @@ module.exports = function(bucket)
     {
 
         $scope.fullBucket = [];
-        getBucket();
-
+        /*
         $scope.getBucket = function(){
             BucketService.getBucket().then(function(data){
             for(i=0;i<data.length;i++){
@@ -13,13 +12,13 @@ module.exports = function(bucket)
             }
         })
         }
-/*
+*/
             BucketService.getBucket().then(function(data){
             for(i=0;i<data.length;i++){
                 $scope.fullBucket.push(data[i]);
             }
         });
-*/
+
         $scope.deleteItem = function(item){
             BucketService.deleteItem(item).then(function(data){
                 alert("you deleted item: " + item);

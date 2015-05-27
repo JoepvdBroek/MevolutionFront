@@ -103,7 +103,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/inbox',
     {
         templateUrl: 'partials/inbox.html',
-        controller: 'InboxController'
+        controller: 'InboxController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/inbox.css' : 'assets/css/inbox.min.css',
+             bustCache: true
+        }]
     })
     .when('/', 
     {

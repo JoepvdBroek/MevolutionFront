@@ -4,27 +4,18 @@
 
 <div id="wrap" ng-controller="InboxController">
 	<div class="container">
-		<div id="groupSelector">
-			<ul>
-				<li ng-repeat="group in groups" id="{{group._id}}"><span ng-click="getStudents(group._id)">{{group.title}}</span></li>
-			</ul>
+
+		<div id="studentSelector" class="panel-style space">
+			<ol>
+				<li  ng-repeat="group in groups" id="{{group._id}}"><span ng-click="getStudents(group._id)"><span class="groupTitle">{{group.title}}</span></span>
+					<ul>
+						<li class="studentListItem" ng-repeat="student in group.participants"><button class="studentButton" ng-click="getInbox(student._id)"> {{student.firstName}} {{student.middleName}} {{student.surName}}</button></li>
+					</ul>
+				</li>
+			</ol>
 		</div>
 
-		<br>
-		<br>
-		<br>
-		<br>
-
-		<div id="studentSelector">
-			<ul>
-				<li ng-repeat="student in studentList"><span ng-click="getInbox(student._id)">{{student.firstName}} {{student.middleName}} {{student.surName}}</span></li>
-			</ul>
-		</div>
-
-
-
-
-		<div class="panel-style space">
+		<div id="objectTable" class="panel-style space">
 			<h3 class="heading-title">Inbox</h3>
 			
 			<table datatable="" id="inboxTable" class="table simple	">
@@ -38,16 +29,6 @@
 				<tbody>
 					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
 						<td></td>
-
-						
-
-
-
-
-
-
-
-
 
 						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}"></span></td>-->
 						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>

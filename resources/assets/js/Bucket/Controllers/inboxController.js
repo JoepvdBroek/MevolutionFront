@@ -48,8 +48,12 @@ module.exports = function(inbox)
         $scope.getInbox = function(id){
             BucketService.getInbox(id).then(function(data){
                 $scope.fullInbox = data[0];
+                if (data.length===0) {
+                    alert("Deze gebruiker heeft geen objecten");
+                } else {
+                    $scope.fullInbox = data;
+                };
             });
-            console.log($scope.fullInbox);
 
 
             /*
