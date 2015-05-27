@@ -10,7 +10,39 @@ module.exports = function(api)
         clientSecret: 'Web123456'
     });
 
-    api.factory('UserService', [ '$http', 'API', function($http, API)
+    api.factory('RefreshService', [ '$http', 'API', '$window', function($http, API, $window) {
+        return {
+            refreshTokenIfNeeded: function(){
+                if($window.sessionStorage.last_activity)
+                {
+                    console.log('tijd in ms van laatste activiteit: '+ (new Date().getTime() - $window.sessionStorage.last_activity));
+                    if((new Date().getTime() - $window.sessionStorage.last_activity) >= 3600000)
+                    {
+                        $http.post(API.url + '/oauth/token',
+                        {
+                            "refresh_token" : $window.sessionStorage.refresh_token,
+                            "grant_type": "refresh_token",
+                            "client_id": API.clientId,
+                            "client_secret": API.clientSecret
+
+                        }).success(function(data)
+                        {
+                            console.log(data);
+                            $window.sessionStorage.access_token = data.access_token;
+                            $window.sessionStorage.refresh_token = data.refresh_token;
+
+                        }).error(function(status, data)
+                        {
+                            console.log(status);
+                            console.log(data);
+                        });
+                    }
+                }
+            }
+        }
+    }]);
+
+    api.factory('UserService', [ '$http', 'API', 'RefreshService', function($http, API, RefreshService)
     {
         return { // <-- Fuck javascript
             login: function (username, password)
@@ -41,23 +73,18 @@ module.exports = function(api)
 
             checkUsername: function (username)
             {
-                return $http.get(API.url + '/users/username/' + username,
-                {
-                    headers: 
-                    {
-                        'x-key': API.key,
-                        'Authorization': 'Bearer ' + sessionStorage.access_token
-                    }
-                });
+                return $http.get(API.url + '/users/username/' + username);
             },
 
             getUserInfo: function ()
             {
+                RefreshService.refreshTokenIfNeeded();
                 return $http.get(API.url + '/users/@me');
             },
 
             getUser: function (user)
             {
+                RefreshService.refreshTokenIfNeeded();
                 return $http.get(API.url + '/users/' + user).then(function(data) {
                     return data.data;
                 });
@@ -65,6 +92,7 @@ module.exports = function(api)
 
             updateUser: function (user)
             {
+                RefreshService.refreshTokenIfNeeded();
                 return $http.put(API.url + '/users/' + user._id,
                 {
                     //"password" : user.password,
@@ -99,11 +127,12 @@ module.exports = function(api)
                 });
             },
 
-            changePassword: function (password)
+            changePassword: function (user)
             {
-                return $http.post(API.url + 'users/' + user._id,
+                RefreshService.refreshTokenIfNeeded();
+                return $http.put(API.url + '/users/' + user._id,
                 {
-                    'password' : password
+                    'password' : user.password
                 });
             },
 
