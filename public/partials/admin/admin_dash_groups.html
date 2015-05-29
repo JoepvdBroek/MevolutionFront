@@ -7,7 +7,11 @@
 		<div class="panel-style space">
 			<h3 class="heading-title">Alle groepen</h3>
 			
-			<table class="table simple">
+			<div align="right"	>
+				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
+				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
+			</div>
+			<table class="table simple" style="margin-top: 20px;">
 				<thead>
 					<tr>
 						<th>Groep</th>
@@ -26,10 +30,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
-				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
-			</div>
 			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">

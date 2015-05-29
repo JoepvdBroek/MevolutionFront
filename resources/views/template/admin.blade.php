@@ -40,7 +40,7 @@
         </div>
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">
+                <a href="#/">
                     <img class="big" src="assets/img/logo.jpg" alt="Mevolution" />
                     <img class="small" src="assets/img/logo-small.png" alt="M" />
                 </a>
