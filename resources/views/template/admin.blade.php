@@ -40,7 +40,7 @@
         </div>
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">
+                <a href="#/">
                     <img class="big" src="assets/img/logo.jpg" alt="Mevolution" />
                     <img class="small" src="assets/img/logo-small.png" alt="M" />
                 </a>
@@ -56,9 +56,21 @@
         </div>
     </div>
 
-    <ng-view>
+    <!-- <nav class="navbar navbar-default" style="  padding-left: 45px;
+  z-index: 999;">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#/profile">Ingelogd als Joep van den Broek</a></li>
+            <li><a href="#/auth/logout">logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
+
+    <div ng-view style="position: relative;">
         @yield('content')
-    </ng-view>
+    </div ng-view>
 </div>
 
 @if (env('APP_DEBUG') == true)

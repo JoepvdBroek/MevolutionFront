@@ -47,6 +47,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
+    .when('/auth/logout', 
+    {
+        template: ' ',
+        controller: 'SignOutController'
+    })
     .when('/auth/register',
     {
         templateUrl: 'partials/authentication/register.html',
@@ -71,12 +76,22 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/user/password.html',
         controller: 'ChangePasswordController'
-        //erft css al van de /profile route
+        ,
+        css:
+        [{
+             href: debug == true ? 'dev/css/password.css' : 'assets/css/password.min.css',
+             bustCache: true
+        }]
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
         controller: 'ForgotPasswordController'
-        //erft css al van de /profile route
+        ,
+        css:
+        [{
+             href: debug == true ? 'dev/css/forgot.css' : 'assets/css/forgot.min.css',
+             bustCache: true
+        }]
     })
     .when('/moderator',
     {

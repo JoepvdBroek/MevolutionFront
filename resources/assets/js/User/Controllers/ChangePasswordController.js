@@ -13,15 +13,20 @@ module.exports = function(user)
                    
                     var user = {};
                     user._id = $scope.user._id;
-                    user.password = password.new;
+                    user.currentPassword = password.current;
+                    user.newPassword = password.new;
 
                     UserService.changePassword(user).success(function(data)
                     {
                         alert("Uw wachtwoord is gewijzigd!")
                         $location.path("/profile");
                         
-                    }).error(function(status, data)
+                    }).error(function(data, status)
                     {
+                        if(data.error == 'Old password is wrong'){
+                            alert('Uw huidig wachtwoord klopt niet. Probeer het opnieuw');
+                            $('#current').val(''); 
+                        }
                         console.log(status);
                         console.log(data);
                     });
@@ -32,7 +37,7 @@ module.exports = function(user)
                 }
             } else 
             {
-                alert('vul alsjeblieft alle velden in');
+                alert('Vul alsjeblieft alle velden in');
             }
         }
 

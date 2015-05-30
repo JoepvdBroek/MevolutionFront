@@ -44,7 +44,7 @@ module.exports = function(api)
 
     api.factory('UserService', [ '$http', 'API', 'RefreshService', function($http, API, RefreshService)
     {
-        return { // <-- Fuck javascript
+        return {
             login: function (username, password)
             {
                 return $http.post(API.url + '/oauth/token',
@@ -130,9 +130,10 @@ module.exports = function(api)
             changePassword: function (user)
             {
                 RefreshService.refreshTokenIfNeeded();
-                return $http.put(API.url + '/users/' + user._id,
+                return $http.put(API.url + '/users/' + user._id + '/password',
                 {
-                    'password' : user.password
+                    'newPassword' : user.newPassword,
+                    'currentPassword' : user.currentPassword
                 });
             },
 
