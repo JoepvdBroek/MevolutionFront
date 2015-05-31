@@ -3,6 +3,7 @@ var modules =
     'ngRoute', 'door3.css',
     'app.api', 'app.authentication',
     'app.user',
+    'app.colorpicker',
     'app.moderator', 'app.adminFunctions',
     'app.leerlingDash',
 
@@ -22,6 +23,8 @@ app.config([ '$httpProvider', function($httpProvider)
 var authentication = require('./Authentication/_index')(app);
 
 var api = require('./Api/_index')(app);
+
+var colorpicker = require('./Colorpicker/_index')(app);
 
 var user = require('./User/_index')(app);
 var admin = require('./Admin/_index')(app);
@@ -172,6 +175,14 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/bucket.html',
         controller: 'BucketController'
+    })
+    .when('/unauthorized',
+    {
+        templateUrl: 'partials/authentication/unauthorized.html'
+    })
+    .when('/forbidden',
+    {
+        templateUrl: 'partials/authentication/forbidden.html'
     })
     .when('/', 
     {

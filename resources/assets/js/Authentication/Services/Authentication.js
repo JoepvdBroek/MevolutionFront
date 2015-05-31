@@ -58,7 +58,7 @@ module.exports = function(authentication)
 
                     AuthenticationService.isAuthenticated = false;
                     
-                    $location.path("/auth/login");
+                    $location.path("/forbidden");
                 }
 
                 //Als je nog niet ingelogd bent 
@@ -70,7 +70,7 @@ module.exports = function(authentication)
 
                     AuthenticationService.isAuthenticated = false;
 
-                    $location.path("/auth/login");
+                    $location.path("/unauthorized");
                 }
 
                 return $q.reject(rejection);
