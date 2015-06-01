@@ -38,6 +38,7 @@ module.exports = function(admin)
                             $scope.allOrganisations.push(data[i]);
                         }
                     });
+                    alert('Organisatie toegevoegd!');
                     $scope.newGroupName = "";
                     $scope.newGroupColor = "";
                     $scope.newGroupLogo = "";
@@ -55,7 +56,7 @@ module.exports = function(admin)
         $scope.submitNewOrganisationName = function submitNewOrganisationName(newName, newColor, organisation){
             OrganisationService.postNewOrganisationName(newName, newColor, organisation._id).then(function(data, status, headers, config)
                 { 
-
+                    alert('Organisatie bijgewerkt!');
                 });
         };
 
@@ -90,6 +91,7 @@ module.exports = function(admin)
                         $scope.allGroups.push(data[i]);
                     }
                     });
+                    alert('Groep aangemaakt!');
                     $scope.newGroupName = "";
 
                 }).error(function(data, status, headers, config)
@@ -130,8 +132,21 @@ module.exports = function(admin)
             $scope.submitNewUsersToOrganisation = function submitNewUsersToOrganisation(){
                 for(i = 0; i < $scope.selectedUsersToAddToOrganisation.length; i++){
                     //console.log($scope.selectedUsersToMakeModerator[i]);
-                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid);
+                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid).then(function(data){
+
+                        UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                        {
+                            $scope.usersOfOrganisation = [];
+                            for(i=0;i<data.length;i++){
+                                $scope.usersOfOrganisation.push(data[i]);
+                            }
+
+                        });
+                        
+                    });
+
                 }
+                alert('Users zijn succesvol aan de organisatie toegevoegd!');
             };
 
             GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
@@ -165,7 +180,7 @@ module.exports = function(admin)
             $scope.submitNewGroupName = function submitNewGroupName(newName, group){
                 UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
                     { 
-
+                        alert('Groep succesvol bewerkt!');
                     });
             };
 
@@ -202,6 +217,7 @@ module.exports = function(admin)
                     //console.log($scope.selectedUsersToMakeModerator[i]);
                     UserGroupService.makeUserModerator($scope.selectedUsersToMakeModerator[i]);
                 }
+                alert('Moderators succesvol aan de organisatie toegevoegd!');
             };
         }
 
@@ -256,7 +272,7 @@ module.exports = function(admin)
                             for(i=0;i<data[0].participants.length;i++){
                                 $scope.usersOfGroup.push(data[0].participants[i]);        
                             }
-                            //console.log($scope.usersOfGroup);
+                            alert('De aangevinkte users zijn aan de groep toegevoegd!');
                         });
                     });
             }

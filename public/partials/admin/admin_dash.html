@@ -11,8 +11,8 @@
 					<tr>
 						<th>Organisatie</th>
 						<th>Kleur</th>
-						<th>Aantal groepen</th>
-						<th>Aantal leden</th>
+						<!-- <th>Aantal groepen</th>
+						<th>Aantal leden</th> -->
 						<th>Instellingen</th>
 						
 					</tr>
@@ -22,8 +22,8 @@
 						<td ng-model="groupName"><a href="#/admin/groups/{{organisation._id}}">{{ organisation.name }}
 						</a></td>
 						<td>{{ organisation.color }}</td>
-						<td>{{ organisation.logo }}</td>
-						<td></td>
+						<!-- <td>{{ organisation.logo }}</td>
+						<td></td> -->
 						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{organisation._id}}">Instellingen</button></td>
 					</tr>
 				</tbody>
@@ -50,7 +50,7 @@
 				  <div class="modal-footer">
 				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
 					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
-					<button type="submit" class="btn blue">Wijzigen</button>
+					<button type="submit" class="btn blue" >Wijzigen</button>
 				  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -67,18 +67,20 @@
 						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe groep toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-						
+						<label>Organisatie naam</label>
 						<input type="text" placeholder="Naam" ng-model="newGroupName" required />
 						</br>
-					
+						
+						<label>Organisatie kleur</label>
 						<input type="text" placeholder="Voer hier uw kleurcode in" ng-model="newGroupColor" required />
-						</br>
 
-						<input type="text" placeholder="Voer hier uw logostring in" ng-model="newGroupLogo" required />
+						<input type="hidden" ng-model="newGroupLogo" value="test" />
+<!-- 	
+						<input type="text" placeholder="Voer hier uw logostring in" ng-model="newGroupLogo" required /> -->
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue">Organisatie aanmaken</button>
+						<button type="submit" class="btn blue" onclick="$('#newGroup').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Organisatie aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->

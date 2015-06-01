@@ -128,6 +128,7 @@ module.exports = function(moderator)
                         }
                         });
                         $scope.newGroupName = "";
+                        alert('Groep toegevoegd!');
 
                     }).error(function(data, status, headers, config)
                     {
@@ -168,7 +169,17 @@ module.exports = function(moderator)
             $scope.submitNewUsersToOrganisation = function submitNewUsersToOrganisation(){
                 for(i = 0; i < $scope.selectedUsersToAddToOrganisation.length; i++){
                     //console.log($scope.selectedUsersToMakeModerator[i]);
-                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid);
+                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid).then(function(data){
+                        GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
+                        {
+                            $scope.allModerators = [];
+                            for(i=0;i<data.length;i++){
+                                $scope.allModerators.push(data[i]);
+                            }
+                            alert('Gebruikers zijn aan de organisatie toegevoegd!');
+
+                        });
+                    });
                 }
             };
 
@@ -185,7 +196,7 @@ module.exports = function(moderator)
 
             // when checked, push moderatorid to array, else splice the userid from the array
             $scope.toggleSelectionOfModerators = function toggleSelection(userId) {
-                var idx = $scope.selectionOfUsers.indexOf(userId);
+                var idx = $scope.selectionOfModerators.indexOf(userId);
 
                 // is currently selected
                 if (idx > -1) {
@@ -197,14 +208,14 @@ module.exports = function(moderator)
                   $scope.selectionOfModerators.push(userId);
                 }
 
-                //console.log($scope.selectionOfModerators);
+                console.log($scope.selectionOfModerators);
             };
 
             // submits new groupName
             $scope.submitEditedGroup = function submitEditedGroup(newName, group){
                 UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
-                    { 
-
+                    {
+                        alert('Groep bijgewerkt!');
                     });
             };
 
@@ -214,7 +225,6 @@ module.exports = function(moderator)
                             for(i=0;i<data.length;i++){
                                 $scope.usersOfOrganisation.push(data[i]);
                             }
-
                         });
 
             $scope.selectedUsersToMakeModerator = [];
@@ -233,7 +243,6 @@ module.exports = function(moderator)
                   $scope.selectedUsersToMakeModerator.push(userId);
                 }
 
-                console.log($scope.selectedUsersToMakeModerator);
             };
 
             // submits new moderatorlist
@@ -241,26 +250,24 @@ module.exports = function(moderator)
                 for(i = 0; i < $scope.selectedUsersToMakeModerator.length; i++){
                     UserGroupService.makeUserModerator($scope.selectedUsersToMakeModerator[i]);
                 }
+                alert('Leraren aangemaakt!');
             };
 
             if(typeof($routeParams.groupid) != "undefined"){
                 var users = [];
-                //var titleOfGroup = "";
 
                 // gets users and moderators of group, and push them to array
                 UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data[0].participants.length;i++){
-                                users.push(data[0].participants[i]);   
+                                users.push(data[0].participants[i]);
                             }
 
                             $scope.groupTitle = data[0].title;
-                            //titleOfGroup = data[0].title;
                         });
-                
+
                 $scope.usersOfGroup = users;
-                //$scope.groupTitle = titleOfGroup;
-                
+
                 var allUsers = [];
 
                 // gets all users so they can be displayed when adding users to a group
@@ -269,23 +276,22 @@ module.exports = function(moderator)
                             for(i=0;i<data.length;i++){
                                 allUsers.push(data[i]);
                             }
-
                         });
-         
+
                 $scope.allMevolutionUsers = allUsers;
 
                 // submit the new userArray(selectionOfUsers) to the group which are checked in the view
                 $scope.submitUsers = function() {
 
                     UserGroupService.pushUsersToGroup($routeParams.groupid, $scope.selectionOfUsers).then(function(data, status, headers, config)
-                        { 
+                        {
                             UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
                             {
                                 $scope.usersOfGroup = [];
                                 for(i=0;i<data[0].participants.length;i++){
-                                    $scope.usersOfGroup.push(data[0].participants[i]);        
+                                    $scope.usersOfGroup.push(data[0].participants[i]);
                                 }
-                                //console.log($scope.usersOfGroup);
+                                alert('Leerlingen succesvol aan groep toegevoegd!');
                             });
                         });
                 }
@@ -307,9 +313,7 @@ module.exports = function(moderator)
                     }
 
                 };
-
             }
-
         }
 
     }]);
