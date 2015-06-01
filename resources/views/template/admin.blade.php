@@ -68,7 +68,7 @@
       </div>
     </nav> -->
 
-    <div ng-view style="position: relative;">
+    <div ng-view>
         @yield('content')
     </div ng-view>
 </div>

@@ -186,7 +186,12 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/', 
     {
-        templateUrl: 'partials/index.html'
+        templateUrl: 'partials/index.html',
+        css:
+        [{
+             href: debug == true ? 'dev/css/index.css' : 'assets/css/index.min.css',
+             bustCache: true
+        }]
     })
     .otherwise
     ({
