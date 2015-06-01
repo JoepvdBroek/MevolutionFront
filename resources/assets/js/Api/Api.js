@@ -76,6 +76,11 @@ module.exports = function(api)
                 return $http.get(API.url + '/users/username/' + username);
             },
 
+            checkEmail: function (email)
+            {
+                return $http.get(API.url + '/users/email/' + email);
+            },
+
             getUserInfo: function ()
             {
                 RefreshService.refreshTokenIfNeeded();
