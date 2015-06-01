@@ -58,16 +58,16 @@ module.exports = function(api)
 
             },
 
-            register: function (username, password, email, firstname, middlename, surname)
+            register: function (user)
             {
                 return $http.post(API.url + '/users',
                 {
-                    username: username,
-                    password: password,
-                    email: email,
-                    firstName: firstname,
-                    middleName: middlename,
-                    surName: surname
+                    username: user.username,
+                    password: user.password,
+                    email: user.email,
+                    firstName: user.firstname,
+                    middleName: user.middlename,
+                    surName: user.surname
                 });
             },
 

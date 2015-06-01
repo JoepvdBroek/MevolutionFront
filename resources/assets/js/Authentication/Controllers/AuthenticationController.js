@@ -24,19 +24,19 @@ module.exports = function(authentication)
             }
         };
 
-        $scope.register = function register(username, password1, password2, email, firstname, middlename,surname)
+        $scope.register = function register(user)
         {
-            if (username != null && password1 != null && password2 != null && email != null && firstname != null && surname != null)
+            if (user.username != null && user.password1 != null && user.password2 != null && user.email != null && user.firstname != null && user.surname != null)
             {
-                UserService.checkUsername(username).success(function(data)
+                UserService.checkUsername(user.username).success(function(data)
                 {
                 
                     if (data == false)
                     {
-                        if (password1 === password2)
+                        if (user.password1 === user.password2)
                         {
-                            var password = password1;
-                            UserService.register(username, password, email, firstname, middlename, surname).success(function(data)
+                            user.password = user.password1;
+                            UserService.register(user).success(function(data)
                             {
                                 alert("Gebruiker: " + username + " is aangemaakt");
                                 $location.path('/auth/login');
