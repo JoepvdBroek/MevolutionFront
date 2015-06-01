@@ -24,6 +24,8 @@ module.exports = function(moderator)
                     {
                         $scope.learnings = data;
                         alert('Leerlijn toegevoegd');
+                        $scope.newTitle = "";
+                        $scope.newColor = "";
                     });
 
                 }).error(function(data, status, headers, config)
@@ -66,6 +68,9 @@ module.exports = function(moderator)
                 NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
                     $scope.niveaus = data;
                     alert('Niveau toegevoegd');
+                    $scope.newTitle = "";
+                    $scope.newDescription = "";
+                    $scope.newSection = "";
                 });
             }).error(function(data, status, headers, config)
             {
@@ -113,10 +118,10 @@ module.exports = function(moderator)
 
             /* * POST NEW GROUP **/
             $scope.addGroup = function(newName){
-                GroupService.postGroup(newName, $routeParams.organisationid).success(function(data, status, headers, config)
+                GroupService.postGroup(newName, $routeParams.organisation).success(function(data, status, headers, config)
                     {
                         $scope.allGroups = [];
-                        GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
+                        GroupService.getGroups($routeParams.organisation).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
                             $scope.allGroups.push(data[i]);
@@ -168,7 +173,7 @@ module.exports = function(moderator)
             };
 
             /* * ADD MODERATORS TO GROUP AND EDIT GROUP **/
-            GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+            GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
                                 $scope.allModerators.push(data[i]);
@@ -204,7 +209,7 @@ module.exports = function(moderator)
             };
 
             /* * MAKE USERS MODERATOR OF ORGANISATION **/
-            UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+            UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
                                 $scope.usersOfOrganisation.push(data[i]);
