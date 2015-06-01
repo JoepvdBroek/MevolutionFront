@@ -1,28 +1,23 @@
-<!-- Bootstrap core CSS -->
-<link href="dev/css/bootstrap.min.css" rel="stylesheet">
-
 <div id="wrap">
-	<a ng-click='back()' class="back_button">Back</a>
+<!-- 	<a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
-			<h3 class="heading-title">Alle groepen</h3>
+			<h3 class="heading-title">Alle groepen van {{ organisationName }}</h3>
 			
 			<table class="table simple">
 				<thead>
 					<tr>
 						<th>Groep</th>
 						<th>Moderators</th>
-						<th>Aantal leden</th>
 						<th>Instellingen</th>
 						
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="group in allGroups" id="{{group._id}}">
-						<td ng-model="group.groupName"><a href="#/admin/users/{{group._id}}">{{ group.title }}</a></td>
+						<td ng-model="group.groupName"><a href="#/moderator/{{organisationId}}/groups/{{group._id}}">{{ group.title }}</a></td>
 						<td><p ng-repeat="moderator in group.moderators">{{moderator.firstName}}</p></td>
-						<td></td>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</button></td>
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</span></button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -35,7 +30,7 @@
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="newGroupName" novalidate ng-submit="newGroupName.$valid && submitNewGroupName(group.title, group)">
+				<form name="newGroupName" novalidate ng-submit="newGroupName.$valid && submitEditedGroup(group.title, group)">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Wijzigen</h4>
@@ -45,7 +40,7 @@
 							<input type="text" ng-model="group.title"/>
 							</br>
 							<h4>Voeg moderators toe</h4>
-							<div class="add_user_list list">
+							<div class="moderator_list list">
 								<label ng-repeat="moderator in allModerators">
 								  <input
 								    type="checkbox"
@@ -153,7 +148,6 @@
 				</div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
-
 
 		</div>
 	</div><!-- /.container -->

@@ -54,7 +54,7 @@
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue">Niveau aanmaken</button>
+						<button type="submit" class="btn blue" onclick="$('#newNiveau').modal('hide')">Niveau aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -88,7 +88,7 @@
 				  <div class="modal-footer">
 				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
 					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
-					<button type="submit" class="btn blue">Wijzigen</button>
+					<button type="submit" class="btn blue" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Wijzigen</button>
 				  </div>
 				  </form>
 				</div><!-- /.modal-content -->
