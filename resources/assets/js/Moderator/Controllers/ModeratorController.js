@@ -139,16 +139,24 @@ module.exports = function(moderator)
                     });
             };
 
+            //$scope.selectedUsersToAddToOrganisation = [];
+            var excistingUsersInOrganisation = [];
             /* * ADD USERS TO ORGANISATION **/
             UserGroupService.getAllUsers().then(function(data, status, headers, config)
                 {
                     for(i=0;i<data.length;i++){
+                        data[i].isChecked = false;
+                        for(a = 0; a < $scope.usersOfOrganisation.length; a++){
+                            if($scope.usersOfOrganisation[a]._id == data[i]._id){
+                                data[i].isChecked = true;
+                                excistingUsersInOrganisation.push(data[i]._id);
+                            }
+                        }
                         $scope.allUsers.push(data[i]);
                     }
-
                 });
 
-            $scope.selectedUsersToAddToOrganisation = [];
+            $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
 
             // when checked, push newUserId to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersAddOrganisation = function toggleSelection(userId) {
@@ -163,6 +171,8 @@ module.exports = function(moderator)
                 else {
                   $scope.selectedUsersToAddToOrganisation.push(userId);
                 }
+
+                console.log($scope.selectedUsersToAddToOrganisation);
             };
 
             // submits new userList
@@ -175,15 +185,16 @@ module.exports = function(moderator)
                             $scope.allModerators = [];
                             for(i=0;i<data.length;i++){
                                 $scope.allModerators.push(data[i]);
-                            }
-                            alert('Gebruikers zijn aan de organisatie toegevoegd!');
+                            }  
 
                         });
                     });
                 }
+                alert('Gebruikers zijn aan de organisatie toegevoegd!');
             };
 
             /* * ADD MODERATORS TO GROUP AND EDIT GROUP **/
+
             GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
@@ -194,8 +205,18 @@ module.exports = function(moderator)
 
             $scope.selectionOfModerators = [];
 
+            $scope.fillModeratorlist = function fillModeratorlist(groupId){
+                $scope.selectionOfModerators = [];
+                UserGroupService.getGroup(groupId).then(function(data){
+                    for(i = 0; i < data[0].moderators.length; i++){
+                         $scope.selectionOfModerators.push(data[0].moderators[i]._id);
+                    }
+                });
+            }
+            
             // when checked, push moderatorid to array, else splice the userid from the array
-            $scope.toggleSelectionOfModerators = function toggleSelection(userId) {
+            $scope.toggleSelectionOfModerators = function toggleSelection(userId, groupId) {
+
                 var idx = $scope.selectionOfModerators.indexOf(userId);
 
                 // is currently selected
@@ -207,27 +228,43 @@ module.exports = function(moderator)
                 else {
                   $scope.selectionOfModerators.push(userId);
                 }
-
-                console.log($scope.selectionOfModerators);
+                
             };
 
             // submits new groupName
             $scope.submitEditedGroup = function submitEditedGroup(newName, group){
                 UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
                     {
+                        $scope.allGroups = [];
+                        GroupService.getGroups($routeParams.organisation).then(function(data, status, headers, config)
+                        {
+                            for(i=0;i<data.length;i++){
+                                $scope.allGroups.push(data[i]);
+                            }
+                        });
                         alert('Groep bijgewerkt!');
                     });
             };
 
             /* * MAKE USERS MODERATOR OF ORGANISATION **/
+
+            var excistingModeratorsInOrganisation = [];
+
             UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
+                                data[i].isChecked = false;
+                                for(a = 0; a < $scope.allModerators.length; a++){
+                                    if($scope.allModerators[a]._id == data[i]._id){
+                                        data[i].isChecked = true;
+                                        excistingModeratorsInOrganisation.push(data[i]._id);
+                                    }
+                                }
                                 $scope.usersOfOrganisation.push(data[i]);
                             }
                         });
 
-            $scope.selectedUsersToMakeModerator = [];
+            $scope.selectedUsersToMakeModerator = excistingModeratorsInOrganisation;
 
             // when checked, push moderatorid to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersMakingModerator = function toggleSelection(userId) {
@@ -242,6 +279,8 @@ module.exports = function(moderator)
                 else {
                   $scope.selectedUsersToMakeModerator.push(userId);
                 }
+
+                console.log($scope.selectedUsersToMakeModerator);
 
             };
 
@@ -269,11 +308,18 @@ module.exports = function(moderator)
                 $scope.usersOfGroup = users;
 
                 var allUsers = [];
-
+                var excistingUsersInGroup = [];
                 // gets all users so they can be displayed when adding users to a group
                 UserGroupService.getAllUsers().then(function(data, status, headers, config)
                         {
                             for(i=0;i<data.length;i++){
+                                data[i].isChecked = false;
+                                for(a = 0; a < users.length; a++){
+                                    if(users[a]._id == data[i]._id){
+                                        data[i].isChecked = true;
+                                        excistingUsersInGroup.push(data[i]._id);
+                                    }
+                                }
                                 allUsers.push(data[i]);
                             }
                         });
@@ -296,7 +342,7 @@ module.exports = function(moderator)
                         });
                 }
 
-                $scope.selectionOfUsers = [];
+                $scope.selectionOfUsers = excistingUsersInGroup;
 
                 // when checked, push userid to array, else splice the userid from the array
                 $scope.toggleSelection = function toggleSelection(userId) {
@@ -311,6 +357,7 @@ module.exports = function(moderator)
                     else {
                       $scope.selectionOfUsers.push(userId);
                     }
+                    console.log($scope.selectionOfUsers);
 
                 };
             }

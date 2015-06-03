@@ -5,6 +5,10 @@
 		<div class="panel-style space">
 			<h3 class="heading-title">Alle users van {{ groupTitle }}</h3>
 	
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruiker toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
@@ -23,9 +27,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruiker toevoegen</button>
-			</div>
 
 			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 <!-- 			<div class="modal fade" id="settingsid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -66,7 +67,7 @@
 							    type="checkbox"
 							    name="selectedUsers[]"
 							    value="{{userObject._id}}"
-							    ng-checked="selectionOfUsers.indexOf(userObject._id) > -1"
+							    ng-checked="userObject.isChecked"
 							    ng-click="toggleSelection(userObject._id)"> {{userObject.username}}
 							</label>
 						</div>

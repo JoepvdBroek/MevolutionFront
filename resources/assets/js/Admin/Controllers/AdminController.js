@@ -103,15 +103,24 @@ module.exports = function(admin)
                 });
             };
 
+            var excistingUsersInOrganisation = [];
+
             UserGroupService.getAllUsers().then(function(data, status, headers, config)
                 {
                     for(i=0;i<data.length;i++){
+                        data[i].isChecked = false;
+                        for(a = 0; a < $scope.usersOfOrganisation.length; a++){
+                            if($scope.usersOfOrganisation[a]._id == data[i]._id){
+                                data[i].isChecked = true;
+                                excistingUsersInOrganisation.push(data[i]._id);
+                            }
+                        }
                         $scope.allUsers.push(data[i]);
                     }
 
                 });
 
-            $scope.selectedUsersToAddToOrganisation = [];
+            $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
 
             // when checked, push newUserId to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersAddOrganisation = function toggleSelection(userId) {
@@ -126,6 +135,8 @@ module.exports = function(admin)
                 else {
                   $scope.selectedUsersToAddToOrganisation.push(userId);
                 }
+
+                console.log($scope.selectedUsersToAddToOrganisation);
             };
 
             // submits new userList

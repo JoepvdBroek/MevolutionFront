@@ -6,6 +6,10 @@
 		<div class="panel-style space">
 			<h3 class="heading-title">Alle organisaties</h3>
 			
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Organisatie toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
@@ -28,9 +32,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
-			</div>
+
 			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 			<div class="modal fade" ng-repeat="organisation in allOrganisations" id="settingsid{{organisation._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
@@ -50,7 +52,7 @@
 				  <div class="modal-footer">
 				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
 					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
-					<button type="submit" class="btn blue" >Wijzigen</button>
+					<button type="submit" class="btn blue" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Wijzigen</button>
 				  </div>
 				  </form>
 				</div><!-- /.modal-content -->

@@ -3,7 +3,11 @@
 		<div class="panel-style space">
 			<h2>Welkom {{ user.username }}</h2>
 			<h3 class="heading-title">Niveaus van leerlijn {{ learningName }}</h3>
-			
+
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#newNiveau"><span class="glyphicon glyphicon-plus"></span> Nieuw niveau toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
@@ -23,10 +27,6 @@
 					</tr>
 				</tbody>
 			</table>
-
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newNiveau"><span class="glyphicon glyphicon-plus"></span> Nieuw niveau toevoegen</button>
-			</div>
 
 			<!-- Modal Add Learning -->
 			<div class="modal fade" id="newNiveau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

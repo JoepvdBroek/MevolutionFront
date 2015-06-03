@@ -3,7 +3,11 @@
 	<div class="container">
 		<div class="panel-style space">
 			<h3 class="heading-title">Alle groepen van {{ organisationName }}</h3>
-			
+			<div class="table_buttons" align="right"	>
+				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg users toe aan deze organisatie</button>
+				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
+				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
+			</div>
 			<table class="table simple">
 				<thead>
 					<tr>
@@ -17,15 +21,15 @@
 					<tr ng-repeat="group in allGroups" id="{{group._id}}">
 						<td ng-model="group.groupName"><a href="#/moderator/{{organisationId}}/groups/{{group._id}}">{{ group.title }}</a></td>
 						<td><p ng-repeat="moderator in group.moderators">{{moderator.firstName}}</p></td>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</span></button></td>
+						<td><button class="btn orange" ng-click="fillModeratorlist(group._id)" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</span></button></td>
 					</tr>
 				</tbody>
 			</table>
-			<div align="right"	>
+			<!-- <div align="right"	>
 				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg users toe aan deze organisatie</button>
 				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
 				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
-			</div>
+			</div> -->
 			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
@@ -46,8 +50,8 @@
 								    type="checkbox"
 								    name="selectedModerators[]"
 								    value="{{moderator._id}}"
-								    ng-checked="selectionOfModerators.indexOf(moderator._id) > -1"
-								    ng-click="toggleSelectionOfModerators(moderator._id)"> {{moderator.firstName}}
+								    ng-checked="selectionOfModerators.indexOf(moderator._id, group._id) > -1"
+								    ng-click="toggleSelectionOfModerators(moderator._id, group._id)"> {{moderator.firstName}}
 								</label>
 							</div>
 					  </div>
@@ -103,7 +107,7 @@
 								    type="checkbox"
 								    name="selectedUsersToMakeModerator[]"
 								    value="{{user._id}}"
-								    ng-checked="selectionOfModerators.indexOf(user._id) > -1"
+								    ng-checked="user.isChecked"
 								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}}
 								</label>
 							</div>
@@ -136,7 +140,7 @@
 								    type="checkbox"
 								    name="selectedUsersToAddToOrganisation[]"
 								    value="{{user._id}}"
-								    ng-checked="toggleSelectionOfUsersAddOrganisation.indexOf(user._id) > -1"
+								    ng-checked="user.isChecked"
 								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}}
 								</label>
 							</div>

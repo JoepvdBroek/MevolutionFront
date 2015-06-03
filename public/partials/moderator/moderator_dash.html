@@ -5,10 +5,14 @@
 			<h2>Welkom {{ user.username }}</h2>
 			<h3 class="heading-title">Alle leerlijnen van {{ user.organization.name }}</h3>
 			
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span> Nieuwe leerlijn toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
-						<th>Plaatje</th>
+						<!-- <th>Plaatje</th> -->
 						<th>Titel</th>
 						<th>Kleur</th>
 						<th>Instellingen</th>	
@@ -17,17 +21,13 @@
 
 				<tbody ng-repeat="learning in learnings" id="{{learning._id}}">
 					<tr>
-						<td>{{learning.image}}</td>
+						<!-- <td>{{learning.image}}</td> -->
 						<td><a href="#/moderator/{{ user.organization._id }}/{{learning._id}}">{{learning.title}}</a></td>
 						<td>{{learning.color}}</td>
 						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}">Instellingen</button><button class="btn red second_button" ng-click="deleteLearning(learning._id, $index)">Verwijder</button></td>
 					</tr>
 				</tbody>
 			</table>
-
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span> Nieuwe leerlijn toevoegen</button>
-			</div>
 
 			<!-- Modal Add Learning -->
 			<div class="modal fade" id="newLearning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

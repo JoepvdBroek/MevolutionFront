@@ -2,11 +2,17 @@
 <link href="dev/css/bootstrap.min.css" rel="stylesheet">
 
 <div id="wrap">
-	<a ng-click='back()' class="back_button">Back</a>
+	<!-- <a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
 			<h3 class="heading-title">Alle groepen</h3>
 			
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg users toe aan deze organisatie</button>
+				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
+				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
@@ -26,11 +32,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg users toe aan deze organisatie</button>
-				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
-				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
-			</div>
+				
 			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
@@ -140,7 +142,7 @@
 								    type="checkbox"
 								    name="selectedUsersToAddToOrganisation[]"
 								    value="{{user._id}}"
-								    ng-checked="toggleSelectionOfUsersAddOrganisation.indexOf(user._id) > -1"
+								    ng-checked="user.isChecked"
 								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}}
 								</label>
 							</div>
