@@ -39,38 +39,77 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 {
     $routeProvider.when('/auth/login',
     {
-        templateUrl: 'partials/login.html',
-        controller: 'AuthenticationController'
+        templateUrl: 'partials/authentication/login.html',
+        controller: 'AuthenticationController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/login.css' : 'assets/css/login.min.css',
+             bustCache: true
+        }]
     })
     .when('/auth/register',
     {
-        templateUrl: 'partials/register.html',
-        controller: 'AuthenticationController'
+        templateUrl: 'partials/authentication/register.html',
+        controller: 'AuthenticationController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/register.css' : 'assets/css/register.min.css',
+             bustCache: true
+        }]
     })
     .when('/profile',
     {
         templateUrl: 'partials/user/profile.html',
-        controller: 'UserController'
+        controller: 'UserController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/edituser.css' : 'assets/css/edituser.min.css',
+             bustCache: true
+        }]
     })
     .when('/profile/password',
     {
         templateUrl: 'partials/user/password.html',
-        controller: 'UserController'
+        controller: 'ChangePasswordController'
+        //erft css al van de /profile route
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
-        controller: 'UserController'
+        controller: 'ForgotPasswordController'
+        //erft css al van de /profile route
     })
     .when('/moderator',
     {
-        templateUrl: 'partials/moderator_dash.html',
-        controller: 'ModeratorController'
+        templateUrl: 'partials/moderator/moderator_dash.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
+    })
+    .when('/moderator/:orgid/:learningid',
+    {
+        templateUrl: 'partials/moderator/moderator_dash_niveau.html',
+        controller: 'ModeratorController',
+        controllerAs: 'moderator',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/admin',
     {
-        templateUrl: 'partials/admin_dash.html',
+        templateUrl: 'partials/admin/admin_dash.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/canvas/:canvasid',
     {
@@ -84,15 +123,25 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     })
     .when('/admin/groups/:organisationid',
     {
-        templateUrl: 'partials/admin_dash_groups.html',
+        templateUrl: 'partials/admin/admin_dash_groups.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/admin/users/:groupid',
     {
-        templateUrl: 'partials/admin_dash_users.html',
+        templateUrl: 'partials/admin/admin_dash_users.html',
         controller: 'AdminController',
-        controllerAs: 'admin'
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
+             bustCache: true
+        }]
     })
     .when('/leerling_dash',
     {

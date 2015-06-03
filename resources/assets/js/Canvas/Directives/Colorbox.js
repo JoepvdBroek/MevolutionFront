@@ -11,6 +11,9 @@ module.exports = function(canvas)
 
                 element.click('bind', function(e)
                 {
+                    var $parent = $(element).parent().parent();
+                    var prevent = $parent.data('preventColorbox');
+
                     if (e.preventDefault)
                     {
                         e.preventDefault();
@@ -21,9 +24,14 @@ module.exports = function(canvas)
                         e.preventPropagation();
                     }
 
+                    if (prevent == true)
+                    {
+                        $parent.data('preventColorbox', false);
+                        return false;
+                    }
+
                     var cb = angular.extend({}, colorbox,
                     {
-                        href: colorbox.href,
                         onComplete: function()
                         {
                             var s = scope.$parent;

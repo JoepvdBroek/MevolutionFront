@@ -1,0 +1,101 @@
+<div id="wrap">
+	<div class="container">
+		<div class="panel-style space">
+			<h2>Welkom {{ user.username }}</h2>
+			<h3 class="heading-title">Niveaus van leerlijn {{ learningName }}</h3>
+			
+			<table class="table simple">
+				<thead>
+					<tr>
+						<th>Titel</th>
+						<th>Beschrijving</th>
+						<th>Sectie</th>
+						<th>Instellingen</th>		
+					</tr>
+				</thead>
+
+				<tbody ng-repeat="niveau in niveaus" id="{{niveau._id}}">
+					<tr>
+						<td>{{niveau.title}}</td>
+						<td>{{niveau.description}}</td>
+						<td>{{niveau.section}}</td>			
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}">Instellingen</button><button class="btn red second_button" ng-click="deleteNiveau(niveau._id, $index)">Verwijder</button></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div align="right"	>
+				<button class="btn blue" data-toggle="modal" data-target="#newNiveau"><span class="glyphicon glyphicon-plus"></span> Nieuw niveau toevoegen</button>
+			</div>
+
+			<!-- Modal Add Learning -->
+			<div class="modal fade" id="newNiveau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="niveauForm" novalidate ng-submit="niveauForm.$valid && addNiveau(newTitle, newDescription, newSection)">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Voeg een nieuw niveau toe</h4>
+					  </div>
+					  <div class="modal-body input-f-wrapper input_box">
+						<div class="input_row input-group">
+							<label>Niveau titel</label>
+							<input type="text" placeholder="Naam" ng-model="newTitle" required class="form-control" />
+						</div>
+						<div class="input_row input-group">
+							<label>Niveau beschrijving</label>
+							<textarea  placeholder="Beschrijving" ng-model="newDescription" required class="form-control"></textarea>
+						</div>
+						<div class="input_row input-group">
+							<label>Niveau sectie</label>
+							<input type="text" placeholder="Sectie" ng-model="newSection" required class="form-control" />
+						</div>
+
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue">Niveau aanmaken</button>
+					  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<!-- Modal Edit Learning -->
+			<div class="modal fade" ng-repeat="niveau in niveaus" id="settingsid{{niveau._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				<form name="editNiveauForm" novalidate ng-submit="editNiveauForm.$valid && editNiveau(niveau.title, niveau.description, niveau.section, niveau)">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
+				  </div>
+				  <div class="modal-body input-f-wrapper input_box">
+				  		<div class="input_row input-group">
+							<label>Titel niveau</label>
+							<input type="text" ng-model="niveau.title" class="form-control" />
+						</div>
+						<div class="input_row input-group">
+							<label>Beschrijving niveau</label>
+							<textarea ng-model="niveau.description" class="form-control"></textarea>
+						</div>
+						<div class="input_row input-group">
+							<label>Sectie niveau</label>
+							<input type="text" ng-model="niveau.section" class="form-control" />
+						</div>
+				  </div>
+
+				  <div class="modal-footer">
+				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
+					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
+					<button type="submit" class="btn blue">Wijzigen</button>
+				  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+		</div>
+	</div><!-- /.container -->
+</div>
+    
