@@ -18,7 +18,7 @@
 					<tr>
 						<th>Groep</th>
 						<th>Moderators</th>
-						<th>Aantal leden</th>
+<!-- 						<th>Aantal leden</th> -->
 						<th>Instellingen</th>
 						
 					</tr>
@@ -27,8 +27,8 @@
 					<tr ng-repeat="group in allGroups" id="{{group._id}}">
 						<td ng-model="group.groupName"><a href="#/admin/users/{{group._id}}">{{ group.title }}</a></td>
 						<td><p ng-repeat="moderator in group.moderators">{{moderator.firstName}}</p></td>
-						<td></td>
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</button></td>
+<!-- 						<td></td> -->
+						<td><button class="btn orange" data-toggle="modal" ng-click="fillModeratorlist(group._id)" data-target="#settingsid{{group._id}}">Instellingen</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -109,7 +109,8 @@
 								    type="checkbox"
 								    name="selectedUsersToMakeModerator[]"
 								    value="{{user._id}}"
-								    ng-checked="selectionOfModerators.indexOf(user._id) > -1"
+								    ng-checked="user.isChecked"
+								    ng-disabled="{{user.isChecked}}"
 								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}}
 								</label>
 							</div>
@@ -143,6 +144,7 @@
 								    name="selectedUsersToAddToOrganisation[]"
 								    value="{{user._id}}"
 								    ng-checked="user.isChecked"
+								    ng-disabled="user.isChecked"
 								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}}
 								</label>
 							</div>

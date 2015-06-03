@@ -154,10 +154,9 @@ module.exports = function(moderator)
                         }
                         $scope.allUsers.push(data[i]);
                     }
+                    $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
                 });
-
-            $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
-
+ 
             // when checked, push newUserId to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersAddOrganisation = function toggleSelection(userId) {
                 var idx = $scope.selectedUsersToAddToOrganisation.indexOf(userId);
@@ -178,30 +177,36 @@ module.exports = function(moderator)
             // submits new userList
             $scope.submitNewUsersToOrganisation = function submitNewUsersToOrganisation(){
                 for(i = 0; i < $scope.selectedUsersToAddToOrganisation.length; i++){
-                    //console.log($scope.selectedUsersToMakeModerator[i]);
-                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid).then(function(data){
-                        GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
-                        {
-                            $scope.allModerators = [];
-                            for(i=0;i<data.length;i++){
-                                $scope.allModerators.push(data[i]);
-                            }  
-
-                        });
+                    UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisation).then(function(data){
+                        
                     });
                 }
+                UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
+                        {
+                            $scope.usersOfOrganisation = [];
+                            for(i=0;i<data.length;i++){
+                                data[i].isChecked = false;
+                                for(a = 0; a < $scope.allModerators.length; a++){
+                                    if($scope.allModerators[a]._id == data[i]._id){
+                                        data[i].isChecked = true;
+                                        excistingModeratorsInOrganisation.push(data[i]._id);
+                                    }
+                                }
+                                $scope.usersOfOrganisation.push(data[i]);
+                            }
+                        });
                 alert('Gebruikers zijn aan de organisatie toegevoegd!');
             };
 
             /* * ADD MODERATORS TO GROUP AND EDIT GROUP **/
 
             GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
-                        {
-                            for(i=0;i<data.length;i++){
-                                $scope.allModerators.push(data[i]);
-                            }
+                {
+                    for(i=0;i<data.length;i++){
+                        $scope.allModerators.push(data[i]);
+                    }
 
-                        });
+                });
 
             $scope.selectionOfModerators = [];
 
@@ -289,6 +294,14 @@ module.exports = function(moderator)
                 for(i = 0; i < $scope.selectedUsersToMakeModerator.length; i++){
                     UserGroupService.makeUserModerator($scope.selectedUsersToMakeModerator[i]);
                 }
+                GroupService.getAllModeratorsOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
+                        {
+                            $scope.allModerators = [];
+                            for(i=0;i<data.length;i++){
+                                $scope.allModerators.push(data[i]);
+                            }
+
+                        });
                 alert('Leraren aangemaakt!');
             };
 

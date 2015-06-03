@@ -117,10 +117,8 @@ module.exports = function(admin)
                         }
                         $scope.allUsers.push(data[i]);
                     }
-
+                    $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
                 });
-
-            $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
 
             // when checked, push newUserId to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersAddOrganisation = function toggleSelection(userId) {
@@ -142,22 +140,25 @@ module.exports = function(admin)
             // submits new userList
             $scope.submitNewUsersToOrganisation = function submitNewUsersToOrganisation(){
                 for(i = 0; i < $scope.selectedUsersToAddToOrganisation.length; i++){
-                    //console.log($scope.selectedUsersToMakeModerator[i]);
                     UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid).then(function(data){
 
-                        UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                    });
+                }
+                UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
                         {
                             $scope.usersOfOrganisation = [];
                             for(i=0;i<data.length;i++){
+                                data[i].isChecked = false;
+                                for(a = 0; a < $scope.allModerators.length; a++){
+                                    if($scope.allModerators[a]._id == data[i]._id){
+                                        data[i].isChecked = true;
+                                        excistingModeratorsInOrganisation.push(data[i]._id);
+                                    }
+                                }
                                 $scope.usersOfOrganisation.push(data[i]);
                             }
-
                         });
-                        
-                    });
-
-                }
-                alert('Users zijn succesvol aan de organisatie toegevoegd!');
+                alert('Gebruikers zijn aan de organisatie toegevoegd!');
             };
 
             GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
@@ -170,9 +171,18 @@ module.exports = function(admin)
 
             $scope.selectionOfModerators = [];
 
+            $scope.fillModeratorlist = function fillModeratorlist(groupId){
+                $scope.selectionOfModerators = [];
+                UserGroupService.getGroup(groupId).then(function(data){
+                    for(i = 0; i < data[0].moderators.length; i++){
+                         $scope.selectionOfModerators.push(data[0].moderators[i]._id);
+                    }
+                });
+            }
+
             // when checked, push moderatorid to array, else splice the userid from the array
             $scope.toggleSelectionOfModerators = function toggleSelection(userId) {
-                var idx = $scope.selectionOfUsers.indexOf(userId);
+                var idx = $scope.selectionOfModerators.indexOf(userId);
 
                 // is currently selected
                 if (idx > -1) {
@@ -191,19 +201,35 @@ module.exports = function(admin)
             $scope.submitNewGroupName = function submitNewGroupName(newName, group){
                 UserGroupService.pushNewGroupName(group._id, newName, $scope.selectionOfModerators).then(function(data, status, headers, config)
                     { 
-                        alert('Groep succesvol bewerkt!');
+                        $scope.allGroups = [];
+                        GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
+                        {
+                            for(i=0;i<data.length;i++){
+                                $scope.allGroups.push(data[i]);
+                            }
+                        });
+                        alert('Groep bijgewerkt!');
                     });
             };
+
+            var excistingModeratorsInOrganisation = [];
 
             UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
                     {
                         for(i=0;i<data.length;i++){
+                            data[i].isChecked = false;
+                            for(a = 0; a < $scope.allModerators.length; a++){
+                                if($scope.allModerators[a]._id == data[i]._id){
+                                    data[i].isChecked = true;
+                                    excistingModeratorsInOrganisation.push(data[i]._id);
+                                }
+                            }
                             $scope.usersOfOrganisation.push(data[i]);
                         }
 
                     });
 
-            $scope.selectedUsersToMakeModerator = [];
+            $scope.selectedUsersToMakeModerator = excistingModeratorsInOrganisation;
 
             // when checked, push moderatorid to array, else splice the userid from the array
             $scope.toggleSelectionOfUsersMakingModerator = function toggleSelection(userId) {
@@ -225,14 +251,20 @@ module.exports = function(admin)
             // submits new moderatorlist
             $scope.submitNewModeratorList = function submitNewModeratorList(){
                 for(i = 0; i < $scope.selectedUsersToMakeModerator.length; i++){
-                    //console.log($scope.selectedUsersToMakeModerator[i]);
                     UserGroupService.makeUserModerator($scope.selectedUsersToMakeModerator[i]);
+                    GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                    {
+                        $scope.allModerators = [];
+                        for(i=0;i<data.length;i++){
+                            $scope.allModerators.push(data[i]);
+                        }
+
+                    });
                 }
-                alert('Moderators succesvol aan de organisatie toegevoegd!');
+                
+                alert('Leraren aangemaakt!');
             };
         }
-
-        
 
         /* *  ADMIN DASH USERS  **/
 
@@ -261,13 +293,20 @@ module.exports = function(admin)
             
             var allUsers = [];
             var moderatorsOfOrganisation = [];
+            var excistingUsersInGroup = [];
             // gets all users so they can be displayed when adding users to a group
             UserGroupService.getAllUsers().then(function(data, status, headers, config)
                     {
                         for(i=0;i<data.length;i++){
+                            data[i].isChecked = false;
+                            for(a = 0; a < users.length; a++){
+                                if(users[a]._id == data[i]._id){
+                                    data[i].isChecked = true;
+                                    excistingUsersInGroup.push(data[i]._id);
+                                }
+                            }
                             allUsers.push(data[i]);
                         }
-
                     });
      
             $scope.allMevolutionUsers = allUsers;
@@ -283,12 +322,12 @@ module.exports = function(admin)
                             for(i=0;i<data[0].participants.length;i++){
                                 $scope.usersOfGroup.push(data[0].participants[i]);        
                             }
-                            alert('De aangevinkte users zijn aan de groep toegevoegd!');
+                            alert('Leerlingen succesvol aan groep toegevoegd!');
                         });
                     });
             }
 
-            $scope.selectionOfUsers = [];
+            $scope.selectionOfUsers = excistingUsersInGroup;
 
             // when checked, push userid to array, else splice the userid from the array
             $scope.toggleSelection = function toggleSelection(userId) {

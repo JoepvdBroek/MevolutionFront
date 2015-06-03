@@ -107,6 +107,7 @@
 								    type="checkbox"
 								    name="selectedUsersToMakeModerator[]"
 								    value="{{user._id}}"
+								    ng-disabled="{{user.isChecked}}"
 								    ng-checked="user.isChecked"
 								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}}
 								</label>
@@ -141,6 +142,7 @@
 								    name="selectedUsersToAddToOrganisation[]"
 								    value="{{user._id}}"
 								    ng-checked="user.isChecked"
+								    ng-disabled="user.isChecked"
 								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}}
 								</label>
 							</div>

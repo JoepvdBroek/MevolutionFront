@@ -292,8 +292,6 @@ module.exports = function(api)
             pushUsersToGroup: function(groupId, userArray){
                 return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
                 {
-                    username: 'terry',
-                    password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret,
