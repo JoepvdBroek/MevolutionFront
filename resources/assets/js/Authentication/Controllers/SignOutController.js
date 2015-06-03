@@ -7,7 +7,7 @@ module.exports = function(authentication)
         delete $window.sessionStorage.last_activity;
 
         AuthenticationService.isAuthenticated = false;
-
+        
         $location.path("/");
 
     }]);

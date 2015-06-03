@@ -10,6 +10,6 @@
         "datetimepicker": "latest",
         "angular": "latest",
         "zoomooz": "latest",
-	"draggabilly": "latest"
+	    "draggabilly": "latest"
     }
 }

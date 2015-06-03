@@ -73,7 +73,10 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/edituser.css' : 'assets/css/edituser.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/profile/password',
     {
@@ -84,7 +87,10 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/password.css' : 'assets/css/password.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
@@ -105,7 +111,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/moderator/:orgid/:learningid',
     {
@@ -116,7 +126,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/admin',
     {
@@ -127,7 +141,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/canvas/:canvasid',
     {
@@ -148,7 +166,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/admin/users/:groupid',
     {
@@ -159,7 +181,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/leerling_dash',
     {
@@ -200,13 +226,29 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 
 }]);
 
-app.run([ '$rootScope', '$location', '$window', 'AuthenticationService', function($rootScope, $location, $window, AuthenticationService)
+app.run([ '$rootScope', '$location', '$window', 'RouteAccess', function($rootScope, $location, $window, RouteAccess)
 {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
     {
-        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
+        /*if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
         {
             $location.path("/auth/login");
+        }*/
+
+        if(nextRoute !== null && nextRoute.access !== undefined)
+        {
+            var hasAccess = RouteAccess.checkAccess(nextRoute.access.requiresLogin, nextRoute.access.requiredPermissions);
+
+            /*console.log(hasAccess);
+
+            if( hasAccess == 'forbidden' )
+            {
+                $location.path("/forbidden");
+            } 
+            else if( hasAccess == 'unauthorized' )
+            {
+                location.path("/unauthorized");
+            }*/
         }
     });
 }]);

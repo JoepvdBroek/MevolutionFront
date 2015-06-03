@@ -20,6 +20,7 @@
     "reactify": "*",
     "tiny-lr": "*",
     "connect-livereload": "*",
+    "underscore": "*",
 
     "angular": "*",
     "angular-resource": "*",

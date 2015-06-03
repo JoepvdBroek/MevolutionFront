@@ -50,6 +50,11 @@
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
                 </a>
             </li>
+            <li ng-show="isLogged">
+                <a href="#/auth/logout">
+                    <i class="fa fa-sign-out"></i> {{ item.text }}
+                </a>
+            </li>
         </ul>
         <div class="footer">
             &copy; MeVOLUTION 2015
@@ -79,6 +84,7 @@
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
     <script src="//[[ Request::server('SERVER_NAME') ]]:4003/livereload.js"></script>
+    <script src="http://underscorejs.org/underscore.js"></script>
 
     @yield('script-debug')
 
@@ -87,6 +93,7 @@
     <script>var debug = false;</script>
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
+    <script src="http://underscorejs.org/underscore.js"></script>
     
     @yield('script-non-debug')
 

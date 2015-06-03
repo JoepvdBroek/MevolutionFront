@@ -1,15 +1,30 @@
 module.exports = function(authentication)
 {
-    authentication.factory('AuthenticationService', function()
+    authentication.factory('AuthenticationService', [ '$window', function($window)
     {
         var auth =
         {
             isAuthenticated: false,
-            isAdmin: false
+            isAdmin: false/*,
+            checkAccess : function (requiresLogin, requiredPermissions)
+            {
+                access: {
+                    requiresLogin: true,
+                    requiredPermissions: ['Admin', 'Moderator'],
+                    permissionType: 'AtLeastOne'
+                });
+
+                console.log(requiresLogin + ' - ' + requiredPermissions);
+            }*/
         };
 
+        if ($window.sessionStorage.access_token)
+        {
+            auth.isAuthenticated = true;
+        }
+
         return auth;
-    });
+    }]);
 
     authentication.factory('TokenInterceptor', [ '$q', '$window', '$location', 'API', 'AuthenticationService', function($q, $window, $location, API, AuthenticationService)
     {

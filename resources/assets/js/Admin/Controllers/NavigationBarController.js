@@ -1,7 +1,9 @@
 module.exports = function(admin)
 {
-    admin.controller('NavigationBarController', [ '$scope', function($scope)
+    admin.controller('NavigationBarController', [ '$scope', 'AuthenticationService' , function($scope, AuthenticationService)
     {
+        $scope.isLogged = AuthenticationService.isAuthenticated;
+
         $scope.menu =
         [{
             href: '#/timeline',
