@@ -50,7 +50,7 @@
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
                 </a>
             </li>
-            <li ng-show="isLogged">
+            <li ng-show="isAuthenticated()">
                 <a href="#/auth/logout">
                     <i class="fa fa-sign-out"></i> {{ item.text }}
                 </a>

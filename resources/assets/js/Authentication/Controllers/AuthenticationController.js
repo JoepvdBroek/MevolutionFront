@@ -8,7 +8,7 @@ module.exports = function(authentication)
             {
                 UserService.login(username, password).success(function(data)
                 {
-                    AuthenticationService.isAuthenticated = true;
+                    AuthenticationService.isAuthenticated(true);
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
                     $window.sessionStorage.last_activity = new Date().getTime();

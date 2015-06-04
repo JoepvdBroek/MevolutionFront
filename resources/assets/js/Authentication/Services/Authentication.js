@@ -2,28 +2,19 @@ module.exports = function(authentication)
 {
     authentication.factory('AuthenticationService', [ '$window', function($window)
     {
-        var auth =
-        {
-            isAuthenticated: false,
-            isAdmin: false/*,
-            checkAccess : function (requiresLogin, requiredPermissions)
-            {
-                access: {
-                    requiresLogin: true,
-                    requiredPermissions: ['Admin', 'Moderator'],
-                    permissionType: 'AtLeastOne'
-                });
-
-                console.log(requiresLogin + ' - ' + requiredPermissions);
-            }*/
-        };
+        var isAuthenticated = false;
 
         if ($window.sessionStorage.access_token)
         {
-            auth.isAuthenticated = true;
+            isAuthenticated = true;
         }
 
-        return auth;
+        var auth = function(state) {
+            if(state !== undefined ) { isAuthenticated = state }
+            return isAuthenticated;
+        }
+
+        return { isAuthenticated : auth };
     }]);
 
     authentication.factory('TokenInterceptor', [ '$q', '$window', '$location', 'API', 'AuthenticationService', function($q, $window, $location, API, AuthenticationService)
@@ -52,7 +43,7 @@ module.exports = function(authentication)
             {
                 if (response != null && response.status == 200 && $window.sessionStorage.access_token/* && !AuthenticationService.isAuthenticated*/)
                 {
-                    AuthenticationService.isAuthenticated = true;
+                    AuthenticationService.isAuthenticated(true);
                     $window.sessionStorage.last_activity = new Date().getTime();//reset last_activity
                     console.log('reset last_activity');
                 }
@@ -71,7 +62,7 @@ module.exports = function(authentication)
                     delete $window.sessionStorage.refresh_token;
                     delete $window.sessionStorage.last_activity;
 
-                    AuthenticationService.isAuthenticated = false;
+                    AuthenticationService.isAuthenticated(false);
                     
                     $location.path("/forbidden");
                 }
@@ -83,7 +74,7 @@ module.exports = function(authentication)
                     delete $window.sessionStorage.refresh_token;
                     delete $window.sessionStorage.last_activity;
 
-                    AuthenticationService.isAuthenticated = false;
+                    AuthenticationService.isAuthenticated(false);
 
                     $location.path("/unauthorized");
                 }

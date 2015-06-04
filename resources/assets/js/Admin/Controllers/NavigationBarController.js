@@ -2,7 +2,7 @@ module.exports = function(admin)
 {
     admin.controller('NavigationBarController', [ '$scope', 'AuthenticationService' , function($scope, AuthenticationService)
     {
-        $scope.isLogged = AuthenticationService.isAuthenticated;
+        $scope.isAuthenticated = AuthenticationService.isAuthenticated;
 
         $scope.menu =
         [{

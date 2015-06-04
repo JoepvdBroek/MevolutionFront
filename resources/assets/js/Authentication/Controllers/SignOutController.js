@@ -6,7 +6,7 @@ module.exports = function(authentication)
     	delete $window.sessionStorage.refresh_token;
         delete $window.sessionStorage.last_activity;
 
-        AuthenticationService.isAuthenticated = false;
+        AuthenticationService.isAuthenticated(false);
         
         $location.path("/");
 
