@@ -15,6 +15,8 @@ module.exports = function(admin)
             $location.path(prevUrl);
         };
 
+        //var singleOrganisationId = "";
+
         /* *  ADMIN DASH ORGANISATIONS  **/
         var organisations = [];
 
@@ -71,6 +73,10 @@ module.exports = function(admin)
         $scope.allUsers = [];
 
         if(typeof $routeParams.organisationid !== 'undefined'){
+
+            // singleOrganisationId = $routeParams.organisationid;
+            // console.log(singleOrganisationId);
+
             GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
                 {
                     for(i=0;i<data.length;i++){
@@ -271,8 +277,11 @@ module.exports = function(admin)
         var users = [];
         var moderators = [];
         var titleOfGroup = "";
-
+        //var singleOrganisationId = "";
         if(typeof $routeParams.groupid !== 'undefined'){
+            var allUsers = [];
+            var moderatorsOfOrganisation = [];
+            var excistingUsersInGroup = [];
             // gets users and moderators of group, and push them to array
             UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
                     {
@@ -284,6 +293,23 @@ module.exports = function(admin)
                             moderators.push(data[0].moderators[i]);     
                         }
 
+                        $scope.singleOrganisationId = data[0].organization;
+
+                        UserGroupService.getAllUsersOfOrganisation($scope.singleOrganisationId).then(function(data, status, headers, config)
+                        {
+                            for(i=0;i<data.length;i++){
+                                data[i].isChecked = false;
+                                for(a = 0; a < users.length; a++){
+                                    if(users[a]._id == data[i]._id){
+                                        data[i].isChecked = true;
+                                        excistingUsersInGroup.push(data[i]._id);
+                                    }
+                                }
+                                allUsers.push(data[i]);
+                            }
+                        });
+
+
                         titleOfGroup = data[0].title;
                     });
             
@@ -291,24 +317,22 @@ module.exports = function(admin)
             $scope.moderatorsOfGroup = moderators;
             $scope.groupTitle = titleOfGroup;
             
-            var allUsers = [];
-            var moderatorsOfOrganisation = [];
-            var excistingUsersInGroup = [];
+            
             // gets all users so they can be displayed when adding users to a group
-            UserGroupService.getAllUsers().then(function(data, status, headers, config)
-                    {
-                        for(i=0;i<data.length;i++){
-                            data[i].isChecked = false;
-                            for(a = 0; a < users.length; a++){
-                                if(users[a]._id == data[i]._id){
-                                    data[i].isChecked = true;
-                                    excistingUsersInGroup.push(data[i]._id);
-                                }
-                            }
-                            allUsers.push(data[i]);
-                        }
-                    });
-     
+            // UserGroupService.getAllUsers().then(function(data, status, headers, config)
+            //         {
+            //             for(i=0;i<data.length;i++){
+            //                 data[i].isChecked = false;
+            //                 for(a = 0; a < users.length; a++){
+            //                     if(users[a]._id == data[i]._id){
+            //                         data[i].isChecked = true;
+            //                         excistingUsersInGroup.push(data[i]._id);
+            //                     }
+            //                 }
+            //                 allUsers.push(data[i]);
+            //             }
+            //         });
+
             $scope.allMevolutionUsers = allUsers;
 
             // submit the new userArray(selectionOfUsers) to the group which are checked in the view

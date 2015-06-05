@@ -100,6 +100,8 @@ module.exports = function(moderator)
             $scope.usersOfOrganisation = [];
             $scope.allUsers = [];
 
+            $scope.singleOrganisationId = $routeParams.organisation;
+
             /* * GET ALL GROUPS **/
             GroupService.getGroups($routeParams.organisation).then(function(data, status, headers, config)
                     {
@@ -308,7 +310,8 @@ module.exports = function(moderator)
 
             if(typeof($routeParams.groupid) != "undefined"){
                 var users = [];
-
+                var allUsers = [];
+                var excistingUsersInGroup = [];
                 // gets users and moderators of group, and push them to array
                 UserGroupService.getGroup($routeParams.groupid).then(function(data, status, headers, config)
                         {
@@ -317,26 +320,42 @@ module.exports = function(moderator)
                             }
 
                             $scope.groupTitle = data[0].title;
+                            UserGroupService.getAllUsersOfOrganisation($scope.singleOrganisationId).then(function(data, status, headers, config)
+                            {
+                                for(i=0;i<data.length;i++){
+                                    data[i].isChecked = false;
+                                    for(a = 0; a < users.length; a++){
+                                        if(users[a]._id == data[i]._id){
+                                            data[i].isChecked = true;
+                                            excistingUsersInGroup.push(data[i]._id);
+                                        }
+                                    }
+                                    allUsers.push(data[i]);
+                                }
+                            });
                         });
 
                 $scope.usersOfGroup = users;
 
-                var allUsers = [];
-                var excistingUsersInGroup = [];
+                
                 // gets all users so they can be displayed when adding users to a group
-                UserGroupService.getAllUsers().then(function(data, status, headers, config)
-                        {
-                            for(i=0;i<data.length;i++){
-                                data[i].isChecked = false;
-                                for(a = 0; a < users.length; a++){
-                                    if(users[a]._id == data[i]._id){
-                                        data[i].isChecked = true;
-                                        excistingUsersInGroup.push(data[i]._id);
-                                    }
-                                }
-                                allUsers.push(data[i]);
-                            }
-                        });
+                // UserGroupService.getAllUsers().then(function(data, status, headers, config)
+                //         {
+                //             for(i=0;i<data.length;i++){
+                //                 data[i].isChecked = false;
+                //                 for(a = 0; a < users.length; a++){
+                //                     if(users[a]._id == data[i]._id){
+                //                         data[i].isChecked = true;
+                //                         excistingUsersInGroup.push(data[i]._id);
+                //                     }
+                //                 }
+                //                 allUsers.push(data[i]);
+                //             }
+                //         });
+
+                
+
+                
 
                 $scope.allMevolutionUsers = allUsers;
 
