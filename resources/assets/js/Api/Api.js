@@ -330,6 +330,17 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            getLearningParticipant: function(orgId, participantId){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/?participant=' + participantId,
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
             postLearning: function(orgId, newTitle, newColor){
                 return $http.post(API.url + '/organization/' + orgId + '/leerlijn', {title:newTitle, color:newColor},
                 {

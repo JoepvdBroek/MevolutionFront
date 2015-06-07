@@ -148,6 +148,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/leerling_dash/leerling_dash.html',
         controller: 'LeerlingdashController'
     })
+    .when('/leerling_dash/:orgid/:userid',
+    {
+        templateUrl: 'partials/leerling_dash/leerling_dash.html',
+        controller: 'LeerlingdashController'
+    })
     .when('/timeline',
     {
         templateUrl: 'partials/timeline/timeline.html',

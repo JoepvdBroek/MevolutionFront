@@ -3,94 +3,43 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 	    <div class="timeline">
-			<div class="leerlijn-container" ng-repeat="leerlijn in leerlijnen" >
-				<div class="leerlijn-title">{{leerlijn.name}}</div>
+	    	<div>Dashboard van {{}}</div>
+			
+	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
+				<div class="leerlijn-title">{{leerlijn.title}}</div>
 				
-				<div class="levelbar" ng-click="collapse(leerlijn.name)">
-					<div class="level-type" ng-repeat="level in leerlijn.levels" style="width:{{100/leerlijn.levels.length}}%;">
-						<div ng-if="level.objects.length">
+				<div class="levelbar" ng-click="collapse(leerlijn.title)" style="background:{{leerlijn.color}};">
+					<div class="level-type" ng-repeat="niveau in leerlijn.niveaux" style="width:{{100/leerlijn.niveaux.length}}%;">
+						<div ng-if="niveau.objects.length">
 					    	<div style="width:100%;height:20px;background:lime;"></div>
 					    </div>
 					</div>
 				</div>
 
-				<div class="leerlijn-holder {{leerlijn.name}}" ng-repeat="level in leerlijn.levels">
-					<div ng-if="level.objects.length">				
-						<div>{{level.name}}</div>
-						<div class="level-header"></div>
-		                <span class=" leerlijn-objects" ng-repeat="object in level.objects">
+				<div class="leerlijn-holder {{leerlijn.title}}" ng-repeat="niveau in leerlijn.niveaux">	
+					<div>{{niveau.title}}</div>
+					<div class="level-header" style="background:{{leerlijn.color}};">
+						
+					</div>
+
+					<div ng-repeat="participant in niveau.participants">
+					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
+						<span class=" leerlijn-objects" ng-repeat="object in participant.objects">
 		                    <div class="leerlijn-object">
-		                   		<div class="object-stroke"></div>
-		                        <a href="" class="object-item">
-		                            <i class="fa {{object.icon}}" />
-		                        </a>
+		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};"></div>
+		                   		<div ng-switch on="object.type">
+			                        <a href="" class="object-item">							   
+			                            <i ng-switch-when="video" class="fa fa-play" />
+			                            <i ng-switch-when="audio" class="fa fa-music" />
+			                            <i ng-switch-when="text" class="fa fa-icon-file-text" />
+			                        </a>
+		                        </div>
 		                    </div>
 		                </span>
-	                </div>
+					</div>
 			    </div>
-
 		    </div>
+
 	    </div>
     </div>
-
-
-
-<!--
-    <div class="timeline-options">
-    	<button type="button" class="btn btn-success" id="btn-create-canvas" data-toggle="modal" data-target="#create-canvas">Creeer een nieuw canvas</button>
-    </div>
-	<form class="form-horizontal timeline-filters" role="form">
-		<div class="form-group">
-			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Zoeken</label>
-      		<input ng-model="query" id="input-timeline-search" type="text" placeholder="Filter op" class="form-control timeline-search" autofocus>
-		</div>
-		<div>
-			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Snelmenu</label>
-			</br></br>
-			<div ng-repeat="y in allCanvas" class="quick-scroll">
-				<a ng-click="scrollTo(y.year)">{{ y.year }}</a>
-				<div ng-repeat="m in y.m" class="month">
-					&nbsp;&nbsp;&nbsp;<a ng-click="scrollTo(y.year, m.month)" >{{ m.month }}</a>
-				</div>
-			</div>
-		</div>
-	</form>
-
-	<div class="modal fade" id="create-canvas" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Creeer een nieuw canvas</h4>
-				</div>
-				<div class="modal-body">
-					<form novalidate ng-submit="addCanvas(newCanvasName, canvasType)">
-						<div class="form-group">
-							<label for="recipient-name" class="control-label">Naam canvas:</label>
-							<input type="text" class="form-control" id="recipient-name" ng-model="newCanvasName">
-						</div>
-						<div class="form-group">
-							<label for="canvas-type">Type:</label>
-							<select class="form-control" id="canvas-type" ng-model="canvasType">
-								<option>ontwikkelruimte</option>
-								<option>portfolio</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="message-text" class="control-label">Tags:</label>
-							<textarea class="form-control" id="message-text" ng-model="canvasTags" disabled="true"></textarea>
-						</div>
-						<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
-					<button type="submit" class="btn btn-primary">Creeer canvas</button>
-				</div>
-					</form>
-				</div>
-				
-			</div>
-		</div>
-	</div>
 </div>
-
-
--->
