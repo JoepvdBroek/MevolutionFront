@@ -341,6 +341,29 @@ module.exports = function(api)
                 return $http.get(API.url + '/objects/inbox/' + id, {}).then(function(data) {
                     return data.data;
                 });
+            },
+
+            getLeerlijnen: function(id){
+                return $http.get(API.url + '/organization/' + id + '/leerlijn', {}).then(function(data) {
+                    return data.data;
+                });
+            },
+
+            addObject: function(organizationId, leerlijnId, niveauId, participantId, objectId){
+                return $http.post(API.url + '/organization/'+ organizationId +'/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant/'+ participantId +'/object',
+                    {
+                        objectId: objectId
+                    }).then(function(data){
+                    return data.data;
+                });
+            },
+            makeParticipant: function(organizationId, leerlijnId, niveauId, studentId){
+                return $http.post(API.url + '/organization/'+ organizationId +'/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant', 
+                    {
+                        participant: studentId
+                    }).then(function(data){
+                    return data.data;
+                });
             }
         };
 

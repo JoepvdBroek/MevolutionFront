@@ -19,16 +19,34 @@
 					<tr ng-repeat="object in fullBucket" id="{{object._id}}">
 
 <!--
-						<ng-switch on="object.type">
-						<div ng-switch-when="video"><td>1</td></div>
-						<div ng-switch-when="picture"><td>2</td></div>
+						<ng-switch on="object.object.type">
+                        	<div ng-switch-when="video">
+                            	<td><i>video</i></td>
+                        	</div>
+                        	<div ng-switch-when="picture">
+                        		<td><i>picture</i></td>
+                        	</div>
+                        	<div ng-switch-when="audio">
+                        	    <td><i>audio</i></td>
+                        	</div>
+                        	<div ng-switch-when="text">
+                        	    <td><i>text</i></td>
+                        	</div>
+                    </ng-switch>
+
+
 -->
-						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>-->
-						<td ng-model="objectType">{{object.type}}</span></td>
 
 
-						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}" target="_blank">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
-						<!--<td ng-model="objectSubject">{{object.subject}}</td> -->
+						<td ng-model="objectType"><span>{{object.type}}</span></td>
+
+						<td>
+							<a ng-if="object.type === 'video'" href="{{object.video}}" target="_blank">{{object.video}}</a>
+							<a ng-if="object.type === 'audio'" href="{{object.audio}}" target="_blank">{{object.audio}}</a>
+							<a ng-if="object.type === 'picture'" href="{{object.picture}}" target="_blank">{{object.picture}}</a>
+							<!-- todo: popup for text -->
+							<span ng-if="object.type === 'text'">{{object.content}}</span>
+						</td>
 						<td><button ng-click="deleteItem(object._id)"><span class="glyphicon glyphicon-trash"></span></button></td>
 					</tr>
 				</tbody>

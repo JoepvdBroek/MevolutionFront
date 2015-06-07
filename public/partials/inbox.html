@@ -22,22 +22,48 @@
 				<thead>
 					<tr>
 						<th>Type</th>
-						<th>Object</th>	
-						<th>Delete</th>				
+						<th>Gemaakt door</th>	
+						<th>Acties</th>				
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
-						<td></td>
 
 						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}"></span></td>-->
-						<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}">{{object.type}}</span></td>
-						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}" target="_blank">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
-						<td><button ng-click="deleteItem(object._id)"><span class="glyphicon glyphicon-trash"></span></button></td>
+						<td ng-model="objectType">{{object.type}}</td>
+						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
+						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Open Modal Dialog</button></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+
+		<div class="modal fade" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="organisationForm" novalidate ng-submit="addObject(selectedLeerlijn, niveau)">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">voeg dit object toe aan een leerlijn</h4>
+					 </div>
+					 <div class="modal-body input-f-wrapper">
+					  	<select ng-model='selectedLeerlijn'  ng-options='leerlijn.title for leerlijn in leerlijnen'></select>
+						</br>
+						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" />{{niveau.title}} - {{niveau.description}}
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue">Object toevoegen</button>
+					  </div>
+					</div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+		
 	</div><!-- /.container -->
 </div>
     
