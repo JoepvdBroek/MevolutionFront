@@ -27,7 +27,7 @@ module.exports = function(leerlingDash)
             {
                 $scope.learningsParticipant = data2;
 
-            console.log(data2);
+                console.log(data2);
             });
         }
 
