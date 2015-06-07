@@ -147,10 +147,7 @@ module.exports = function(admin)
             $scope.submitNewUsersToOrganisation = function submitNewUsersToOrganisation(){
                 for(i = 0; i < $scope.selectedUsersToAddToOrganisation.length; i++){
                     UserGroupService.putUserToOrganisation($scope.selectedUsersToAddToOrganisation[i], $routeParams.organisationid).then(function(data){
-
-                    });
-                }
-                UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
+                        UserGroupService.getAllUsersOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
                         {
                             $scope.usersOfOrganisation = [];
                             for(i=0;i<data.length;i++){
@@ -164,6 +161,9 @@ module.exports = function(admin)
                                 $scope.usersOfOrganisation.push(data[i]);
                             }
                         });
+                    });
+                }
+                
                 alert('Gebruikers zijn aan de organisatie toegevoegd!');
             };
 
