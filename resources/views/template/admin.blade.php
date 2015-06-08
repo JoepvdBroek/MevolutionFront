@@ -45,14 +45,9 @@
                     <img class="small" src="assets/img/logo-small.png" alt="M" />
                 </a>
             </li>
-            <li ng-repeat="item in menu">
+            <li ng-repeat="item in menu" ng-show="{{ item.showWhen }}" ng-cloak>
                 <a href="{{ item.href }}">
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
-                </a>
-            </li>
-            <li ng-show="isAuthenticated()">
-                <a href="#/auth/logout">
-                    <i class="fa fa-sign-out"></i> {{ item.text }}
                 </a>
             </li>
         </ul>

@@ -1,23 +1,75 @@
 module.exports = function(authentication)
 {
-    authentication.factory('AuthenticationService', [ '$window', function($window)
+    authentication.factory('AuthenticationService', [ '$window', 'UserService', function($window, UserService)
     {
         var isAuthenticated = false;
+        var isAdmin = false;
+        var isModerator = false;
 
         if ($window.sessionStorage.access_token)
         {
             isAuthenticated = true;
+            setRoles();
         }
 
         var auth = function(state) {
-            if(state !== undefined ) { isAuthenticated = state }
+            if(state !== undefined ) 
+            { 
+                isAuthenticated = state 
+
+                if(!state) 
+                {
+                    isAdmin = false;
+                    isModerator = false;
+                } else {
+                    setRoles();
+                }
+            }
             return isAuthenticated;
         }
 
-        return { isAuthenticated : auth };
+        var admin = function(state) {
+            if(state !== undefined ) { isAdmin = state }
+            return isAdmin;
+        }
+
+        var moderator = function(state) {
+            if(state !== undefined ) { isModerator = state }
+            return isModerator;
+        }
+
+        function setRoles(){
+            isAdmin = false;
+            isModerator = false;
+            UserService.getUserInfo().success(function(data)
+            {
+                var roles = data[0].roles;
+
+                if(_.contains(roles, 'admin'))
+                {
+                    isAdmin = true;
+                    isModerator = true;
+                }
+                else if(_.contains(roles, 'moderator'))
+                {
+                    isModerator = true;
+                }                
+                
+            }).error(function(status, data)
+            {
+                console.log(status);
+                console.log(data);
+            });
+        }
+
+        return { 
+            isAuthenticated : auth,
+            isAdmin : admin,
+            isModerator : moderator
+        };
     }]);
 
-    authentication.factory('TokenInterceptor', [ '$q', '$window', '$location', 'API', 'AuthenticationService', function($q, $window, $location, API, AuthenticationService)
+    authentication.factory('TokenInterceptor', [ '$q', '$window', '$location', 'API', function($q, $window, $location, API)
     {
         return {
             request: function(config)
@@ -43,7 +95,7 @@ module.exports = function(authentication)
             {
                 if (response != null && response.status == 200 && $window.sessionStorage.access_token/* && !AuthenticationService.isAuthenticated*/)
                 {
-                    AuthenticationService.isAuthenticated(true);
+                    //AuthenticationService.isAuthenticated(true);
                     $window.sessionStorage.last_activity = new Date().getTime();//reset last_activity
                     console.log('reset last_activity');
                 }
@@ -54,7 +106,7 @@ module.exports = function(authentication)
             responseError: function(rejection)
             {
                 //ALs je wel ingelogd bent maar waarschijnlijk de api tijd is verlopen
-                if(rejection != null && rejection.status === 401 && ($window.sessionStorage.access_token || AuthenticationService.isAuthenticated))
+                if(rejection != null && rejection.status === 401 && ($window.sessionStorage.access_token /*|| AuthenticationService.isAuthenticated*/))
                 {
                     //TODO: acces_denied pagina aanmaken en naar verwijzen.
 
@@ -62,7 +114,7 @@ module.exports = function(authentication)
                     delete $window.sessionStorage.refresh_token;
                     delete $window.sessionStorage.last_activity;
 
-                    AuthenticationService.isAuthenticated(false);
+                    //AuthenticationService.isAuthenticated(false);
                     
                     $location.path("/forbidden");
                 }
@@ -74,7 +126,7 @@ module.exports = function(authentication)
                     delete $window.sessionStorage.refresh_token;
                     delete $window.sessionStorage.last_activity;
 
-                    AuthenticationService.isAuthenticated(false);
+                    //AuthenticationService.isAuthenticated(false);
 
                     $location.path("/unauthorized");
                 }
