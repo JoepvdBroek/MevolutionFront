@@ -1,0 +1,16 @@
+<ng-switch on="toelichting.type">
+    <div ng-switch-when="video">
+        <video width="260" height="130" poster="" controls>
+            <source ng-src="{{ trustSrc(toelichting.source) }}" type="{{ toelichting.mimetype }}" />
+        </video>
+    </div>
+    <div ng-switch-when="audio">
+        <audio controls>
+            <source ng-src="{{ trustSrc(toelichting.source) }}" type="{{ toelichting.mimetype }}">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <div ng-switch-when="text">
+        <p>{{ object.source }}</p>
+    </div>
+</ng-switch>

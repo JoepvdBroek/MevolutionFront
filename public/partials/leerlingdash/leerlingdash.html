@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="assets/css/leerlijn-dash.min.css" type="text/css" />
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+	    <div class="timeline">
+	    	<div>Dashboard van {{}}</div>
+			
+	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
+				<div class="leerlijn-title">{{leerlijn.title}}</div>
+				
+				<div class="levelbar" ng-click="collapse(leerlijn.title)" style="background:{{leerlijn.color}};">
+					<div class="level-type" ng-repeat="niveau in leerlijn.niveaux" style="width:{{100/leerlijn.niveaux.length}}%;">
+						<div ng-if="niveau.objects.length">
+					    	<div style="width:100%;height:20px;background:lime;"></div>
+					    </div>
+					</div>
+				</div>
+
+				<div class="leerlijn-holder {{leerlijn.title}}" ng-repeat="niveau in leerlijn.niveaux">	
+					<div>{{niveau.title}}</div>
+					<div class="level-header" style="background:{{leerlijn.color}};">
+						
+					</div>
+
+					<div ng-repeat="participant in niveau.participants">
+					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
+						<span class=" leerlijn-objects" ng-repeat="object in participant.objects">
+		                    <div class="leerlijn-object">
+		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};"></div>
+                                <div ng-switch on="object.type">
+                                    <a href="" class="object-item" popover ng-switch-when="video">
+                                        <i class="fa fa-play"></i>
+                                        <div class="content hidden">
+                                            <video width="260" height="130" poster="" controls>
+                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
+                                            </video>
+                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="" class="object-item" popover ng-switch-when="audio">
+                                        <i class="fa fa-music"></i>
+                                        <div class="content hidden" ng-hide>
+                                            <audio controls>
+                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="" class="object-item" popover ng-switch-when="text">
+                                        <i class="fa fa-file-text"></i>
+                                        <div class="content hidden" ng-hide>
+                                            <p>{{ object.source }}</p>
+                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+		                    </div>
+		                </span>
+					</div>
+			    </div>
+		    </div>
+
+	    </div>
+    </div>
+</div>
