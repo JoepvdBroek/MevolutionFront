@@ -143,14 +143,14 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
-    .when('/leerling_dash',
+    .when('/leerlingdash',
     {
-        templateUrl: 'partials/leerling_dash/leerling_dash.html',
+        templateUrl: 'partials/leerlingdash/leerlingdash.html',
         controller: 'LeerlingdashController'
     })
-    .when('/leerling_dash/:orgid/:userid',
+    .when('/leerlingdash/:orgid/:userid',
     {
-        templateUrl: 'partials/leerling_dash/leerling_dash.html',
+        templateUrl: 'partials/leerlingdash/leerlingdash.html',
         controller: 'LeerlingdashController'
     })
     .when('/timeline',

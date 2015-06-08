@@ -1,6 +1,7 @@
 module.exports = function(leerlingDash)
 {
-    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route','LearningFactory', 'UserService', function($scope, $location, $window, $routeParams, $anchorScroll, $route, LearningFactory, UserService)
+    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route', '$sce', 'LearningFactory', 'UserService',
+                                                        function($scope, $location, $window, $routeParams, $anchorScroll, $route, $sce, LearningFactory, UserService)
     {
 
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
@@ -30,6 +31,12 @@ module.exports = function(leerlingDash)
                 console.log(data2);
             });
         }
+
+        $scope.trustSrc = function(src)
+        {
+            return $sce.trustAsResourceUrl(src);
+        };
+
 
         $scope.collapse = function(e) {
             $('.'+e).toggleClass("display-inline", 1000);

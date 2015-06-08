@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Mevolution</title>
-    
-    <script src="dev/js/jquery-2.1.3.min.js"></script>
-    <script src="dev/js/jquery-ui.js"></script>
-    <script src="dev/js/bootstrap.min.js"></script>
-
 
     @if (env('APP_DEBUG') == true)
 
+        <link rel="stylesheet" type="text/css" href="dev/css/lib.css" />
+        <link rel="stylesheet" type="text/css" href="dev/css/general.css" />
+
         @yield('style-debug')
-        
+
     @else
+
+        <link rel="stylesheet" type="text/css" href="assets/css/lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/general.min.css" />
 
         @yield('style-non-debug')
 
@@ -31,11 +32,11 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="app">
+<body>
 <div id="wrapper">
-    <div ng-view>
+    <ng-view>
         @yield('content')
-    </div>
+    </ng-view>
 </div>
 
 @if (env('APP_DEBUG') == true)
@@ -43,13 +44,13 @@
     <script>var debug = true;</script>
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
-    <script src="//{{ Request::server('SERVER_NAME') }}:4003/livereload.js"></script>
+    <script src="//[[ Request::server('SERVER_NAME') ]]:4003/livereload.js"></script>
+
     @yield('script-debug')
 
 @else
 
     <script>var debug = false;</script>
-
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
 
