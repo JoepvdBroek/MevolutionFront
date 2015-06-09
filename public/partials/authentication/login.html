@@ -1,23 +1,24 @@
-<link rel="stylesheet" href="assets/css/login.min.css" type="text/css" />
-
-<div id="wrapper">
-    <div id="login-header">
-        <div id="overlay">
-            <img id="header-image" src="assets/img/title.jpg" alt="Mevolution" />
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div id="login-header">
+            <div id="overlay">
+                <img id="header-image" src="assets/img/title.jpg" alt="Mevolution" />
+            </div>
         </div>
+
+        <form id="loginform-wrapper" role="form" ng-controller="AuthenticationController">
+            <input type="text" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username">
+            <input type="password" id="input-password" placeholder="Wachtwoord" ng-model="user.password">
+
+            <div id="left"></div>
+            <div id="right"></div>
+
+            <input id="submit-login" type="submit" ng-click="signIn(user.username, user.password)" value="Inloggen"/>
+
+            <a id="registerLink" href="#/auth/register" >Registreren</a>
+            <a id="forgotLink" href="#/profile/forgot" >Wachtwoord vergeten?</a>
+        </form>
     </div>
-
-    <form id="loginform-wrapper" role="form" ng-controller="AuthenticationController">
-        <input type="text" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username">
-        <input type="password" id="input-password" placeholder="Wachtwoord" ng-model="user.password">
-
-        <div id="left"></div>
-        <div id="right"></div>
-
-        <input id="submit-login" type="submit" ng-click="signIn(user.username, user.password)" value="Inloggen"/>
-
-        <a id="registerLink" href="#/auth/register" >Registreren</a>
-        <a id="forgotLink" href="#/profile/forgot" >Wachtwoord vergeten?</a>
-    </form>
-
+    <div class="col-md-4"></div>
 </div>

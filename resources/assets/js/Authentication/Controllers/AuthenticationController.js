@@ -8,7 +8,7 @@ module.exports = function(authentication)
             {
                 UserService.login(username, password).success(function(data)
                 {
-                    AuthenticationService.isAuthenticated = true;
+                    AuthenticationService.isAuthenticated(true);
                     $window.sessionStorage.access_token = data.access_token;
                     $window.sessionStorage.refresh_token = data.refresh_token;
                     $window.sessionStorage.last_activity = new Date().getTime();
@@ -24,31 +24,53 @@ module.exports = function(authentication)
             }
         };
 
-        $scope.register = function register(username, password1, password2, email, firstname, middlename,surname)
+        $scope.register = function register(user)
         {
-            if (username != null && password1 != null && password2 != null && email != null && firstname != null && surname != null)
+            if (user != null && user.username != null && user.password1 != null && user.password2 != null && user.email != null && user.firstname != null && user.surname != null)
             {
-                UserService.checkUsername(username).success(function(data)
+                if (user.password1 === user.password2)
                 {
-                
-                    if (data == false)
+                    UserService.checkUsername(user.username).success(function(data)
                     {
-                        if (password1 === password2)
+                        if (data == false)
                         {
-                            var password = password1;
-                            UserService.register(username, password, email, firstname, middlename, surname).success(function(data)
+                            UserService.checkEmail(user.email).success(function(data)
                             {
-                                alert("Gebruiker: " + username + " is aangemaakt");
-                                $location.path('/auth/login');
+                                if (data == false)
+                                {
+                                    user.password = user.password1;
+                                    UserService.register(user).success(function(data)
+                                    {
+                                        alert("Uw gebruiker is aangemaakt");
+                                        $location.path('/auth/login');
 
+                                    }).error(function(status, data)
+                                    {
+                                        console.log(status);
+                                        console.log(data);
+                                    });
+                                }else {
+                                    alert('Het e-mail is al in gebruik.');
+                                    user.email = '';
+                                }
                             }).error(function(status, data)
                             {
                                 console.log(status);
                                 console.log(data);
                             });
+                        } else {
+                            alert("Gebruikersnaam is al in gebruik");
+                            $('#input-username').val('');
                         }
-                    }
-                });
+                    });
+                } else {
+                    alert('Uw wachtwoorden komen niet overeen. Probeer het nog eens.');
+                    user.password1 = '';
+                    user.password2 = '';
+                }
+            } else 
+            {
+                alert('Vul alsjeblieft alle velden in');
             }
         };
 
@@ -61,10 +83,10 @@ module.exports = function(authentication)
                     console.log(data);
                     if (data == true) 
                     {
-                        alert("gebruikersnaam: " + username + " is al in gebruik");
+                        alert("Gebruikersnaam: " + username + " is al in gebruik");
                     } else 
                     {
-                        alert("gebruikersnaam: " + username + " is beschikbaar");
+                        alert("Gebruikersnaam: " + username + " is beschikbaar");
                     }   
                     return data;
 

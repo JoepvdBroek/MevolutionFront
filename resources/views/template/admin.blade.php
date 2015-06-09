@@ -40,12 +40,12 @@
         </div>
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">
+                <a href="#/">
                     <img class="big" src="assets/img/logo.jpg" alt="Mevolution" />
                     <img class="small" src="assets/img/logo-small.png" alt="M" />
                 </a>
             </li>
-            <li ng-repeat="item in menu">
+            <li ng-repeat="item in menu" ng-show="{{ item.showWhen }}" ng-cloak>
                 <a href="{{ item.href }}">
                     <i class="fa {{ item.faClass }}"></i> {{ item.text }}
                 </a>
@@ -56,9 +56,21 @@
         </div>
     </div>
 
-    <ng-view>
+    <!-- <nav class="navbar navbar-default" style="  padding-left: 45px;
+  z-index: 999;">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#/profile">Ingelogd als Joep van den Broek</a></li>
+            <li><a href="#/auth/logout">logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
+
+    <div ng-view>
         @yield('content')
-    </ng-view>
+    </div ng-view>
 </div>
 
 @if (env('APP_DEBUG') == true)
@@ -67,6 +79,7 @@
     <script src="dev/js/libs.js"></script>
     <script src="dev/js/Application.js"></script>
     <script src="//[[ Request::server('SERVER_NAME') ]]:4003/livereload.js"></script>
+    <script src="http://underscorejs.org/underscore.js"></script>
 
     @yield('script-debug')
 
@@ -75,6 +88,7 @@
     <script>var debug = false;</script>
     <script src="assets/js/libs.min.js"></script>
     <script src="assets/js/Application.min.js"></script>
+    <script src="http://underscorejs.org/underscore.js"></script>
     
     @yield('script-non-debug')
 

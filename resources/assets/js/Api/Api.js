@@ -44,7 +44,7 @@ module.exports = function(api)
 
     api.factory('UserService', [ '$http', 'API', 'RefreshService', function($http, API, RefreshService)
     {
-        return { // <-- Fuck javascript
+        return {
             login: function (username, password)
             {
                 return $http.post(API.url + '/oauth/token',
@@ -58,22 +58,27 @@ module.exports = function(api)
 
             },
 
-            register: function (username, password, email, firstname, middlename, surname)
+            register: function (user)
             {
                 return $http.post(API.url + '/users',
                 {
-                    username: username,
-                    password: password,
-                    email: email,
-                    firstName: firstname,
-                    middleName: middlename,
-                    surName: surname
+                    username: user.username,
+                    password: user.password,
+                    email: user.email,
+                    firstName: user.firstname,
+                    middleName: user.middlename,
+                    surName: user.surname
                 });
             },
 
             checkUsername: function (username)
             {
                 return $http.get(API.url + '/users/username/' + username);
+            },
+
+            checkEmail: function (email)
+            {
+                return $http.get(API.url + '/users/email/' + email);
             },
 
             getUserInfo: function ()
@@ -130,9 +135,10 @@ module.exports = function(api)
             changePassword: function (user)
             {
                 RefreshService.refreshTokenIfNeeded();
-                return $http.put(API.url + '/users/' + user._id,
+                return $http.put(API.url + '/users/' + user._id + '/password',
                 {
-                    'password' : user.password
+                    'newPassword' : user.newPassword,
+                    'currentPassword' : user.currentPassword
                 });
             },
 

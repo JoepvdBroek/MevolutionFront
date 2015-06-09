@@ -3,6 +3,7 @@ var modules =
     'ngRoute', 'door3.css',
     'app.api', 'app.authentication',
     'app.user',
+    'app.colorpicker',
     'app.moderator', 'app.adminFunctions',
     'app.leerlingDash',
 
@@ -22,6 +23,8 @@ app.config([ '$httpProvider', function($httpProvider)
 var authentication = require('./Authentication/_index')(app);
 
 var api = require('./Api/_index')(app);
+
+var colorpicker = require('./Colorpicker/_index')(app);
 
 var user = require('./User/_index')(app);
 var admin = require('./Admin/_index')(app);
@@ -47,6 +50,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
              bustCache: true
         }]
     })
+    .when('/auth/logout', 
+    {
+        template: ' ',
+        controller: 'SignOutController'
+    })
     .when('/auth/register',
     {
         templateUrl: 'partials/authentication/register.html',
@@ -65,18 +73,34 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/edituser.css' : 'assets/css/edituser.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/profile/password',
     {
         templateUrl: 'partials/user/password.html',
         controller: 'ChangePasswordController'
-        //erft css al van de /profile route
+        ,
+        css:
+        [{
+             href: debug == true ? 'dev/css/password.css' : 'assets/css/password.min.css',
+             bustCache: true
+        }],
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/profile/forgot', {
         templateUrl: 'partials/user/forgot.html',
         controller: 'ForgotPasswordController'
-        //erft css al van de /profile route
+        ,
+        css:
+        [{
+             href: debug == true ? 'dev/css/forgot.css' : 'assets/css/forgot.min.css',
+             bustCache: true
+        }]
     })
     .when('/moderator',
     {
@@ -87,7 +111,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/moderator/:orgid/:learningid',
     {
@@ -98,7 +126,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/moderator/:organisation',
     {
@@ -131,7 +163,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/canvas/:canvasid',
     {
@@ -152,7 +188,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/admin/users/:groupid',
     {
@@ -163,7 +203,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/admin/admin_dash.css' : 'assets/css/admin/admin_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
     })
     .when('/leerlingdash',
     {
@@ -185,9 +229,22 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         templateUrl: 'partials/bucket.html',
         controller: 'BucketController'
     })
+    .when('/unauthorized',
+    {
+        templateUrl: 'partials/authentication/unauthorized.html'
+    })
+    .when('/forbidden',
+    {
+        templateUrl: 'partials/authentication/forbidden.html'
+    })
     .when('/', 
     {
-        templateUrl: 'partials/index.html'
+        templateUrl: 'partials/index.html',
+        css:
+        [{
+             href: debug == true ? 'dev/css/index.css' : 'assets/css/index.min.css',
+             bustCache: true
+        }]
     })
     .otherwise
     ({
@@ -196,13 +253,29 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
 
 }]);
 
-app.run([ '$rootScope', '$location', '$window', 'AuthenticationService', function($rootScope, $location, $window, AuthenticationService)
+app.run([ '$rootScope', '$location', '$window', 'RouteAccess', function($rootScope, $location, $window, RouteAccess)
 {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute)
     {
-        if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
+        /*if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token)
         {
             $location.path("/auth/login");
+        }*/
+
+        if(nextRoute !== null && nextRoute.access !== undefined)
+        {
+            var hasAccess = RouteAccess.checkAccess(nextRoute.access.requiresLogin, nextRoute.access.requiredPermissions);
+
+            /*console.log(hasAccess);
+
+            if( hasAccess == 'forbidden' )
+            {
+                $location.path("/forbidden");
+            } 
+            else if( hasAccess == 'unauthorized' )
+            {
+                location.path("/unauthorized");
+            }*/
         }
     });
 }]);
