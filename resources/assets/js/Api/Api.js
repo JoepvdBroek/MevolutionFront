@@ -156,6 +156,18 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            getOrganisation: function (orgId)
+            {
+                return $http.get(API.url + '/organization/' + orgId,
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
+            },
             postOrganisation: function(newName, newColor, newLogo){
                 return $http.post(API.url + '/organization', {name:newName, color:newColor, logo:newLogo},
                 {
@@ -268,11 +280,18 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            putUserToOrganisation: function(userId, organisationId){
+                return $http.put(API.url + '/users/' + userId, {organization:organisationId}, 
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
             pushUsersToGroup: function(groupId, userArray){
                 return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
                 {
-                    username: 'terry',
-                    password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
                     "client_secret": API.clientSecret,

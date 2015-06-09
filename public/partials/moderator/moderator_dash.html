@@ -1,13 +1,18 @@
 <div id="wrap">
 	<div class="container">
 		<div class="panel-style space">
+			<a href="#/moderator/{{user.organization._id}}">Ga naar groepen</a>
 			<h2>Welkom {{ user.username }}</h2>
 			<h3 class="heading-title">Alle leerlijnen van {{ user.organization.name }}</h3>
 			
+			<div class="table_buttons" align="right">
+				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span> Nieuwe leerlijn toevoegen</button>
+			</div>
+
 			<table class="table simple">
 				<thead>
 					<tr>
-						<th>Plaatje</th>
+						<!-- <th>Plaatje</th> -->
 						<th>Titel</th>
 						<th>Kleur</th>
 						<th>Instellingen</th>	
@@ -16,17 +21,13 @@
 
 				<tbody ng-repeat="learning in learnings" id="{{learning._id}}">
 					<tr>
-						<td>{{learning.image}}</td>
+						<!-- <td>{{learning.image}}</td> -->
 						<td><a href="#/moderator/{{ user.organization._id }}/{{learning._id}}">{{learning.title}}</a></td>
 						<td>{{learning.color}}</td>
 						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}">Instellingen</button><button class="btn red second_button" ng-click="deleteLearning(learning._id, $index)">Verwijder</button></td>
 					</tr>
 				</tbody>
 			</table>
-
-			<div align="right"	>
-				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span> Nieuwe leerlijn toevoegen</button>
-			</div>
 
 			<!-- Modal Add Learning -->
 			<div class="modal fade" id="newLearning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -51,7 +52,7 @@
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue">Leerlijn aanmaken</button>
+						<button type="submit" class="btn blue" onclick="$('#newLearning').modal('hide')">Leerlijn aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -59,10 +60,10 @@
 			</div><!-- /.modal -->
 
 			<!-- Modal Edit Learning -->
-			<div class="modal fade" ng-repeat="learning in learnings" id="settingsid{{learning._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal edit fade" ng-repeat="learningedit in learnings" id="settingsid{{learningedit._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learning.title, learning.color, learning)">
+				<form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learningedit.title, learningedit.color, learningedit)">
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
@@ -71,18 +72,18 @@
 
 				  	<div class="input_row input-group">
 						<label>Naam leerlijn</label>
-						<input type="text" ng-model="learning.title" class="form-control" />
+						<input type="text" ng-model="learningedit.title" class="form-control" />
 					</div>
 					<div class="input_row input-group">
 						<label>Kleurcode</label>
-						<input type="text" ng-model="learning.color" class="form-control" />
+						<input type="text" ng-model="learningedit.color" class="form-control" />
 					</div>
 				  </div>
 
 				  <div class="modal-footer">
 				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
 					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
-					<button type="submit" class="btn blue">Wijzigen</button>
+					<button type="submit" class="btn blue" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Wijzigen</button>
 				  </div>
 				  </form>
 				</div><!-- /.modal-content -->
