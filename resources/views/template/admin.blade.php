@@ -34,7 +34,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <div id="navigation-wrapper" ng-controller="NavigationBarController">
+    <div id="navigation-wrapper" ng-controller="NavigationBarController" ng-show="isAuthenticated()">
         <div class="toggle-navigation" ng-click="toggle()">
             <i class="fa"></i>
         </div>
