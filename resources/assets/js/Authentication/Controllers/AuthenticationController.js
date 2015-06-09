@@ -13,7 +13,7 @@ module.exports = function(authentication)
                     $window.sessionStorage.refresh_token = data.refresh_token;
                     $window.sessionStorage.last_activity = new Date().getTime();
 
-                    $window.location.href = '/#/timeline';
+                    $window.location.href = '#/timeline';
 
                 }).error(function(status, data)
                 {
