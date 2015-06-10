@@ -7,6 +7,8 @@ module.exports = function(inbox)
         var studentList = [];
         $scope.studentList= [];
         $scope.leerlijnen = [];
+        $scope.fullInbox = [];
+        $scope.selectedStudent = "";
         var organisation;
         var selectedObject;
         var selectedStudent;
@@ -49,12 +51,25 @@ module.exports = function(inbox)
 
 
         //komt 404 terug, kan nu niet testen
-        $scope.getInbox = function(id){
+        var getInbox = function(id){
             selectedStudent = id;
             BucketService.getInbox(id).then(function(data){
                 $scope.fullInbox = data[0];
                 if (data.length===0) {
-                    alert("Deze gebruiker heeft geen objecten");
+                    $scope.fullInbox = [];
+                } else {
+                    $scope.fullInbox = data;
+                };
+            });
+        };
+
+            $scope.getInbox = function(id, firstname){
+            selectedStudent = id;
+            $scope.selectedStudent = ""+firstname+"";
+            BucketService.getInbox(id).then(function(data){
+                $scope.fullInbox = data[0];
+                if (data.length===0) {
+                    $scope.fullInbox = [];
                 } else {
                     $scope.fullInbox = data;
                 };
@@ -82,15 +97,21 @@ module.exports = function(inbox)
 
         $scope.addObject = function(leerlijn, niveau){
             if (niveau.participants.length === 0) {
+                createNewParticipant(niveau, leerlijn);
+                /*
                 BucketService.makeParticipant(organisation._id, leerlijn._id, niveau._id, selectedStudent).then(function(participantData){
                     var participant = participantData;
                     console.log(participantData);
                     combineObjectLeerlijn(leerlijn, niveau, participant);
-                });
+                    
+                });*/
             } else { 
-                var participant = niveau.participant[0].participant._id.;
+                checkParticipants(niveau, leerlijn);
+                /*
+                var participant = niveau.participants[0].participant._id;
                 console.log(participant);
                 combineObjectLeerlijn(leerlijn, niveau, participant);
+                */
             }
         }
 
@@ -99,9 +120,49 @@ module.exports = function(inbox)
                 {
                     console.log(data);
                     alert("toegevoegd");
+                    getInbox(selectedStudent);
 
                 }
             });
+        }
+
+        var checkParticipants = function(niveau, leerlijn){
+            var newParticipant;
+            var tempParticipants = [];
+            for (var i = 0; i < niveau.participants.length; i++) {
+                tempParticipants.push(niveau.participants[i].participant._id);
+            }
+            if (_.contains(tempParticipants, selectedStudent)) {
+                combineObjectLeerlijn(leerlijn, niveau, selectedStudent);
+            } else {
+                createNewParticipant(niveau, leerlijn);
+            }
+
+/*
+            for (var i =0; i < niveau.participants.length; i++) {
+                if (selectedStudent === (niveau.participants[i].participant._id)) {
+                    console.log(selectedStudent);
+                    console.log(niveau.participants[i].participant._id);
+
+                    combineObjectLeerlijn(leerlijn, niveau, niveau.participants[i].participant._id);
+                    //niet doen. participant komt overeen met user
+                } else {
+                    console.log(selectedStudent);
+                    console.log(niveau.participants[i].participant._id);
+                    newParticipant = selectedStudent;
+                    
+                    //nieuwe participant aanmaken. participant komt niet overheen met user
+                };
+            };
+            */
+        };
+
+        var createNewParticipant = function(niveau, leerlijn){
+            BucketService.makeParticipant(organisation._id, leerlijn._id, niveau._id, selectedStudent).then(function(participantData){
+                    var participant = participantData;
+                    console.log(participantData);
+                    combineObjectLeerlijn(leerlijn, niveau, participant.participant);
+                });
         }
 
 

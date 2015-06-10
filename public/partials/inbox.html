@@ -6,6 +6,17 @@
 	<div class="container">
 
 		<div id="studentSelector" class="panel-style space">
+			<span>Selecteer een groep</span>
+				<select class="studentSelectorMenu" ng-model='studentSelector'  ng-options='group.title for group in groups'></select>
+					<ul>
+						<li class="studentListItem" ng-model="selectedStudent" ng-repeat="student in studentSelector.participants"><button class="studentButton" ng-click="getInbox(student._id, student.firstName)"> {{student.firstName}} {{student.middleName}} {{student.surName}}</button></li>
+					</ul>
+		</div>
+		
+
+
+<!--
+		<div id="studentSelector" class="panel-style space">
 			<ol>
 				<li  ng-repeat="group in groups" id="{{group._id}}"><span ng-click="getStudents(group._id)"><span class="groupTitle">{{group.title}}</span></span>
 					<ul>
@@ -15,10 +26,12 @@
 			</ol>
 		</div>
 
+	-->
+
 		<div id="objectTable" class="panel-style space">
-			<h3 class="heading-title">Inbox</h3>
-			
-			<table datatable="" id="inboxTable" class="table simple	">
+			<h3 class="heading-title">Inbox van {{selectedStudent}}</h3>
+			<span ng-if="fullInbox.length === 0">Deze gebruiker heeft geen objecten om te koppelen</span>			
+			<table datatable="" id="inboxTable" class="table simple	" ng-if="fullInbox.length !== 0">
 				<thead>
 					<tr>
 						<th>Type</th>
@@ -32,7 +45,7 @@
 						<!--<td ng-model="objectType"><span class="glyphicon glyphicon-{{ object.type === 'video' ? 'film' : object.type }}"></span></td>-->
 						<td ng-model="objectType">{{object.type}}</td>
 						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
-						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Open Modal Dialog</button></td>
+						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Object koppelen</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -47,15 +60,18 @@
 						<h4 class="modal-title" id="myModalLabel">voeg dit object toe aan een leerlijn</h4>
 					 </div>
 					 <div class="modal-body input-f-wrapper">
-					  	<select ng-model='selectedLeerlijn'  ng-options='leerlijn.title for leerlijn in leerlijnen'></select>
+					 	<span>Selecteer een leerlijn:</span>
+					  	<select class="leerlijnSelector" ng-model='selectedLeerlijn'  ng-options='leerlijn.title for leerlijn in leerlijnen'></select>
 						</br>
+						</br>
+						<span>Selecteer een niveau:</span>
 						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
 							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" />{{niveau.title}} - {{niveau.description}}
 						</div>
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue">Object toevoegen</button>
+						<button type="submit" class="btn blue" onclick="$('#newGroup').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Object toevoegen</button>
 					  </div>
 					</div>
 				  </form>
