@@ -108,7 +108,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/inbox.css' : 'assets/css/inbox.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/', 
     {
