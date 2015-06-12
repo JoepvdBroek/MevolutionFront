@@ -131,6 +131,15 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
             requiredPermissions: ['admin', 'moderator']
         }
     })
+    .when('/groups',
+    {
+        template: 'Groups',
+        controller: 'GroupsRedirectController',
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['moderator']
+        }
+    })
     .when('/moderator/:organisation',
     {
         templateUrl: 'partials/moderator/moderator_dash_groups.html',
