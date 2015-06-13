@@ -163,7 +163,7 @@
 							<h4>Vink users aan om ze moderator te maken</h4>
 							<div class="input-group searchbar">
 								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
-								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchModerators">
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer gebruikers" ng-model="searchModerators">
 							</div>
 							<div class="dropdown_list" ng-show="showDetails">
 								<label ng-repeat="user in usersOfOrganisation | filter:searchModerators">
@@ -201,7 +201,7 @@
 					  <div class="modal-body input-f-wrapper">
 							<div class="input-group searchbar">
 								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
-								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchAddModerators">
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer gebruikers" ng-model="searchAddModerators">
 							</div>
 							<div class="dropdown_list" ng-show="showDetails">
 							<!-- @TODO filter the ng-repeat on users who don't have an organisation yet??? -->
