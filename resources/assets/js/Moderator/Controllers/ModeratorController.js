@@ -4,6 +4,15 @@ module.exports = function(moderator)
     {
         /* *  MODERATOR LEARNINGS **/
 
+        $scope.go = function(path){
+            console.log(path);
+            $location.path(path);
+        };
+
+        $scope.goBack = function(){
+            $window.history.back();
+        };
+
         var organisationId = "";
 
         UserService.getUserInfo().then(function(data, status, headers, config){
@@ -45,11 +54,9 @@ module.exports = function(moderator)
         };
 
         $scope.deleteLearning = function(learningId, index){
-            if(confirm("Weet u zeker dat u deze leerlijn wilt verwijderen?")){
-                LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
-                    $scope.learnings.splice(index, 1);
-                });
-            }
+            LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
+                $scope.learnings.splice(index, 1);
+            });
         };
 
         /* *  MODERATOR NIVEAUS **/
@@ -85,11 +92,9 @@ module.exports = function(moderator)
         };
 
         $scope.deleteNiveau = function(niveauId, index){
-            if(confirm("Weet u zeker dat u dit niveau wilt verwijderen?")){
                 NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
                     $scope.niveaus.splice(index, 1);
                 });
-            } 
         };
 
         /* * MODERATOR GROUPS **/
@@ -173,7 +178,7 @@ module.exports = function(moderator)
                   $scope.selectedUsersToAddToOrganisation.push(userId);
                 }
 
-                console.log($scope.selectedUsersToAddToOrganisation);
+                //console.log($scope.selectedUsersToAddToOrganisation);
             };
 
             // submits new userList
@@ -288,7 +293,7 @@ module.exports = function(moderator)
                   $scope.selectedUsersToMakeModerator.push(userId);
                 }
 
-                console.log($scope.selectedUsersToMakeModerator);
+                //console.log($scope.selectedUsersToMakeModerator);
 
             };
 
@@ -390,7 +395,7 @@ module.exports = function(moderator)
                     else {
                       $scope.selectionOfUsers.push(userId);
                     }
-                    console.log($scope.selectionOfUsers);
+                    //console.log($scope.selectionOfUsers);
 
                 };
             }
