@@ -73,7 +73,7 @@ module.exports = function(moderator)
 
 
         UserService.getUserInfo().then(function(data, status, headers, config){
-        	$scope.user = data.data[0];
+            $scope.user = data.data[0];
             organisationId = $scope.user.organization._id;
             LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
                 {
