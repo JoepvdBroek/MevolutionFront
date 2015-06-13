@@ -239,6 +239,18 @@ module.exports = function(api)
                 }).then(function(data){
                     return data.data;
                 });
+            },
+            postUser: function(user, organisationId){
+                return $http.post(API.url + '/users',
+                {
+                    username: user.username,
+                    password: user.password,
+                    email: user.email,
+                    firstName: user.firstName,
+                    middleName: user.middleName,
+                    surName: user.surName,
+                    organization: organisationId
+                });
             }
         };       
     }]);
@@ -410,12 +422,12 @@ module.exports = function(api)
                     return data.data;
                 });
             },
-            postNiveau: function(orgId, learningId, newTitle, newDescription, newSection){
+            postNiveau: function(orgId, learningId, newTitle, newDescription){
                 return $http.post(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau', 
                     {
                         title: newTitle, 
                         description: newDescription,
-                        section: newSection
+                        section: "test"
                     },
                 {
                     "grant_type": "password",
@@ -424,12 +436,12 @@ module.exports = function(api)
                     headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             },
-            editNiveau: function(orgId, learningId, niveauId, newTitle, newDescription, newSection){
+            editNiveau: function(orgId, learningId, niveauId, newTitle, newDescription){
                 return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau/' + niveauId, 
                     {
                         title: newTitle, 
-                        description: newDescription,
-                        section: newSection
+                        description: newDescription
+                        //section: newSection
                     },
                 {
                     "grant_type": "password",

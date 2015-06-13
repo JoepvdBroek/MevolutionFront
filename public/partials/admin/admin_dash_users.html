@@ -1,6 +1,3 @@
-<!-- Bootstrap core CSS -->
-<link href="dev/css/bootstrap.min.css" rel="stylesheet">
-
 <div id="wrap">
 	<!-- <button type="button" class="btn default back-button"></button> -->
 	<!-- <a ng-click='back()' class="back_button">Back</a> -->
@@ -27,37 +24,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="user in usersOfGroup | filter:searchTable" id="{{user._id}}" class="tablerow">
+
+					<tr ng-repeat="user in usersOfGroup | filter:searchTable | orderBy: 'firstName'" id="{{user._id}}" class="tablerow">
 						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.firstName }}</td>
 						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.middleName }}</td>
 						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.surName }}</td>
-						<!-- <td><button class="btn orange" data-toggle="modal" data-target="#settingsid">Instellingen</button></td> -->
 					</tr>
 				</tbody>
 			</table>
-
-			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
-<!-- 			<div class="modal fade" id="settingsid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			  <div class="modal-dialog">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Wijzigen</h4>
-				  </div> -->
-				  <!-- <div class="modal-body input-f-wrapper">
-						<label>Groep naam</label>
-						<input type="text" placeholder="groep naam"/>
-				  </div> -->
-
-				  <!-- <div class="modal-footer">
-				  	<button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button>
-					<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-					<button type="button" class="btn blue" data-dismiss="modal">Wijzigen</button>
-				  </div>
-				</div> --><!-- /.modal-content -->
-			  <!-- </div> --><!-- /.modal-dialog -->
-			<!-- </div> --><!-- /.modal -->
-
 
 			<!-- Modal -->
 			<div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -80,7 +54,7 @@
 							    name="selectedUsers[]"
 							    value="{{userObject._id}}"
 							    ng-checked="selectionOfUsers.indexOf(userObject._id) > -1"
-							    ng-click="toggleSelection(userObject._id)"> {{userObject.username}}
+							    ng-click="toggleSelection(userObject._id)"> {{userObject.firstName}} {{userObject.middleName}} {{userObject.surName}}
 							    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
 							</label>
 						</div>

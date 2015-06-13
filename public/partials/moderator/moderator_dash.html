@@ -23,17 +23,15 @@
 					</tr>
 				</thead>
 
-				<tbody >
-					
-					<tr ng-repeat="learning in learnings | filter:searchTable" id="{{learning._id}}" class="tablerow" >
-						<!-- <td>{{learning.image}}</td> -->
+				<tbody>
+					<tr ng-repeat="learning in learnings | filter:searchTable | orderBy:'title'" id="{{learning._id}}" class="tablerow" >
 						<td data-ng-click="go('/moderator/' + user.organization._id + '/' + learning._id + '/')">{{learning.title}}</td>
-						<td data-ng-click="go('/moderator/' + user.organization._id + '/' + learning._id + '/')"><div style="width:14px;height:14px;display:inline-block;background:{{learning.color}};"></div> {{learning.color}}</td>
+						<td data-ng-click="go('/moderator/' + user.organization._id + '/' + learning._id + '/')">
+						<div style="width:14px;height:14px;display:inline-block;background:{{learning.color}};"></div> {{learning.color}}</td>
 						<td>
 							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}"><i class="fa fa-pencil"></i> Instellingen</button>
 							<button class="btn red second_button" data-toggle="modal" data-target="#deleteid{{learning._id}}" ><i class="fa fa-times"></i> Verwijder</button>
 						</td>
-					
 					</tr>
 				</tbody>
 			</table>
