@@ -7,6 +7,10 @@
 			<h3 class="heading-title">Alle organisaties</h3>
 			
 			<div class="table_buttons" align="right">
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
 				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Organisatie toevoegen</button>
 			</div>
 
@@ -22,13 +26,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="organisation in allOrganisations" id="{{group._id}}">
-						<td ng-model="groupName"><a href="#/admin/groups/{{organisation._id}}">{{ organisation.name }}
-						</a></td>
-						<td>{{ organisation.color }}</td>
+					<tr ng-repeat="organisation in allOrganisations | filter:searchTable" id="{{group._id}}" class="tablerow">
+						<td data-ng-click="go('/admin/groups/' + organisation._id + '/')" ng-model="groupName">{{ organisation.name }}
+						</td>
+						<td data-ng-click="go('/admin/groups/' + organisation._id + '/')"><div style="width:14px;height:14px;display:inline-block;background:{{organisation.color}};"></div> {{ organisation.color }}</td>
 						<!-- <td>{{ organisation.logo }}</td>
 						<td></td> -->
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{organisation._id}}">Instellingen</button></td>
+						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{organisation._id}}"><i class="fa fa-pencil"></i> Instellingen</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -43,10 +47,14 @@
 					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
 				  </div>
 				  <div class="modal-body input-f-wrapper">
-						<label>Organisatie naam</label>
-						<input type="text" ng-model="organisation.name" /> </br>
-						<label>Organisatie kleur</label>
-						<input colorpicker="hex" type="text" ng-model="organisation.color" />
+						<div class="input_row input-group">
+							<label>Organisatie titel:</label>
+							<input type="text" placeholder="Naam" ng-model="organisation.name" required class="form-control" />
+						</div>
+						<div class="input_row input-group">
+							<label>Organisatie kleur:</label>
+							<input type="text" colorpicker="hex" placeholder="Kleurcode" ng-model="organisation.color" required class="form-control" />
+						</div>
 				  </div>
 
 				  <div class="modal-footer">
@@ -69,12 +77,15 @@
 						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe organisatie toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-						<label>Organisatie naam</label>
-						<input type="text" placeholder="Naam" ng-model="newGroupName" required />
-						</br>
-						
-						<label>Organisatie kleur</label>
-						<input type="text" placeholder="Voer hier uw kleurcode in" ng-model="newGroupColor" required />
+
+						<div class="input_row input-group">
+							<label>Organisatie naam:</label>
+							<input type="text" placeholder="Naam" ng-model="newGroupName" required class="form-control" />
+						</div>
+						<div class="input_row input-group">
+							<label>Organisatie kleur:</label>
+							<input type="text" colorpicker="hex" placeholder="Voer hier uw kleurcode in" ng-model="newGroupColor" required class="form-control" />
+						</div>
 
 						<input type="hidden" ng-model="newGroupLogo" value="test" />
 <!-- 	

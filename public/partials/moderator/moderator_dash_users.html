@@ -26,8 +26,8 @@
 				<tbody>
 					<tr ng-repeat="user in usersOfGroup | filter:searchTable" id="{{user._id}}" class="tablerow">
 						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.firstName }}</td>
-						<td>{{ user.middleName }}</td>
-						<td>{{ user.surName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.middleName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.surName }}</td>
 						<!-- <td><button class="btn orange" data-toggle="modal" data-target="#settingsid">Instellingen</button></td> -->
 					</tr>
 				</tbody>

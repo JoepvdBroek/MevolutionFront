@@ -2,6 +2,16 @@ module.exports = function(admin)
 {
     admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', '$rootScope', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, $rootScope, OrganisationService, GroupService, UserGroupService, AdminFactory)
     {
+
+        $scope.go = function(path){
+            console.log(path);
+            $location.path(path);
+        };
+
+        $scope.goBack = function(){
+            $window.history.back();
+        };
+        
         // @TODO filter the ng-repeat on users who don't have an organisation yet???
         var history = [];
 
