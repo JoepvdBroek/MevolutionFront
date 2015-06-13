@@ -2,11 +2,17 @@
 <!-- 	<a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
-			<a ng-click="goBack()" class="back_link">Terug</a>
+
+			<a class="btn btn-default" style="background:#777;float:left;margin-top:-70px;margin-left:-25px;"  ng-click="goBack()"><i class="fa fa-arrow-left"> Ga terug</i></a>
 			<h3 class="heading-title">Alle groepen van {{ organisationName }}</h3>
 			<div class="table_buttons" align="right"	>
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
 				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg gebruikers toe aan deze organisatie</button>
 				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak gebruikers moderator van deze organisatie</button>
+
 				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
 				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruikers aanmaken</button>
 			</div>
@@ -20,10 +26,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="group in allGroups | orderBy: 'title'" id="{{group._id}}">
-						<td ng-model="group.groupName"><a href="#/moderator/{{organisationId}}/groups/{{group._id}}">{{ group.title }}</a></td>
-						<td><p ng-repeat="moderator in group.moderators">{{moderator.firstName}}</p></td>
-						<td><button class="btn orange" ng-click="fillModeratorlist(group._id)" data-toggle="modal" data-target="#settingsid{{group._id}}">Instellingen</span></button></td>
+					<tr ng-repeat="group in allGroups | filter:searchTable | orderBy: 'title'" id="{{group._id}}" class="tablerow">
+						<td ng-model="group.groupName" data-ng-click="go('/moderator/' + organisationId + '/groups/' + group._id + '/')">{{ group.title }}</td>
+						<td><text ng-repeat="moderator in group.moderators">{{moderator.firstName}}<comma ng-if="!$last">,</comma> </text></td>
+						<td><button class="btn orange" ng-click="fillModeratorlist(group._id)" data-toggle="modal" data-target="#settingsid{{group._id}}"><i class="fa fa-pencil"></i> Instellingen</span></button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -84,21 +90,27 @@
 						<h4 class="modal-title" id="myModalLabel">Wijzigen</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-					  		<div class="input-row">
-								<label>Groep naam</label>
-								<input type="text" class="form-control" ng-model="group.title"/>
+							<label>Groep naam</label>
+							<div class="input-group">
+								<input class="form-control" placeholder="Naam van een groep" type="text" ng-model="group.title"/>
 							</div>
 							</br>
 							<h4>Voeg moderators toe</h4>
-							<div class="moderator_list list">
-								<label ng-repeat="moderator in allModerators">
+							<div class="input-group searchbar">
+								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchModerators">
+							</div>
+							<div class="dropdown_list" ng-show="showDetails">
+								<label ng-repeat="moderator in allModerators | filter:searchModerators">
 								  <input
 								    type="checkbox"
 								    name="selectedModerators[]"
 								    value="{{moderator._id}}"
 								    ng-checked="selectionOfModerators.indexOf(moderator._id, group._id) > -1"
 								    ng-click="toggleSelectionOfModerators(moderator._id, group._id)"> {{moderator.firstName}} {{moderator.middleName}} {{moderator.surName}}
+								    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
 								</label>
+
 							</div>
 					  </div>
 
@@ -120,11 +132,11 @@
 						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe groep toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-					  	<div class="input-row">
-							<label>Groep naam</label>
-							<input type="text" class="form-control" placeholder="Naam" ng-model="newGroupName" required />
+						<label>Groep naam</label>
+						<div class="input-group">
+							<input class="form-control" placeholder="Naam van een groep" type="text" ng-model="newGroupName" required/>
 						</div>
-
+						</br>
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
@@ -146,8 +158,13 @@
 					  </div>
 					  <div class="modal-body input-f-wrapper">
 							<h4>Vink users aan om ze moderator te maken</h4>
-							<div class="moderator_list list">
-								<label ng-repeat="user in usersOfOrganisation">
+							<div class="input-group searchbar">
+								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchModerator">
+							</div>
+							<div class="dropdown_list" ng-show="showDetails">
+							
+								<label ng-repeat="user in usersOfOrganisation | filter:searchModerator">
 								  <input
 								    type="checkbox"
 								    name="selectedUsersToMakeModerator[]"
@@ -155,7 +172,9 @@
 								    ng-disabled="{{user.isChecked}}"
 								    ng-checked="user.isChecked"
 								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}} {{user.middleName}} {{user.surName}}
+								    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
 								</label>
+								
 							</div>
 					  </div>
 					  <div class="modal-footer">
@@ -179,9 +198,13 @@
 						<h4 class="modal-title" id="myModalLabel">Selecteer gebruikers</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-							<div class="moderator_list list">
+							<div class="input-group searchbar">
+								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchAddModerator">
+							</div>
+							<div class="dropdown_list" ng-show="showDetails">
 							<!-- @TODO filter the ng-repeat on users who don't have an organisation yet??? -->
-								<label ng-repeat="user in allUsers">
+								<label ng-repeat="user in allUsers | filter:searchAddModerator">
 								  <input
 								    type="checkbox"
 								    name="selectedUsersToAddToOrganisation[]"
@@ -189,6 +212,7 @@
 								    ng-checked="user.isChecked"
 								    ng-disabled="user.isChecked"
 								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}} {{user.middleName}} {{user.surName}}
+								    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
 								</label>
 							</div>
 					  </div>

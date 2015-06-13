@@ -1,11 +1,15 @@
 <div id="wrap">
 	<div class="container">
 		<div class="panel-style space">
-			<a ng-click="goBack()" class="back_link">Terug</a>
+			<a class="btn btn-default" style="background:#777;float:left;margin-top:-70px;margin-left:-25px;" ng-click="goBack()"><i class="fa fa-arrow-left"> Ga terug</i></a>
 			<h2>Welkom {{ user.username }}</h2>
 			<h3 class="heading-title">Niveaus van leerlijn {{ learningName }}</h3>
 
 			<div class="table_buttons" align="right">
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
 				<button class="btn blue" data-toggle="modal" data-target="#newNiveau"><span class="glyphicon glyphicon-plus"></span> Nieuw niveau toevoegen</button>
 			</div>
 
@@ -19,14 +23,13 @@
 					</tr>
 				</thead>
 
-				<tbody ng-repeat="niveau in niveaus | orderBy:'title'" id="{{niveau._id}}">
-					<tr>
+				<tbody >
+					<tr ng-repeat="niveau in niveaus | filter:searchTable | orderBy:'title'" id="{{niveau._id}}" style="cursor:auto;" class="tablerow">
 						<td>{{niveau.title}}</td>
-						<td style="white-space: pre;">{{ niveau.description}}</td>
-						<!-- <td>{{niveau.section}}</td>-->
-						<td class="table_row_buttons">
-							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}">Instellingen</button>
-							<button class="btn red second_button" ng-click="deleteNiveau(niveau._id, $index)">Verwijder</button>
+						<td style="white-space: pre;">{{niveau.description}}</td>		
+						<td>
+							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}"><i class="fa fa-pencil"></i> Instellingen</button>
+							<button class="btn red second_button" data-toggle="modal" data-target="#deleteid{{niveau._id}}"><i class="fa fa-times"></i> Verwijder</button>
 						</td>
 					</tr>
 				</tbody>
@@ -93,6 +96,27 @@
 				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
 					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
 					<button type="submit" class="btn blue" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Wijzigen</button>
+				  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+
+			<!-- Modal warning DELETE -->
+			<div class="modal delete fade" ng-repeat="niveau in niveaus" id="deleteid{{niveau._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				<form name="editLearningForm" novalidate>
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Verwijder {{niveau.title}}</h4>
+					<p>Weet u zeker dat u "{{niveau.title}}" wilt verwijderen?</p>
+				  </div>
+				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
+					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
+					<button data-dismiss="modal" class="btn blue">Annuleren</button>
+					<button type="submit" class="btn btn-danger" ng-click="deleteNiveau(niveau._id, $index)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
 				  </div>
 				  </form>
 				</div><!-- /.modal-content -->
