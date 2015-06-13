@@ -1,16 +1,15 @@
-<!-- Bootstrap core CSS -->
-<link href="dev/css/bootstrap.min.css" rel="stylesheet">
-
 <div id="wrap">
 	<!-- <a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
+			<a ng-click="goBack()" class="back_link">Terug</a>
 			<h3 class="heading-title">Alle groepen</h3>
 			
 			<div class="table_buttons" align="right">
 				<button class="btn blue" data-toggle="modal" data-target="#setUsers"><span class="glyphicon glyphicon-plus"></span> Voeg users toe aan deze organisatie</button>
 				<button class="btn blue" data-toggle="modal" data-target="#setModerators"><span class="glyphicon glyphicon-plus"></span> Maak users moderator van deze organisatie</button>
 				<button class="btn blue" data-toggle="modal" data-target="#newGroup"><span class="glyphicon glyphicon-plus"></span> Groep toevoegen</button>
+				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruikers aanmaken</button>
 			</div>
 
 			<table class="table simple">
@@ -33,7 +32,53 @@
 				</tbody>
 			</table>
 				
-			<!-- Deze moet dus in de for each !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
+			<div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+					<div class="modal-content">
+						<form name="createNewUser" ng-submit="createNewUser.$valid && submitNewUser(username, password1, password2, email, firstName, middleName, surName)">
+					  		<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title" id="myModalLabel">Gebruiker toevoegen</h4>
+					  		</div>
+						  	<div class="modal-body input-f-wrapper">
+					  			<div class="input-row">
+					  				<label for="input-username">Gebruikersnaam</label>
+									<input type="text" class="form-control" id="input-username" placeholder="Gebruikersnaam" ng-model="username" required>
+					  			</div>
+						  		<div class="input-row">
+						  			<label for="input-password1">Wachtwoord</label>
+					            	<input type="password" class="form-control" id="input-password1" placeholder="Wachtwoord" ng-model="password1" required>
+				            	</div>
+				            	<div class="input-row">
+						  			<label for="input-password2">Bevestig wachtwoord</label>
+					            	<input type="password" class="form-control" id="input-password2" placeholder="Bevestiging" ng-model="password2" required>
+				            	</div>
+				            	<div class="input-row">
+						  			<label for="input-email">Email adres</label>
+					            	<input type="email" class="form-control" id="input-email" placeholder="Email" ng-model="email" required>
+				            	</div>
+				            	<div class="input-row">
+						  			<label for="input-firstname">Voornaam</label>
+					            	<input type="text" class="form-control" id="input-firstname" placeholder="Voornaam" ng-model="firstName" required>
+				            	</div>
+				            	<div class="input-row">
+						  			<label for="input-middlename">Tussenvoegsel</label>
+					            	<input type="text" class="form-control" id="input-middlename" placeholder="Tussenvoegsel" ng-model="middleName">
+				            	</div>
+				            	<div class="input-row">
+						  			<label for="input-surname">Achternaam</label>
+					            	<input type="text" class="form-control" id="input-surname" placeholder="Achternaam" ng-model="surName" required>
+				            	</div>
+						  	</div>
+
+					  		<div class="modal-footer">
+								<button type="submit" class="btn blue" >Gebruiker toevoegen</button>
+					  		</div>
+				  		</form>
+					</div><!-- /.modal-content -->
+			  	</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
@@ -54,7 +99,7 @@
 								    name="selectedModerators[]"
 								    value="{{moderator._id}}"
 								    ng-checked="selectionOfModerators.indexOf(moderator._id) > -1"
-								    ng-click="toggleSelectionOfModerators(moderator._id)"> {{moderator.firstName}}
+								    ng-click="toggleSelectionOfModerators(moderator._id)"> {{moderator.firstName}} {{moderator.middleName}} {{moderator.surName}}
 								</label>
 							</div>
 					  </div>
@@ -72,20 +117,21 @@
 			<div class="modal fade" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-					<form name="groupForm" novalidate ng-submit="groupForm.$valid && addGroup(newGroupName)">
+					<form name="groupForm" ng-submit="groupForm.$valid && addGroup(newGroupName)">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe groep toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-						
-						<input type="text" placeholder="Naam" ng-model="newGroupName" required />
-						</br>
+						<div class="input-row">
+							<label>Groep naam</label>
+							<input type="text" class="form-control" placeholder="Naam" ng-model="newGroupName" required />
+						</div>
 
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue" onclick="$('#newGroup').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Groep aanmaken</button>
+						<button type="submit" class="btn blue">Groep aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -111,7 +157,7 @@
 								    value="{{user._id}}"
 								    ng-checked="user.isChecked"
 								    ng-disabled="{{user.isChecked}}"
-								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}}
+								    ng-click="toggleSelectionOfUsersMakingModerator(user._id)"> {{user.firstName}} {{user.middleName}} {{user.surName}}
 								</label>
 							</div>
 					  </div>
@@ -145,7 +191,7 @@
 								    value="{{user._id}}"
 								    ng-checked="user.isChecked"
 								    ng-disabled="user.isChecked"
-								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}}
+								    ng-click="toggleSelectionOfUsersAddOrganisation(user._id)"> {{user.firstName}} {{user.middleName}} {{user.surName}}
 								</label>
 							</div>
 					  </div>

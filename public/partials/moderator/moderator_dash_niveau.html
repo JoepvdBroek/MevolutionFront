@@ -1,6 +1,7 @@
 <div id="wrap">
 	<div class="container">
 		<div class="panel-style space">
+			<a ng-click="goBack()" class="back_link">Terug</a>
 			<h2>Welkom {{ user.username }}</h2>
 			<h3 class="heading-title">Niveaus van leerlijn {{ learningName }}</h3>
 
@@ -13,17 +14,20 @@
 					<tr>
 						<th>Titel</th>
 						<th>Beschrijving</th>
-						<th>Sectie</th>
+						<!-- <th>Sectie</th> -->
 						<th>Instellingen</th>		
 					</tr>
 				</thead>
 
-				<tbody ng-repeat="niveau in niveaus" id="{{niveau._id}}">
+				<tbody ng-repeat="niveau in niveaus | orderBy:'title'" id="{{niveau._id}}">
 					<tr>
 						<td>{{niveau.title}}</td>
-						<td>{{niveau.description}}</td>
-						<td>{{niveau.section}}</td>			
-						<td><button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}">Instellingen</button><button class="btn red second_button" ng-click="deleteNiveau(niveau._id, $index)">Verwijder</button></td>
+						<td style="white-space: pre;">{{ niveau.description}}</td>
+						<!-- <td>{{niveau.section}}</td>-->
+						<td class="table_row_buttons">
+							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}">Instellingen</button>
+							<button class="btn red second_button" ng-click="deleteNiveau(niveau._id, $index)">Verwijder</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -32,7 +36,7 @@
 			<div class="modal fade" id="newNiveau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-					<form name="niveauForm" novalidate ng-submit="niveauForm.$valid && addNiveau(newTitle, newDescription, newSection)">
+					<form name="niveauForm" ng-submit="niveauForm.$valid && addNiveau(newTitle, newDescription)">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Voeg een nieuw niveau toe</h4>
@@ -44,17 +48,17 @@
 						</div>
 						<div class="input_row input-group">
 							<label>Niveau beschrijving</label>
-							<textarea  placeholder="Beschrijving" ng-model="newDescription" required class="form-control"></textarea>
+							<textarea placeholder="Beschrijving" ng-model="newDescription" required class="form-control" rows="15" cols="80" id="textarea_niveau"></textarea>
 						</div>
-						<div class="input_row input-group">
+						<!-- <div class="input_row input-group">
 							<label>Niveau sectie</label>
 							<input type="text" placeholder="Sectie" ng-model="newSection" required class="form-control" />
-						</div>
+						</div> -->
 
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
-						<button type="submit" class="btn blue" onclick="$('#newNiveau').modal('hide')">Niveau aanmaken</button>
+						<button type="submit" class="btn blue">Niveau aanmaken</button>
 					  </div>
 				  </form>
 				</div><!-- /.modal-content -->
@@ -65,7 +69,7 @@
 			<div class="modal fade" ng-repeat="niveau in niveaus" id="settingsid{{niveau._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="editNiveauForm" novalidate ng-submit="editNiveauForm.$valid && editNiveau(niveau.title, niveau.description, niveau.section, niveau)">
+				<form name="editNiveauForm" novalidate ng-submit="editNiveauForm.$valid && editNiveau(niveau.title, niveau.description, niveau)">
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
@@ -77,12 +81,12 @@
 						</div>
 						<div class="input_row input-group">
 							<label>Beschrijving niveau</label>
-							<textarea ng-model="niveau.description" class="form-control"></textarea>
+							<textarea ng-model="niveau.description" class="form-control" rows="15" cols="80"></textarea>
 						</div>
-						<div class="input_row input-group">
+						<!-- <div class="input_row input-group">
 							<label>Sectie niveau</label>
 							<input type="text" ng-model="niveau.section" class="form-control" />
-						</div>
+						</div> -->
 				  </div>
 
 				  <div class="modal-footer">

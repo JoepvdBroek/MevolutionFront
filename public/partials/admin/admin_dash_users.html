@@ -1,11 +1,9 @@
-<!-- Bootstrap core CSS -->
-<link href="dev/css/bootstrap.min.css" rel="stylesheet">
-
 <div id="wrap">
 	<!-- <button type="button" class="btn default back-button"></button> -->
 	<!-- <a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
+			<a ng-click="goBack()" class="back_link">Terug</a>
 			<h3 class="heading-title">Alle users</h3>
 	
 			<div class="table_buttons" align="right"	>
@@ -22,7 +20,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="user in usersOfGroup" id="{{user._id}}">
+					<tr ng-repeat="user in usersOfGroup | orderBy: 'firstName'" id="{{user._id}}">
 						<td><a href="#/leerlingdash/{{singleOrganisationId}}/{{user._id}}">{{ user.firstName }}</a></td>
 						<td>{{ user.middleName }}</td>
 						<td>{{ user.surName }}</td>
@@ -71,7 +69,7 @@
 							    name="selectedUsers[]"
 							    value="{{userObject._id}}"
 							    ng-checked="selectionOfUsers.indexOf(userObject._id) > -1"
-							    ng-click="toggleSelection(userObject._id)"> {{userObject.username}}
+							    ng-click="toggleSelection(userObject._id)"> {{userObject.firstName}} {{userObject.middleName}} {{userObject.surName}}
 							</label>
 						</div>
 					  </div>

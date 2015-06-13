@@ -19,7 +19,7 @@
 					</tr>
 				</thead>
 
-				<tbody ng-repeat="learning in learnings" id="{{learning._id}}">
+				<tbody ng-repeat="learning in learnings | orderBy:'title'" id="{{learning._id}}">
 					<tr>
 						<!-- <td>{{learning.image}}</td> -->
 						<td><a href="#/moderator/{{ user.organization._id }}/{{learning._id}}">{{learning.title}}</a></td>
