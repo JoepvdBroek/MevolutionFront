@@ -8,7 +8,7 @@
 	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
 				<div class="leerlijn-title">{{leerlijn.title}}</div>
 				
-				<div class="levelbar" ng-click="collapse(leerlijn.title)" style="background:{{leerlijn.color}};">
+				<div class="levelbar" ng-click="collapse(leerlijn._id)" style="background:{{leerlijn.color}};">
 					<div class="level-type" ng-repeat="niveau in leerlijn.niveaux" style="width:{{100/leerlijn.niveaux.length}}%;">
 						<div ng-if="niveau.objects.length">
 					    	<div style="width:100%;height:20px;background:lime;"></div>
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 
-				<div class="leerlijn-holder {{leerlijn.title}}" ng-repeat="niveau in leerlijn.niveaux">	
+				<div class="leerlijn-holder {{leerlijn._id}}" ng-repeat="niveau in leerlijn.niveaux">	
 					<div>{{niveau.title}}</div>
 					<div class="level-header" style="background:{{leerlijn.color}};">
 						
