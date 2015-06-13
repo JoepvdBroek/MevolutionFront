@@ -1,0 +1,46 @@
+<div class="container-fluid mv-canvas content zoomViewport" ng-controller="CanvasController">
+    <div class="zoomContainer">
+        <div class="row">
+            <!---->
+            <div ng-repeat="fase in fases" class="col-xs-6 mv-spiral-section zoomTarget" zoomtarget data-targetsize="0.95" data-closeclick="true">
+                <h2 class="title">{{ fase.fase }}</h2>
+                <div ng-repeat="object in fase.objects"
+                     class="object"
+                     data-id="{{ object.object._id }}"
+                     data-fase="{{ fase.fase }}"
+                     draggabilly="{ containment: true, dragEnd: 'dragEnd' }"
+                     style="top: {{ object.yPosition }}px;left: {{ object.xPosition }}px;">
+
+                    <ng-switch on="object.object.type">
+                        <div ng-switch-when="video"
+                             class="media video"
+                             colorbox="{ href: '/partials/canvas/objects/{{ object.object.type }}.html' }"
+                             videopreview="{ href: '{{ object.object.video }}', mimetype: '{{ object.object.mimetype }}' }">
+                                <i class="fa fa-play"></i>
+                        </div>
+
+                        <div ng-switch-when="picture"
+                             class="media picture"
+                             style="background-image:url('{{ object.object.picture }}');"
+                             colorbox="{ href: '/partials/canvas/objects/{{ object.object.type }}.html', innerWidth: '50%', innerHeight: '50%' }">
+                        </div>
+
+                        <div ng-switch-when="audio"
+                             class="media audio"
+                             colorbox="{ href: '/partials/canvas/objects/{{ object.object.type }}.html' }"
+                             audiopreview="{ href: '{{ object.object.audio }}', mimetype: '{{ object.object.mimetype }}' }">
+                            <i class="fa fa-music"></i>
+                            <img src="assets/img/animated-notes.gif" alt="Listening" />
+                        </div>
+
+                        <div ng-switch-when="text"
+                             class="media text"
+                             colorbox="{ href: '/partials/canvas/objects/{{ object.object.type }}.html', innerWidth: '50%', innerHeight: '50%' }">
+                            <i class="fa fa-align-left"></i>
+                        </div>
+                    </ng-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

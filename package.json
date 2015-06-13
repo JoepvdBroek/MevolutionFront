@@ -20,9 +20,17 @@
     "reactify": "*",
     "tiny-lr": "*",
     "connect-livereload": "*",
+    "underscore": "*",
 
     "angular": "*",
     "angular-resource": "*",
-    "angular-route": "*"
+    "angular-route": "*",
+    "angular-css": "*",
+
+    "jquery": "2.1.*",
+    "bootstrap": "*",
+    "jquery-colorbox": "*",
+    "jquery-bridget": "*",
+    "draggabilly": "*"
   }
 }

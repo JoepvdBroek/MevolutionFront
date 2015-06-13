@@ -11,7 +11,16 @@
 |
 */
 
-Route::get('/', function()
+Blade::setRawTags('[!!', '!!]');
+Blade::setContentTags('[[', ']]');
+Blade::setEscapedContentTags('[[[', ']]]');
+
+Route::get('/auth', function()
 {
     return view('template.base');
+});
+
+Route::get('/', function()
+{
+    return view('template.admin');
 });

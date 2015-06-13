@@ -135,7 +135,7 @@ gulp.task('fonts', function()
 {
     return gulp.src
     ([
-        path.bower('fontawesome', 'fonts') + '*/**'
+        path.bower('fontawesome', 'fonts') + '**/*'
     ])
     .pipe(gulp.dest(path.deploy('fonts', false)))
     .pipe(gulp.dest(path.deploy('fonts', true)));
@@ -183,39 +183,38 @@ gulp.task('global-style', function ()
     .pipe(gulp.dest(path.deploy('css', true)));
 });
 
+var bundler = function(file)
+{
+    var stream = through2.obj(function(file, enc, next)
+    {
+        var b = browserify();
+
+        b.add(file.path);
+        b.transform(reactify);
+        b.bundle(function(err, src)
+        {
+            if (err)
+            {
+                console.log(err);
+            }
+
+            stream.push(new vinyl
+            ({
+                path: file.path.replace(/^.*[\\\/]/, ''),
+                contents: src
+            }));
+
+            next();
+        })
+    });
+
+    return stream;
+};
+
 gulp.task('global-script', function ()
 {
-    var bundler = function(file)
-    {
-        var stream = through2.obj(function(file, enc, next)
-        {
-            var b = browserify();
-
-            b.add(file.path);
-            b.transform(reactify);
-            b.bundle(function(err, src)
-            {
-                if (err)
-                {
-                    console.log(err);
-                }
-
-                stream.push(new vinyl
-                ({
-                    path: file.path.replace(/^.*[\\\/]/, ''),
-                    contents: src
-                }));
-
-                next();
-            })
-        });
-
-        return stream;
-    };
-
     return gulp.src
            ([
-               path.src('js') + 'libs.js',
                path.src('js') + 'Application.js'
            ])
            .pipe(bundler())
@@ -228,10 +227,14 @@ gulp.task('global-script', function ()
 gulp.task('lib-script', function ()
 {
     return gulp.src
-    ([
-         path.bower('base') + '**/*.min.js'
-    ])
-    .pipe(gulp.dest(path.deploy('jslib', true)));
+        ([
+             path.src('js') + 'libs.js'
+        ])
+        .pipe(bundler())
+        .pipe(gulp.dest(path.deploy('js')))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify())
+        .pipe(gulp.dest(path.deploy('js', true)));
 });
 
 gulp.task('global-image', function()

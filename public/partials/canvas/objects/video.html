@@ -1,0 +1,5 @@
+<div ng-controller="VideoController as video">
+    <video class="video{{ object.object._id }}" width="640" height="360" poster="" controls>
+        <source ng-src="{{ trustSrc(object.object.video) }}" type="{{ object.object.mimetype }}" />
+    </video>
+</div>

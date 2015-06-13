@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="assets/css/timeline.min.css" type="text/css" />
+<div ng-controller="TimelineController" class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+	    <div class="paal"></div>
+
+	    <div class="timeline">
+			<div ng-repeat="y in allCanvas | orderBy:'year':true" >
+				<div class="tag-year" id="{{y.year}}">{{ y.year }}</div>
+
+				<div ng-repeat="m in y.m" class="month">
+					<div class="align-hrz">
+						<div class="hrz-line"></div>
+						<div class="hrz-line-dotted"></div>
+					</div>
+					
+					<div class="canvas-holder" id="{{y.year}}{{ m.month }}">
+						<div class="month-header">
+							<div class="tag-month">{{ m.month }}</div>
+						</div>
+                        <span ng-repeat="canvas in m.canvas | filter:query">
+                            <a href="#/canvas/{{ canvas.id }}" class="cvs_item">
+                                {{ canvas.title }}
+                            </a>
+                        </span>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+    <div class="timeline-options">
+    	<button type="button" class="btn btn-success" id="btn-create-canvas" data-toggle="modal" data-target="#create-canvas">Creeer een nieuw canvas</button>
+    </div>
+	<form class="form-horizontal timeline-filters" role="form">
+		<div class="form-group">
+			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Zoeken</label>
+      		<input ng-model="query" id="input-timeline-search" type="text" placeholder="Filter op" class="form-control timeline-search" autofocus>
+		</div>
+		<div>
+			<label for="input-timeline-search" id="timeline-label" class="col-sm-4 control-label">Snelmenu</label>
+			</br></br>
+			<div ng-repeat="y in allCanvas" class="quick-scroll">
+				<a ng-click="scrollTo(y.year)">{{ y.year }}</a>
+				<div ng-repeat="m in y.m" class="month">
+					&nbsp;&nbsp;&nbsp;<a ng-click="scrollTo(y.year, m.month)" >{{ m.month }}</a>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="modal fade" id="create-canvas" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Creeer een nieuw canvas</h4>
+				</div>
+				<div class="modal-body">
+					<form novalidate ng-submit="addCanvas(newCanvasName, canvasType)">
+						<div class="form-group">
+							<label for="recipient-name" class="control-label">Naam canvas:</label>
+							<input type="text" class="form-control" id="recipient-name" ng-model="newCanvasName">
+						</div>
+						<div class="form-group">
+							<label for="canvas-type">Type:</label>
+							<select class="form-control" id="canvas-type" ng-model="canvasType">
+								<option>ontwikkelruimte</option>
+								<option>portfolio</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="control-label">Tags:</label>
+							<textarea class="form-control" id="message-text" ng-model="canvasTags" disabled="true"></textarea>
+						</div>
+						<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+					<button type="submit" class="btn btn-primary">Creeer canvas</button>
+				</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

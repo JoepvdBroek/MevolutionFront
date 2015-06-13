@@ -1,0 +1,51 @@
+S<div ng-controller="ForgotPasswordController">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="title-header col-md-10">
+            <h1>Wachtwoord vergeten</h1>
+            <div class="divider"></div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row "> 
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row">
+                <div ng-hide="tokenSent">
+                    <div class="col-md-4">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="email">E-mailadres van je account</label>
+                                <input type="text" class="form-control" id="email" ng-model="email">
+                            </div>
+                            <button type="submit" id="resetpassword-button" ng-click="sentPasswordReset(email)" class="btn btn-default">Verstuur e-mail</button>
+                        </form>
+                    </div>
+                </div>
+                <div ng-show="tokenSent">
+                    <div class="col-md-4">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="token">Token van uw net ontvangen e-mail</label>
+                                <input type="text" class="form-control" id="token" ng-model="forgot.token">
+                            </div>
+                            <div class="form-group">
+                                <label for="new">Nieuw wachtwoord</label>
+                                <input type="password" class="form-control" id="new" ng-model="forgot.new">
+                            </div>
+                            <div class="form-group">
+                                <label for="repeat">Herhaal nieuw wachtwoord</label>
+                                <input type="password" class="form-control" id="repeat" ng-model="forgot.repeat">
+                            </div>
+                            <button type="submit" id="setpassword-button" ng-click="setNewPassword(forgot)" class="btn btn-default">Opslaan</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-md-4"></div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>

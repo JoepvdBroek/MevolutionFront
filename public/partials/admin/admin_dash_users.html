@@ -1,0 +1,101 @@
+<div id="wrap">
+	<!-- <button type="button" class="btn default back-button"></button> -->
+	<!-- <a ng-click='back()' class="back_button">Back</a> -->
+	<div class="container">
+		<div class="panel-style space">
+			<a class="btn btn-default" style="background:#777;float:left;margin-top:-70px;margin-left:-25px;" ng-click="goBack()"><i class="fa fa-arrow-left"> Ga terug</i></a>
+			<h3 class="heading-title">Alle users</h3>
+	
+			<div class="table_buttons" align="right"	>
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
+				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruiker toevoegen</button>
+			</div>
+
+			<table class="table simple">
+				<thead>
+					<tr>
+						<th>naam</th>
+						<th>tussenvoegsel</th>
+						<th>achternaam</th>
+						<!-- <th>instellingen</th> -->					
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr ng-repeat="user in usersOfGroup | filter:searchTable | orderBy: 'firstName'" id="{{user._id}}" class="tablerow">
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.firstName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.middleName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.surName }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Modal -->
+			<div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="userForm" novalidate ng-submit="userForm.$valid && submitUsers()">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Voeg nieuwe user(s) toe</h4>
+					  </div>
+					  <div class="modal-body input-f-wrapper">
+						  <div class="input-group searchbar">
+								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchUsers">
+							</div>
+							<div class="dropdown_list" ng-show="showDetails">
+							<label ng-repeat="userObject in allMevolutionUsers | filter:searchUsers">
+							  <input
+							    type="checkbox"
+							    name="selectedUsers[]"
+							    value="{{userObject._id}}"
+							    ng-checked="selectionOfUsers.indexOf(userObject._id) > -1"
+							    ng-click="toggleSelection(userObject._id)"> {{userObject.firstName}} {{userObject.middleName}} {{userObject.surName}}
+							    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
+							</label>
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue" onclick="$('#newUser').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">User toevoegen</button>
+					  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="newModerator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="moderatorForm" novalidate ng-submit="moderatorForm.$valid && submitModerators()">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe moderator toe</h4>
+					  </div>
+					  <div class="modal-body input-f-wrapper">
+						<label ng-repeat="moderator in moderatorsOfGroup">
+						  <input
+						    type="checkbox"
+						    name="selectedUsers[]"
+						    value="{{moderator._id]"
+						    ng-checked="selection.indexOf(moderator._id) > -1"
+						    ng-click="toggleSelection(moderator._id)"> {{moderator.username}}
+						</label>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue" onclick="$('#newModerator').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">moderator toevoegen</button>
+					  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+		</div>		
+	</div><!-- /.container -->
+</div>

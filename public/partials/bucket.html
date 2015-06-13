@@ -1,0 +1,33 @@
+<link rel="stylesheet" type="text/css" href="dev/css/admin_dash.css" />
+<!-- Bootstrap core CSS -->
+<link href="dev/css/bootstrap.min.css" rel="stylesheet">
+
+<div id="wrap" ng-controller="BucketController">
+	<div class="container">
+		<div class="panel-style space">
+			<h3 class="heading-title" style="font-family: calibri, verdana !important;">Verzamelbak</h3>
+			
+			<table datatable="" id="bucketTable" class="table simple">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Object</th>		
+						<th>Feedback</th>
+						<th>Owner</th>
+						<th>Delete</th>				
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="object in fullBucket" id="{{object._id}}">
+						<td ng-model="objectType">{{ object.type }}</td>
+						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
+						<td ng-model="objectFeedback">{{ object.feedbackOwner[0] !== "" ?  "No feedback" : object.feedbackOwner[0] }}</td>
+						<td ng-model="objectOwner">{{ object.owner[0] }}</td>
+						<td><button><span class="glyphicon glyphicon-trash"></span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div><!-- /.container -->
+</div>
+    

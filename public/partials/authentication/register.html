@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div id="login-header">
+            <div id="overlay">
+                <img id="header-image" src="assets/img/title.jpg" alt="Mevolution" />
+            </div>
+        </div>
+
+        <form id="loginform-wrapper" role="form" ng-controller="AuthenticationController">
+            <input type="text" class="form-control" id="input-username" placeholder="Gebruikersnaam" ng-model="user.username" >
+            <button id="username_check" class="form-control" ng-click="checkUsername(user.username)">Controleer gebruikersnaam</button>
+            <input type="password" class="form-control" id="input-password1" placeholder="Wachtwoord" ng-model="user.password1" >
+            <input type="password" class="form-control" id="input-password2" placeholder="Wachtwoord" ng-model="user.password2" >
+            <input type="email" class="form-control" id="input-email" placeholder="Email" ng-model="user.email" >
+            <input type="text" class="form-control" id="input-firstname" placeholder="Voornaam" ng-model="user.firstname" >
+            <input type="text" class="form-control" id="input-middlename" placeholder="Tussenvoegsel" ng-model="user.middlename">
+            <input type="text" class="form-control" id="input-surname" placeholder="Achternaam" ng-model="user.surname" >
+
+            <input id="submit-register" type="submit" ng-click="register(user)" value="Registreren"/>
+
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
