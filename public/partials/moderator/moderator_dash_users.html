@@ -3,9 +3,14 @@
 	<!-- <a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
+			<a class="btn btn-default" style="background:#777;float:left;margin-top:-70px;margin-left:-25px;" ng-click="goBack()"><i class="fa fa-arrow-left"> Ga terug</i></a>
 			<h3 class="heading-title">Alle users van {{ groupTitle }}</h3>
 	
 			<div class="table_buttons" align="right">
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
 				<button class="btn blue" data-toggle="modal" data-target="#newUser"><span class="glyphicon glyphicon-plus"></span> Gebruiker toevoegen</button>
 			</div>
 
@@ -19,10 +24,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="user in usersOfGroup" id="{{user._id}}">
-						<td><a href="#/leerlingdash/{{singleOrganisationId}}/{{user._id}}">{{ user.firstName }}</a></td>
-						<td>{{ user.middleName }}</td>
-						<td>{{ user.surName }}</td>
+					<tr ng-repeat="user in usersOfGroup | filter:searchTable" id="{{user._id}}" class="tablerow">
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.firstName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.middleName }}</td>
+						<td data-ng-click="go('/leerlingdash/' + singleOrganisationId + '/' + user._id + '/')">{{ user.surName }}</td>
 						<!-- <td><button class="btn orange" data-toggle="modal" data-target="#settingsid">Instellingen</button></td> -->
 					</tr>
 				</tbody>
@@ -61,14 +66,19 @@
 						<h4 class="modal-title" id="myModalLabel">Voeg nieuwe user(s) toe</h4>
 					  </div>
 					  <div class="modal-body input-f-wrapper">
-						  <div class="userholder list">
-							<label ng-repeat="userObject in allMevolutionUsers">
+						  	<div class="input-group searchbar">
+								<span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+								<input type="text" class="form-control" ng-focus="showDetails = true" placeholder="Zoek en selecteer één of meer moderatoren" ng-model="searchUsers">
+							</div>
+							<div class="dropdown_list" ng-show="showDetails">
+							<label ng-repeat="userObject in allMevolutionUsers | filter:searchUsers">
 							  <input
 							    type="checkbox"
 							    name="selectedUsers[]"
 							    value="{{userObject._id}}"
 							    ng-checked="userObject.isChecked"
 							    ng-click="toggleSelection(userObject._id)"> {{userObject.username}}
+							    <border ng-if="!$last"><div class="dropdown_seperator"></div></border>
 							</label>
 						</div>
 					  </div>

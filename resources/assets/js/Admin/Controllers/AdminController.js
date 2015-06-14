@@ -2,20 +2,53 @@ module.exports = function(admin)
 {
     admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', '$rootScope', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, $rootScope, OrganisationService, GroupService, UserGroupService, AdminFactory)
     {
+
+        $scope.go = function(path){
+            console.log(path);
+            $location.path(path);
+        };
+
         // @TODO filter the ng-repeat on users who don't have an organisation yet???
         var history = [];
 
-        $rootScope.$on('$routeChangeSuccess', function() {
-            //console.log('routeChange');
-            history.push($location.$$path);
-        });
+        $scope.goBack = function goBack(){
+            $window.history.back();
+        }
 
-        $rootScope.back = function () {
-            var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
-            $location.path(prevUrl);
-        };
+        function refillUsersOfOrganisation(){
+            UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
+                {
+                    $scope.usersOfOrganisation = [];
+                    for(i=0;i<data.length;i++){
+                        data[i].isChecked = false;
+                        for(a = 0; a < $scope.allModerators.length; a++){
+                            if($scope.allModerators[a]._id == data[i]._id){
+                                data[i].isChecked = true;
+                                excistingModeratorsInOrganisation.push(data[i]._id);
+                            }
+                        }
+                        $scope.usersOfOrganisation.push(data[i]);
+                    }
+                });
+        }
 
-        //var singleOrganisationId = "";
+        function refillExcistingUsersInOrganisation(){
+            $scope.allUsers = [];
+            UserGroupService.getAllUsers().then(function(data, status, headers, config)
+                {
+                    for(i=0;i<data.length;i++){
+                        data[i].isChecked = false;
+                        for(a = 0; a < $scope.usersOfOrganisation.length; a++){
+                            if($scope.usersOfOrganisation[a]._id == data[i]._id){
+                                data[i].isChecked = true;
+                                excistingUsersInOrganisation.push(data[i]._id);
+                            }
+                        }
+                        $scope.allUsers.push(data[i]);
+                    }
+                    $scope.selectedUsersToAddToOrganisation = excistingUsersInOrganisation;
+                });
+        }
 
         /* *  ADMIN DASH ORGANISATIONS  **/
         var organisations = [];
@@ -40,6 +73,9 @@ module.exports = function(admin)
                             $scope.allOrganisations.push(data[i]);
                         }
                     });
+                    $('.modal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                     alert('Organisatie toegevoegd!');
                     $scope.newGroupName = "";
                     $scope.newGroupColor = "";
@@ -57,7 +93,10 @@ module.exports = function(admin)
         // submits new groupName
         $scope.submitNewOrganisationName = function submitNewOrganisationName(newName, newColor, organisation){
             OrganisationService.postNewOrganisationName(newName, newColor, organisation._id).then(function(data, status, headers, config)
-                { 
+                {
+                    $('.modal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                     alert('Organisatie bijgewerkt!');
                 });
         };
@@ -73,9 +112,6 @@ module.exports = function(admin)
         $scope.allUsers = [];
 
         if(typeof $routeParams.organisationid !== 'undefined'){
-
-            // singleOrganisationId = $routeParams.organisationid;
-            // console.log(singleOrganisationId);
 
             GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
                 {
@@ -94,9 +130,12 @@ module.exports = function(admin)
                     GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
                     {
                         for(i=0;i<data.length;i++){
-                        $scope.allGroups.push(data[i]);
-                    }
+                            $scope.allGroups.push(data[i]);
+                        }
                     });
+                    $('#newGroup').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                     alert('Groep aangemaakt!');
                     $scope.newGroupName = "";
 
@@ -113,6 +152,7 @@ module.exports = function(admin)
 
             UserGroupService.getAllUsers().then(function(data, status, headers, config)
                 {
+                    $scope.allUsers = [];
                     for(i=0;i<data.length;i++){
                         data[i].isChecked = false;
                         for(a = 0; a < $scope.usersOfOrganisation.length; a++){
@@ -232,6 +272,7 @@ module.exports = function(admin)
                             }
                             $scope.usersOfOrganisation.push(data[i]);
                         }
+                        
 
                     });
 
@@ -269,6 +310,49 @@ module.exports = function(admin)
                 }
                 
                 alert('Leraren aangemaakt!');
+            };
+
+            // add user part
+            $scope.submitNewUser = function submitNewUser(username, password1, password2, email, firstName, middleName, surName){
+                var user = {
+                    username: username,
+                    password: password1,
+                    email: email,
+                    firstName: firstName,
+                    middleName: middleName,
+                    surName: surName
+                };
+                var usernameExists = false;
+                for(i = 0; i < $scope.allUsers.length; i++){
+                    if($scope.allUsers[i].username == username){
+                        usernameExists = true;
+                    }
+                }
+                if( password1 == password2 && !usernameExists){
+                    GroupService.postUser(user, $routeParams.organisation).then(function(data){ 
+                        $('.modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        alert('Gebruiker is aan de organisatie toegevoegd.');
+                        refillUsersOfOrganisation();
+                        refillExcistingUsersInOrganisation();
+                        $scope.username = "";
+                        $scope.password1 = "";
+                        $scope.password2 = "";
+                        $scope.email = "";
+                        $scope.firstName = "";
+                        $scope.middleName = "";
+                        $scope.surName = "";
+                    });
+                } else if(password1 != password2){
+                    alert('Wachtwoord komt niet overeen, vul deze aub opnieuw in');
+                    $scope.password1 = "";
+                    $scope.password2 = "";
+                } else {
+                    alert('Gebruikersnaam al in gebruik, kies aub een andere');
+                    $scope.username = "";
+                }
+                
             };
         }
 
