@@ -7,7 +7,10 @@ module.exports = function(leerlingDash)
         $scope.isAdmin = AuthenticationService.isAdmin;
         $scope.isModerator = AuthenticationService.isModerator;
 
-        console.log($scope.isModerator());
+        $scope.goBack = function(){
+            console.log("test");
+            $window.history.back();
+        };
 
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
 
@@ -28,7 +31,6 @@ module.exports = function(leerlingDash)
         }
 
         function populateDashboard(organisationId, userId){
-
             LearningFactory.getLearningParticipant(organisationId, userId).then(function(data2, status, headers, config)
             {
                 $scope.learningsParticipant = data2;
@@ -49,19 +51,16 @@ module.exports = function(leerlingDash)
 
 
         $scope.accomplished = function(leerlijnId, niveauId, newAccomplished){
-            
-
             LearningFactory.putLearningParticipant(organisationId, leerlijnId, niveauId, userId, newAccomplished).then(function(data, status, headers, config){
-
                 LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
-                    {
-                        $scope.learningsParticipant = data;
-                        if(newAccomplished){
-                            alert('Leerlijn accomplished');
-                        }else{
-                            alert('Leerlijn NOT accomplished'); 
-                        }
-                    });
+                {
+                    $scope.learningsParticipant = data;
+                    if(newAccomplished){
+                        alert('Leerlijn accomplished');
+                    }else{
+                        alert('Leerlijn NOT accomplished'); 
+                    }
+                });
             });
         };
     }]);
