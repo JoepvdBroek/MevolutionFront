@@ -18,12 +18,13 @@
                 <div class="fader {{leerlijn._id}}">
     				<div class="leerlijn-holder" ng-repeat="niveau in leerlijn.niveaux">	
     					<div class="niveautitle"><i class="fa fa-info info-icon" ng-click="collapse(niveau._id)"></i>{{niveau.title}}</div>
-                        <div class="checkbox">
-                                <label ng-switch="niveau.participant[0].accomplished">
-                                    Leerlijn voltooid: 
-                                    <input type="checkbox">
-                                </label>
-                            </div>
+                        <div ng-if="niveau.participants[0].participant.roles[0] == 'moderator' || niveau.participants[0].participant.roles[0] == 'admin'" class="checkbox">
+                            <label ng-if="niveau.participants[0]">
+                                Leerlijn voltooid: 
+                                <input ng-model="niveau.participants[0].accomplished" ng-change="accomplished(leerlijn._id, niveau._id, niveau.participants[0].accomplished)" type="checkbox">
+                            </label>
+                        </div>
+                        <i ng-if="niveau.participants[0].participant.roles[0] == ''" ng-if="niveau.participants[0].accomplished" class="accomplished fa fa-check" />
                         <div class="desc {{niveau._id}}"><b>Beschrijving</b><br><br>{{niveau.description}}</div>
     					<div class="level-header" style="background:{{leerlijn.color}};">
                             <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
@@ -32,7 +33,7 @@
 
     					<div ng-repeat="participant in niveau.participants">
                             
-        					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
+        					
     						<span class=" leerlijn-objects" >
     		                    <div class="leerlijn-object" ng-repeat="object in participant.objects">
     		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};">

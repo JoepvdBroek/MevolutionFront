@@ -378,6 +378,15 @@ module.exports = function(api)
                     return data.data;
                 });
             },
+            putLearningParticipant: function(orgId, leerlijnId, niveauId, participantId, newAccomplished){
+                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant/' + participantId, {accomplished: newAccomplished},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
             postLearning: function(orgId, newTitle, newColor){
                 return $http.post(API.url + '/organization/' + orgId + '/leerlijn', {title:newTitle, color:newColor},
                 {
