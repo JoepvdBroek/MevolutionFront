@@ -39,8 +39,12 @@ module.exports = function(leerlingDash)
 
 
         $scope.collapse = function(e) {
-            $('.'+e).toggleClass("display-inline", 1000);
-        }
+            $('.'+e).slideToggle(100);
+        };
 
+
+        $scope.accomplished = function(){
+            console.log('checked');
+        };
     }]);
 };

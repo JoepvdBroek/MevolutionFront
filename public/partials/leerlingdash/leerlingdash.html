@@ -10,58 +10,70 @@
 				
 				<div class="levelbar" ng-click="collapse(leerlijn._id)" style="background:{{leerlijn.color}};">
 					<div class="level-type" ng-repeat="niveau in leerlijn.niveaux" style="width:{{100/leerlijn.niveaux.length}}%;">
-						<div ng-if="niveau.objects.length">
-					    	<div style="width:100%;height:20px;background:lime;"></div>
-					    </div>
+                        <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
+                        <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>
 					</div>
 				</div>
 
-				<div class="leerlijn-holder {{leerlijn._id}}" ng-repeat="niveau in leerlijn.niveaux">	
-					<div>{{niveau.title}}</div>
-					<div class="level-header" style="background:{{leerlijn.color}};">
-						
-					</div>
+                <div class="fader {{leerlijn._id}}">
+    				<div class="leerlijn-holder" ng-repeat="niveau in leerlijn.niveaux">	
+    					<div class="niveautitle"><i class="fa fa-info info-icon" ng-click="collapse(niveau._id)"></i>{{niveau.title}}</div>
+                        <div class="checkbox">
+                                <label ng-switch="niveau.participant[0].accomplished">
+                                    Leerlijn voltooid: 
+                                    <input type="checkbox">
+                                </label>
+                            </div>
+                        <div class="desc {{niveau._id}}"><b>Beschrijving</b><br><br>{{niveau.description}}</div>
+    					<div class="level-header" style="background:{{leerlijn.color}};">
+                            <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
+                            <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>               
+                        </div>
 
-					<div ng-repeat="participant in niveau.participants">
-					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
-						<span class=" leerlijn-objects" ng-repeat="object in participant.objects">
-		                    <div class="leerlijn-object">
-		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};"></div>
-                                <div ng-switch on="object.type">
-                                    <a href="" class="object-item" popover ng-switch-when="video">
-                                        <i class="fa fa-play"></i>
-                                        <div class="content hidden">
-                                            <video width="260" height="130" poster="" controls>
-                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
-                                            </video>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+    					<div ng-repeat="participant in niveau.participants">
+                            
+        					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
+    						<span class=" leerlijn-objects" >
+    		                    <div class="leerlijn-object" ng-repeat="object in participant.objects">
+    		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};">
+                                        <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>         
+                                    </div>
+                                    <div ng-switch on="object.type">
+                                        <a href="" class="object-item" popover ng-switch-when="video">
+                                            <i class="fa fa-play"></i>
+                                            <div class="content hidden">
+                                                <video width="260" height="130" poster="" controls>
+                                                    <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
+                                                </video>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="object-item" popover ng-switch-when="audio">
-                                        <i class="fa fa-music"></i>
-                                        <div class="content hidden" ng-hide>
-                                            <audio controls>
-                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                        </a>
+                                        <a href="" class="object-item" popover ng-switch-when="audio">
+                                            <i class="fa fa-music"></i>
+                                            <div class="content hidden" ng-hide>
+                                                <audio controls>
+                                                    <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="object-item" popover ng-switch-when="text">
-                                        <i class="fa fa-file-text"></i>
-                                        <div class="content hidden" ng-hide>
-                                            <p>{{ object.source }}</p>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                        </a>
+                                        <a href="" class="object-item" popover ng-switch-when="text">
+                                            <i class="fa fa-file-text"></i>
+                                            <div class="content hidden" ng-hide>
+                                                <p>{{ object.source }}</p>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </div>
-		                    </div>
-		                </span>
-					</div>
-			    </div>
+                                        </a>
+                                    </div>
+    		                    </div>
+    		                </span>
+    					</div>
+    			    </div>
+                </div>
 		    </div>
 
 	    </div>
