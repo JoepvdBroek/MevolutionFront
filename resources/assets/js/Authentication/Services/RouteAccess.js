@@ -13,8 +13,6 @@ module.exports = function(authentication)
                             var roles = data[0].roles;
                             var access = false;
 
-                            console.log(roles);
-                            console.log(requiredPermissions)
                             for (i = 0; i < roles.length; i++) { 
                                 console.log(roles[i]);
                                 if(_.contains(requiredPermissions, roles[i]))

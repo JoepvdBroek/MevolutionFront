@@ -6,6 +6,16 @@ module.exports = function(admin)
         $scope.isAdmin = AuthenticationService.isAdmin;
         $scope.isModerator = AuthenticationService.isModerator;
 
+        $scope.onlyModerator = function(){
+            if($scope.isAdmin()){
+                return false;
+            } else if($scope.isModerator()){
+                return true;
+            }
+
+            return false;
+        }
+
         $scope.menu =
         [{
             showWhen: 'isAuthenticated()',
@@ -13,12 +23,6 @@ module.exports = function(admin)
             text: 'Timeline',
             faClass: 'fa-dashboard'
         },
-        /*{
-            showWhen: 'isAuthenticated()',
-            href: '#/canvas',
-            text: 'Canvas',
-            faClass: 'fa-pie-chart'
-        },*/
         {
             showWhen: 'isAdmin()',
             href: '#/admin',
@@ -26,9 +30,15 @@ module.exports = function(admin)
             faClass: 'fa-sitemap'
         },
         {
-            showWhen: 'isModerator()',
+            showWhen: 'onlyModerator()',
+            href: '#/groups' ,
+            text: 'Groepen',
+            faClass: 'fa-users'
+        },
+        {
+            showWhen: 'onlyModerator()',
             href: '#/moderator',
-            text: 'Moderator',
+            text: 'Leerlijnen',
             faClass: 'fa-briefcase'
         },
         {
