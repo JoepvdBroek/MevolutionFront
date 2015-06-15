@@ -1,8 +1,13 @@
 module.exports = function(leerlingDash)
 {
-    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route', '$sce', 'LearningFactory', 'UserService',
-                                                        function($scope, $location, $window, $routeParams, $anchorScroll, $route, $sce, LearningFactory, UserService)
+    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route', '$sce', 'LearningFactory', 'UserService', 'AuthenticationService',
+                                                        function($scope, $location, $window, $routeParams, $anchorScroll, $route, $sce, LearningFactory, UserService, AuthenticationService)
     {
+
+        $scope.isAdmin = AuthenticationService.isAdmin;
+        $scope.isModerator = AuthenticationService.isModerator;
+
+        console.log($scope.isModerator());
 
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
 
