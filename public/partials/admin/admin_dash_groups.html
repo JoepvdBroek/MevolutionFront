@@ -27,7 +27,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="group in allGroups | filter:searchTable | orderBy: 'title'" id="{{group._id}}" class="tablerow">
-						<td ng-model="group.groupName" data-ng-click="go('/moderator/' + organisationId + '/groups/' + group._id + '/')">{{ group.title }}</td>
+						<td ng-model="group.groupName" data-ng-click="go('/moderator/' + group.organization + '/groups/' + group._id + '/')">{{ group.title }}</td>
 						<td><text ng-repeat="moderator in group.moderators">{{moderator.firstName}}<comma ng-if="!$last">,</comma> </text></td>
 						<td><button class="btn orange" ng-click="fillModeratorlist(group._id)" data-toggle="modal" data-target="#settingsid{{group._id}}"><i class="fa fa-pencil"></i> Instellingen</span></button></td>
 					</tr>
