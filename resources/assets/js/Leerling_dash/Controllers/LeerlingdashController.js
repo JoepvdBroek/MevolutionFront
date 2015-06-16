@@ -33,6 +33,16 @@ module.exports = function(leerlingDash)
         function populateDashboard(organisationId, userId){
             LearningFactory.getLearningParticipant(organisationId, userId).then(function(data2, status, headers, config)
             {
+                var regex = /<br\s*[\/]?>/gi;
+                //console.log(data2[0].niveaux.length);
+                for(i = 0; i < data2.length; i++){
+                    //console.log(data2[i].niveaux);
+                    for(a = 0; a < data2[i].niveaux.length; a++){
+                        console.log(data2[i].niveaux[a]);
+
+                        data2[i].niveaux[a].descriptionEdited = data2[i].niveaux[a].description.replace(regex, "\n");
+                    }
+                }
                 $scope.learningsParticipant = data2;
 
                 console.log(data2);
