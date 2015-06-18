@@ -29,7 +29,7 @@
                             <i class="fa fa-check" />
                             Afgerond
                         </div>
-                        <div class="desc {{niveau._id}}"><b>Beschrijving</b><br><br>{{niveau.description}}</div>
+                        <div class="desc {{niveau._id}}"><b>Beschrijving</b><br><br><p style="white-space: pre;">{{niveau.descriptionEdited}}</p></div>
     					<div class="level-header" style="background:{{leerlijn.color}};">
                             <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
                             <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>               

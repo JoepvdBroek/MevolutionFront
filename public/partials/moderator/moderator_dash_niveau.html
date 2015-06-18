@@ -26,7 +26,7 @@
 				<tbody >
 					<tr ng-repeat="niveau in niveaus | filter:searchTable | orderBy:'title'" id="{{niveau._id}}" style="cursor:auto;" class="tablerow">
 						<td>{{niveau.title}}</td>
-						<td style="white-space: pre;">{{niveau.description}}</td>		
+						<td style="white-space: pre;">{{niveau.descriptionEdited}}</td>		
 						<td>
 							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{niveau._id}}"><i class="fa fa-pencil"></i> Instellingen</button>
 							<button class="btn red second_button" data-toggle="modal" data-target="#deleteid{{niveau._id}}"><i class="fa fa-times"></i> Verwijder</button>

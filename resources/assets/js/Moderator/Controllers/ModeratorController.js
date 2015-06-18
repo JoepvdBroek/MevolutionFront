@@ -71,6 +71,23 @@ module.exports = function(moderator)
                 });
         }
 
+        function getNiveaus(){
+            NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){ 
+                var regex = /<br\s*[\/]?>/gi;
+                $scope.niveaus = [];
+                for(i = 0; i < data.length; i++){
+                    data[i].descriptionEdited = data[i].description.replace(regex, "\n");
+                    console.log(data[i].descriptionEdited);
+                    console.log(data[i].description);
+                }
+
+                $scope.niveaus = data;
+                LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                    $scope.learningName = data.title;
+                });
+            });
+        }
+
 
         UserService.getUserInfo().then(function(data, status, headers, config){
             $scope.user = data.data[0];
@@ -118,17 +135,7 @@ module.exports = function(moderator)
 
         /* *  MODERATOR NIVEAUS **/
         if(typeof($routeParams.learningid) != "undefined"){
-            NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){ 
-                var regex = /<br\s*[\/]?>/gi;
-                for(i = 0; i < data.length; i++){
-                    data[i].description = data[i].description.replace(regex, "\n");
-                }
-
-                $scope.niveaus = data;
-                LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
-                    $scope.learningName = data.title;
-                });
-            });
+            getNiveaus();
         }
 
         $scope.addNiveau = function(newTitle, newDescription){
@@ -140,7 +147,7 @@ module.exports = function(moderator)
                 NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
                     var regex = /<br\s*[\/]?>/gi;
                     for(i = 0; i < data.length; i++){
-                        data[i].description = data[i].description.replace(regex, "\n");
+                        data[i].descriptionEdited = data[i].description.replace(regex, "\n");
                     }
                     $scope.niveaus = data;
                     $('#newNiveau').modal('hide');
@@ -158,6 +165,7 @@ module.exports = function(moderator)
         $scope.editNiveau = function(newTitle, newDescription, niveau){
             NiveauFactory.editNiveau($routeParams.orgid, $routeParams.learningid, niveau._id, newTitle, newDescription).then(function(data, status, headers, config){
                 alert('Niveau bijgewerkt');
+                getNiveaus();
             });
         };
 
