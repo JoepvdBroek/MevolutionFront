@@ -66,12 +66,23 @@ module.exports = function(leerlingDash)
                 {
                     $scope.learningsParticipant = data;
                     if(newAccomplished){
-                        alert('Leerlijn accomplished');
+                        fancyAlert("Succes!", "De leerlijn is afgerond.");
                     }else{
-                        alert('Leerlijn NOT accomplished'); 
+                        fancyAlert("Succes!", "De leerlijn is niet meer afgerond.");
                     }
                 });
             });
         };
+
+        function fancyAlert(title, text){
+            $('.dialog .d-success h2').html(title);
+            $('.dialog .d-success p').html(text);
+
+            $('.dialog').fadeTo( 500, 0.8, function(){
+                $('.dialog').fadeTo( "slow", 0);
+            }).delay(1000);
+        }
+
+
     }]);
 };

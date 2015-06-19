@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="assets/css/leerlijn-dash.min.css" type="text/css" />
 <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
@@ -16,6 +15,7 @@
                         <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>
 					</div>
 				</div>
+
                 <div class="fader {{leerlijn._id}}">
     				<div class="leerlijn-holder" ng-repeat="niveau in leerlijn.niveaux">	
     					<div class="niveautitle"><i class="fa fa-info info-icon" ng-click="collapse(niveau._id)"></i>{{niveau.title}}</div>
@@ -36,8 +36,6 @@
                         </div>
 
     					<div ng-repeat="participant in niveau.participants">
-                            
-        					
     						<span class=" leerlijn-objects" >
     		                    <div class="leerlijn-object" ng-repeat="object in participant.objects">
     		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};">
@@ -80,7 +78,14 @@
     			    </div>
                 </div>
 		    </div>
-
 	    </div>
+
+        <div class="dialog">
+            <div class="d-success">
+              <h2></h2>
+              <p></p>
+            </div>
+        </div>
+
     </div>
 </div>
