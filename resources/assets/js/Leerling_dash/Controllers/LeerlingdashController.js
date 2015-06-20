@@ -12,6 +12,19 @@ module.exports = function(leerlingDash)
             $window.history.back();
         };
 
+        function fancyAlert(title, text){
+            $('.dialog .d-success h2').html(title);
+            $('.dialog .d-success p').html(text);
+
+            $('.dialog').fadeTo( 500, 0.8, function(){
+                $('.dialog').fadeTo( "slow", 0);
+            }).delay(1000);
+        };
+
+        $scope.test = function(){
+            alert();
+        };
+
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
 
             organisationId = $routeParams.orgid;
@@ -74,14 +87,7 @@ module.exports = function(leerlingDash)
             });
         };
 
-        function fancyAlert(title, text){
-            $('.dialog .d-success h2').html(title);
-            $('.dialog .d-success p').html(text);
 
-            $('.dialog').fadeTo( 500, 0.8, function(){
-                $('.dialog').fadeTo( "slow", 0);
-            }).delay(1000);
-        }
 
 
     }]);
