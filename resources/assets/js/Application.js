@@ -221,6 +221,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
         controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
         css:
         [{
             href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
@@ -231,6 +232,7 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
         controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
         css:
         [{
             href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',

@@ -45,8 +45,8 @@
                                         <a href="" class="object-item" popover ng-switch-when="video">
                                             <i class="fa fa-play"></i>
                                             <div class="content hidden">
-                                                <i class="fa fa-remove delete-object"></i>
-                                                <i class="fa fa-pencil edit-object"></i>
+                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 <h4>Feedback:</h4>
                                                 <video width="367" height="182" poster="" controls>
                                                     <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
@@ -58,11 +58,10 @@
                                         <a href="" class="object-item" popover ng-switch-when="audio">
                                             <i class="fa fa-music"></i>
                                             <div class="content hidden" ng-hide>
-                                                <i class="fa fa-remove delete-object"></i>
-                                                <i class="fa fa-pencil edit-object"></i>
-                                                <button ng-click="test()">test</button>
+                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 <h4>Feedback:</h4>
-                                                <audio controls>
+                                                <audio style="width:367px" controls>
                                                     <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
                                                     Your browser does not support the audio element.
                                                 </audio>
@@ -70,15 +69,14 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <a href="" class="object-item" popover ng-switch-when="text">
+                                        <a href="" class="object-item" popover ng-switch-when="text" ng-click="currentObject(object)">
                                             <i class="fa fa-file-text"></i>
                                             <div class="content hidden" ng-hide>
-                                                <i class="fa fa-remove delete-object"></i>
-                                                <i class="fa fa-pencil edit-object"></i>
+                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 <h4>Feedback:</h4>
-                                                <p>{{ object.source }}</p>
-                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
-                                                </div>
+                                                <pre style="width:367px">{{ object.source }}</pre>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'"></div>
                                             </div>
                                         </a>
                                     </div>
@@ -91,17 +89,16 @@
 	    </div>
 
                                 <!-- Modal warning DELETE -->
-        <div class="modal delete fade" id="test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal delete fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learningedit.title, learningedit.color, learningedit)">
+                    <form name="editLearningForm" novalidate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Verwijder {{learningedit.title}}</h4>
-                            <p>{{modalObject}}</p>
+                            <h4 class="modal-title" id="myModalLabel">Verwijder object</h4>
                         </div>
                         <button data-dismiss="modal" class="btn blue">Annuleren</button>
-                        <button type="submit" class="btn btn-danger" ng-click="deleteLearning(learningedit._id, $index)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                        <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
                     </form>
                 </div>
             </div>

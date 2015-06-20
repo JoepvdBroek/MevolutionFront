@@ -53,6 +53,7 @@ module.exports = function(inbox)
             tempToelichtingen = [];
             $scope.selectedStudent = ""+firstname+"";
             BucketService.getInbox(id).then(function(data){
+                console.log(data);
                 for (var i =0; i<data.length; i++) {
                     if (data[i].toelichting.length !== 0) {
                         $scope.fullInbox.push(data[i]);

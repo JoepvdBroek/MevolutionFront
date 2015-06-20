@@ -1,14 +1,13 @@
 module.exports = function(leerlingDash)
 {
-    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route', '$sce', 'LearningFactory', 'UserService', 'AuthenticationService',
-                                                        function($scope, $location, $window, $routeParams, $anchorScroll, $route, $sce, LearningFactory, UserService, AuthenticationService)
+    leerlingDash.controller('LeerlingdashController', [ '$scope', '$location', '$window','$routeParams', '$anchorScroll', '$route', '$sce', 'LearningFactory', 'UserService', 'AuthenticationService', 'BucketService',
+                                                        function($scope, $location, $window, $routeParams, $anchorScroll, $route, $sce, LearningFactory, UserService, AuthenticationService, BucketService)
     {
 
         $scope.isAdmin = AuthenticationService.isAdmin;
         $scope.isModerator = AuthenticationService.isModerator;
 
         $scope.goBack = function(){
-            console.log("test");
             $window.history.back();
         };
 
@@ -19,10 +18,6 @@ module.exports = function(leerlingDash)
             $('.dialog').fadeTo( 500, 0.8, function(){
                 $('.dialog').fadeTo( "slow", 0);
             }).delay(1000);
-        };
-
-        $scope.test = function(){
-            alert();
         };
 
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
@@ -47,18 +42,13 @@ module.exports = function(leerlingDash)
             LearningFactory.getLearningParticipant(organisationId, userId).then(function(data2, status, headers, config)
             {
                 var regex = /<br\s*[\/]?>/gi;
-                //console.log(data2[0].niveaux.length);
+                
                 for(i = 0; i < data2.length; i++){
-                    //console.log(data2[i].niveaux);
                     for(a = 0; a < data2[i].niveaux.length; a++){
-                        console.log(data2[i].niveaux[a]);
-
                         data2[i].niveaux[a].descriptionEdited = data2[i].niveaux[a].description.replace(regex, "\n");
                     }
                 }
                 $scope.learningsParticipant = data2;
-
-                console.log(data2);
             });
         }
 
@@ -87,8 +77,28 @@ module.exports = function(leerlingDash)
             });
         };
 
+        $scope.testobject = {};
 
+        $scope.deleteObjectFromNiveau = function(objectId){
 
+            BucketService.deleteItem(objectId).then(function(data, status, headers, config){
+                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
+                {
+                    $scope.learningsParticipant = data;
+                    fancyAlert("Succes!", 'Het object is verwijderd.');
+                });
+            });
+        };
 
+        $scope.editObjectFromNiveau = function(objectId){
+
+            BucketService.deleteItem(objectId).then(function(data, status, headers, config){
+                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
+                {
+                    $scope.learningsParticipant = data;
+                    fancyAlert("Succes!", 'Het object is verwijderd.');
+                });
+            });
+        };
     }]);
 };
