@@ -26,7 +26,7 @@ module.exports = function(canvas)
 
                 scope.currentObject = function(object) {
                     scope.testobject.obj = object;
-                    console.log(scope.testobject.obj);
+                    console.log(object);
                 }
             }
         }

@@ -48,6 +48,7 @@ module.exports = function(leerlingDash)
                         data2[i].niveaux[a].descriptionEdited = data2[i].niveaux[a].description.replace(regex, "\n");
                     }
                 }
+                console.log(data2);
                 $scope.learningsParticipant = data2;
             });
         }
@@ -81,6 +82,8 @@ module.exports = function(leerlingDash)
 
         $scope.deleteObjectFromNiveau = function(objectId){
 
+            console.log($scope.testobject);
+
             BucketService.deleteItem(objectId).then(function(data, status, headers, config){
                 LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
                 {
@@ -90,15 +93,24 @@ module.exports = function(leerlingDash)
             });
         };
 
-        $scope.editObjectFromNiveau = function(objectId){
 
-            BucketService.deleteItem(objectId).then(function(data, status, headers, config){
-                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
-                {
-                    $scope.learningsParticipant = data;
-                    fancyAlert("Succes!", 'Het object is verwijderd.');
+        //TODO:
+        //API call to change or add a "toelichting" does not exist
+        $scope.editAdditionFromNiveau = function(object){
+
+            if(object.toelichting.length){
+                console.log("full: "+ object.toelichting.length);
+            }else{
+                console.log("empty: "+ object.toelichting.length);
+
+                BucketService.updateObject(object._id).then(function(data, status, headers, config){
+                    LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
+                    {
+                        $scope.learningsParticipant = data;
+                        fancyAlert("Succes!", 'De toelichting is toegevoegd.');
+                    });
                 });
-            });
+            }
         };
     }]);
 };

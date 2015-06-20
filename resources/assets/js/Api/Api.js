@@ -568,6 +568,14 @@ module.exports = function(api)
                     }).then(function(data){
                     return data.data;
                 });
+            },
+            updateObject: function(objectId, addition){
+                return $http.put(API.url + '/objects/'+ objectId , 
+                    {
+                        toelichting: addition
+                    }).then(function(data){
+                    return data.data;
+                });
             }
         };
 
