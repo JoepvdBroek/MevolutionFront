@@ -12,6 +12,7 @@ module.exports = function(inbox)
         var organisation;
         var selectedObject;
         var selectedStudent;
+        var tempToelichtingen = [];
 
         UserService.getUserInfo().then(function(userdata){
             if (userdata.data[0].organization !== 'null') {
@@ -23,11 +24,7 @@ module.exports = function(inbox)
                     $scope.groups = groups;
                     $scope.selectedGroup = $scope.groups[0];
                     console.log(groupdata);
-                });/*
-                for (i = 0; i < data.data[0].organization.length; i++) {
-                    organisations[i] = data.organization[i];
-                    console.log(data.organization[i]);
-                }*/
+                });
             }
         });
 
@@ -36,21 +33,8 @@ module.exports = function(inbox)
                 console.log(data[0]);
                 $scope.studentList = data[0].participants;
             });
-            
-
-
-            /*
-            UserGroupService.getGroup(id).then(function(data){
-                for(i=0;i<data.length;i++){
-                    studentList.push(data[i]);
-
-                } console.log(studentList);
-                $scope.studentList = studentList;
-            });*/
         }
 
-
-        //komt 404 terug, kan nu niet testen
         var getInbox = function(id){
             selectedStudent = id;
             BucketService.getInbox(id).then(function(data){
@@ -62,28 +46,25 @@ module.exports = function(inbox)
                 };
             });
         };
-
-            $scope.getInbox = function(id, firstname){
+        
+        $scope.getInbox = function(id, firstname){
+            $scope.fullInbox = [];
             selectedStudent = id;
+            tempToelichtingen = [];
             $scope.selectedStudent = ""+firstname+"";
             BucketService.getInbox(id).then(function(data){
-                $scope.fullInbox = data[0];
-                if (data.length===0) {
-                    $scope.fullInbox = [];
-                } else {
-                    $scope.fullInbox = data;
-                };
+                console.log(data);
+                for (var i =0; i<data.length; i++) {
+                    if (data[i].toelichting.length !== 0) {
+                        $scope.fullInbox.push(data[i]);
+                        tempToelichtingen.push(data[(i+1)]);
+                    } else {
+                        if (!(_.findWhere(tempToelichtingen, {_id: data[i]._id}))) {
+                            $scope.fullInbox.push(data[i]);
+                        }
+                    }
+                }
             });
-
-
-            /*
-            UserGroupService.getGroup(id).then(function(data){
-                for(i=0;i<data.length;i++){
-                    studentList.push(data[i]);
-
-                } console.log(studentList);
-                $scope.studentList = studentList;
-            });*/
         }
         
         $scope.getPopUp = function(object){
@@ -98,20 +79,8 @@ module.exports = function(inbox)
         $scope.addObject = function(leerlijn, niveau){
             if (niveau.participants.length === 0) {
                 createNewParticipant(niveau, leerlijn);
-                /*
-                BucketService.makeParticipant(organisation._id, leerlijn._id, niveau._id, selectedStudent).then(function(participantData){
-                    var participant = participantData;
-                    console.log(participantData);
-                    combineObjectLeerlijn(leerlijn, niveau, participant);
-                    
-                });*/
             } else { 
                 checkParticipants(niveau, leerlijn);
-                /*
-                var participant = niveau.participants[0].participant._id;
-                console.log(participant);
-                combineObjectLeerlijn(leerlijn, niveau, participant);
-                */
             }
         }
 
@@ -137,24 +106,6 @@ module.exports = function(inbox)
             } else {
                 createNewParticipant(niveau, leerlijn);
             }
-
-/*
-            for (var i =0; i < niveau.participants.length; i++) {
-                if (selectedStudent === (niveau.participants[i].participant._id)) {
-                    console.log(selectedStudent);
-                    console.log(niveau.participants[i].participant._id);
-
-                    combineObjectLeerlijn(leerlijn, niveau, niveau.participants[i].participant._id);
-                    //niet doen. participant komt overeen met user
-                } else {
-                    console.log(selectedStudent);
-                    console.log(niveau.participants[i].participant._id);
-                    newParticipant = selectedStudent;
-                    
-                    //nieuwe participant aanmaken. participant komt niet overheen met user
-                };
-            };
-            */
         };
 
         var createNewParticipant = function(niveau, leerlijn){
@@ -164,32 +115,5 @@ module.exports = function(inbox)
                     combineObjectLeerlijn(leerlijn, niveau, participant.participant);
                 });
         }
-
-
-
-/*
-
-
-
-
-
-
-
-
-        $scope.fullInbox = [];
-
-            BucketService.getInbox().then(function(data){
-            for(i=0;i<data.length;i++){
-                $scope.fullInbox.push(data[i]);
-            }   
-        });
-
-        $scope.deleteItem = function(item){
-            BucketService.deleteItem(item).then(function(data){
-                alert("you deleted item: " + item);
-            })
-        }
-
-        */
-    }]);
+    }]); 
 };

@@ -220,12 +220,24 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/leerlingdash',
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
-        controller: 'LeerlingdashController'
+        controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
+        css:
+        [{
+            href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
+            bustCache: true
+        }]
     })
     .when('/leerlingdash/:orgid/:userid',
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
-        controller: 'LeerlingdashController'
+        controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
+        css:
+        [{
+            href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
+            bustCache: true
+        }]
     })
     .when('/timeline',
     {

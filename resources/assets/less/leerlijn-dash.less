@@ -200,7 +200,7 @@
 
 audio
 {
-    width: 260px;
+    width: 367px;
 }
 
 .fader{
@@ -237,9 +237,9 @@ audio
 .leerlijn-holder{
 
 	.checkbox{
-		position: absolute;
+		position: relative;
 		display: block;
-		right:0;
+		text-align:right;
 		margin-top: -25px;
 		margin-bottom: 10px;
 		z-index:0;
@@ -285,3 +285,69 @@ audio
 		vertical-align: top;
 	}
 }
+
+.dialog{
+	position:absolute;
+	top:50%;
+	left:50%;
+	z-index: 10;
+	transform:translate(-50%);opacity: 0;
+	color:white;
+	
+	.d-success{
+		width: 300px; 
+		height: 120px; 
+		background:rgba(0,0,0,.8); 
+		border-radius:4px; 
+		color:white; 
+		text-align:center; 
+		padding:5px;	
+		
+		p{
+			font-size:16px;
+			color:white;
+		}
+	}
+}
+
+.popover{
+	max-width:400px !important;
+
+	i {
+		padding: 7px;
+		color: white;
+		position: absolute;
+		right: 0;
+		margin-right: -25px;
+		border-left: 1px solid #ccc;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		cursor: pointer;
+		box-shadow: 1px 2px 2px rgba(0,0,0,0.4);
+		max-width: 26px;
+
+		&.delete-object{
+			background: red;
+		}
+
+		&.edit-object{
+			background: orange;
+			margin-top:28px;
+		}
+	}
+}
+
+.modal.delete, .modal.edit{
+
+	text-align: center;
+
+	button{
+		margin:10px;
+	}
+}
+
+.btn.blue { background:#3498db; color:white; }
+.btn.blue:link {  }
+.btn.blue:visited {  }
+.btn.blue:hover { background:#2e80b6; }
+.btn.blue:active {  }

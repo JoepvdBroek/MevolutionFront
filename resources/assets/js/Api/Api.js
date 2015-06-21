@@ -87,6 +87,14 @@ module.exports = function(api)
                 return $http.get(API.url + '/users/@me');
             },
 
+            getSpecificUserInfo: function (userId)
+            {
+                RefreshService.refreshTokenIfNeeded();
+                return $http.get(API.url + '/users/'+ userId).then(function(data) {
+                    return data.data;
+                });
+            },
+
             getUser: function (user)
             {
                 RefreshService.refreshTokenIfNeeded();
@@ -565,6 +573,14 @@ module.exports = function(api)
                 return $http.post(API.url + '/organization/'+ organizationId +'/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant', 
                     {
                         participant: studentId
+                    }).then(function(data){
+                    return data.data;
+                });
+            },
+            updateObject: function(objectId, addition){
+                return $http.put(API.url + '/objects/'+ objectId , 
+                    {
+                        toelichting: addition
                     }).then(function(data){
                     return data.data;
                 });

@@ -84,7 +84,7 @@
 			<div class="modal fade" ng-repeat="group in allGroups" id="settingsid{{group._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				<form name="newGroupName" novalidate ng-submit="newGroupName.$valid && submitEditedGroup(group.title, group)">
+				<form name="newGroupName" novalidate ng-submit="newGroupName.$valid && submitNewGroupName(group.title, group)">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Wijzigen</h4>
@@ -226,5 +226,13 @@
 			</div><!-- /.modal -->
 
 		</div>
+
+		<div class="dialog">
+            <div class="d-success">
+              <h2></h2>
+              <p></p>
+            </div>
+        </div>
+		
 	</div><!-- /.container -->
 </div>
