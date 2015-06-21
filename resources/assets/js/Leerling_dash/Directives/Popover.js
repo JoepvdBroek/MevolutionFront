@@ -24,9 +24,13 @@ module.exports = function(canvas)
                     });
                 });
 
-                scope.currentObject = function(object) {
+                scope.currentObject = function(object, e) {
                     scope.testobject.obj = object;
-                    console.log(object);
+                    scope.clickedElement = '.'+e.currentTarget.classList[0];
+                    
+                    $(scope.clickedElement).on('click', function (e) {
+                        $(scope.clickedElement).not(this).popover('hide');
+                    });
                 }
             }
         }

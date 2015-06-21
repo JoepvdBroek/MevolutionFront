@@ -4,7 +4,7 @@
 
 	    <div class="timeline">
         <a class="btn btn-default" style="background:#777; color:white;" ng-if="isModerator() || isAdmin()" ng-click="goBack()"><i class="fa fa-arrow-left"></i> Ga terug</a>
-	    	<div>Dashboard van {{}}</div>
+	    	<h2 ng-repeat="user in pageUser">Dashboard van {{user.firstName +' '+ user.middleName +' '+ user.surName}}</h2>
 			
 	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
 				<div class="leerlijn-title">{{leerlijn.title}}</div>
@@ -42,10 +42,12 @@
                                         <div ng-if="niveau.participants[0].accomplished" style="border-right:2px solid rgba(0,0,0,.4);"></div>         
                                     </div>
                                     <div ng-switch on="object.type">
-                                        <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object)">
+                                        <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object, $event)">
                                             <i class="fa fa-play"></i>
                                             <div class="content hidden">
-                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
                                                 <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <video width="367" height="182" poster="" controls>
@@ -55,10 +57,12 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <a href="" class="object-item" popover ng-switch-when="audio" ng-click="currentObject(object)">
+                                        <a href="" class="object-item" popover ng-switch-when="audio" ng-click="currentObject(object, $event)">
                                             <i class="fa fa-music"></i>
                                             <div class="content hidden" ng-hide>
-                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
                                                 <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <audio style="width:367px" controls>
@@ -69,10 +73,12 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <a href="" class="object-item" popover ng-switch-when="text" ng-click="currentObject(object)">
+                                        <a href="" class="object-item" popover ng-switch-when="text" ng-click="currentObject(object, $event)">
                                             <i class="fa fa-file-text"></i>
                                             <div class="content hidden" ng-hide>
-                                                <i class="fa fa-remove delete-object" data-toggle="modal" data-target="#deleteModal"></i>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
                                                 <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <pre style="width:367px">{{ object.source }}</pre>
@@ -99,6 +105,22 @@
                         </div>
                         <button data-dismiss="modal" class="btn blue">Annuleren</button>
                         <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal warning DELETE -->
+        <div class="modal delete fade" id="deleteAdditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="editLearningForm" novalidate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Verwijder deze toelichting</h4>
+                        </div>
+                        <button data-dismiss="modal" class="btn blue">Annuleren</button>
+                        <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj.toelichting[0]._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
                     </form>
                 </div>
             </div>

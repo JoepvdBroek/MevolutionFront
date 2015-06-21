@@ -6,6 +6,7 @@ module.exports = function(leerlingDash)
 
         $scope.isAdmin = AuthenticationService.isAdmin;
         $scope.isModerator = AuthenticationService.isModerator;
+        $scope.testobject = {};
 
         $scope.goBack = function(){
             $window.history.back();
@@ -26,7 +27,6 @@ module.exports = function(leerlingDash)
             userId = $routeParams.userid;
 
             populateDashboard(organisationId, userId);
-
         }else{
             UserService.getUserInfo().then(function(data, status, headers, config){
 
@@ -48,8 +48,13 @@ module.exports = function(leerlingDash)
                         data2[i].niveaux[a].descriptionEdited = data2[i].niveaux[a].description.replace(regex, "\n");
                     }
                 }
-                console.log(data2);
+
                 $scope.learningsParticipant = data2;
+            });
+
+            UserService.getSpecificUserInfo(userId).then(function(data, status, headers, config){
+
+                $scope.pageUser = data;
             });
         }
 
@@ -66,30 +71,24 @@ module.exports = function(leerlingDash)
 
         $scope.accomplished = function(leerlijnId, niveauId, newAccomplished){
             LearningFactory.putLearningParticipant(organisationId, leerlijnId, niveauId, userId, newAccomplished).then(function(data, status, headers, config){
-                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
-                {
-                    $scope.learningsParticipant = data;
+                
+                    populateDashboard(organisationId, userId);
+
                     if(newAccomplished){
                         fancyAlert("Succes!", "De leerlijn is afgerond.");
                     }else{
                         fancyAlert("Succes!", "De leerlijn is niet meer afgerond.");
                     }
-                });
             });
         };
 
-        $scope.testobject = {};
-
         $scope.deleteObjectFromNiveau = function(objectId){
-
-            console.log($scope.testobject);
-
             BucketService.deleteItem(objectId).then(function(data, status, headers, config){
-                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
-                {
-                    $scope.learningsParticipant = data;
-                    fancyAlert("Succes!", 'Het object is verwijderd.');
-                });
+                    
+                populateDashboard(organisationId, userId);
+
+                $scope.learningsParticipant = data;
+                fancyAlert("Succes!", 'Het object is verwijderd.');
             });
         };
 
