@@ -68,7 +68,7 @@
       </div>
     </nav> -->
 
-    <div ng-view>
+    <div ng-view class="full_width_height">
         @yield('content')
     </div ng-view>
 </div>
