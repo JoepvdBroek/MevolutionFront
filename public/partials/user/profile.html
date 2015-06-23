@@ -18,14 +18,15 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputFile">Pasfoto</label><br />
-                                    <img style="width:100%;" src="assets/img/placeholder-photo.png" alt="Pasfoto" />
+                                    <img style="width:100%;" ng-if="!hasProfilePicture()" src="assets/img/placeholder-photo.png" alt="Pasfoto" />
+                                    <img style="width:100%;" ng-if="hasProfilePicture()" src="{{user.profilePicture}}" alt="Pasfoto" />
                                     <br /><br />
                                     <div id="uploadbutton" ng-show="editmode">
-                                        <div class="btn btn-default" onclick="document.getElementById('photo-file').click();">
-                                            Kies foto
+                                        <div class="fileUpload btn btn-default">
+                                            <span>Kies foto</span>
+                                            <input type="file" class="upload" name="file" id="photo-file" onchange="angular.element(this).scope().setImage(this.files)"/>
                                         </div>
-                                        <input type="file" id="photo-file">
-                                        <p class="help-block">Kies een pasfoto met de afmetingen 150x240 pixels.</p>
+                                        <p class="help-block">Kies een pasfoto en druk op opslaan.</p>
                                     </div>
                                 </div>
                             </div>

@@ -1,10 +1,10 @@
 <div id="wrap">
-<!-- 	<a ng-click='back()' class="back_button">Back</a> -->
 	<div class="container">
 		<div class="panel-style space">
 
 			<a class="btn btn-default" style="background:#777;float:left;margin-top:-70px;margin-left:-25px;"  ng-click="goBack()"><i class="fa fa-arrow-left"> Ga terug</i></a>
-			<h3 class="heading-title">Alle groepen van {{ organisationName }}</h3>
+			<a class="btn btn-default" style="background:#777;float:right;margin-top:-70px;margin-right:-25px;"  data-ng-click="go('/admin/learning/' + organisationId + '/')">Ga naar leerlijnen<i class="fa fa-arrow-right" style="padding-left: 5px;"></i></a>
+			<h3 class="heading-title">Alle groepen van {{ organisation.name }}</h3>
 			<div class="table_buttons" align="right"	>
 				<div class="input-group searchbar">
 					<span class="input-group-addon"><i class="fa fa-search"></i></span>

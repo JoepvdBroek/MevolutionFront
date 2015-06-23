@@ -14,12 +14,13 @@
 		</div>
 		<!-- object table -->
 		<div id="objectTable" class="panel-style space">
-			<h3 class="heading-title">Inbox van <a href="#/leerlingdash/{{organisation._id}}/{{selectedStudentId}}">{{selectedStudent}}</a></h3>
-			<span ng-if="fullInbox.length === 0">Deze gebruiker heeft geen objecten om te koppelen</span>			
+			<h3 class="heading-title" id="name-label">Inbox van <a href="#/leerlingdash/{{organisation._id}}/{{selectedStudentId}}">{{selectedStudent}}</a></h3><label id="search-label">Search: <input ng-model="searchText" id="searchBox"></label>
+			<br>
+			<span ng-if="fullInbox.length === 0">Deze gebruiker heeft geen leerbewijzen om te koppelen</span>			
 			<table datatable="" id="inboxTable" class="table simple	" ng-if="fullInbox.length !== 0">
 				<thead>
 					<tr>
-						<th>Object</th>
+						<th>Leerbewijs</th>
 						<th>Toelichting</th>
 						<th>Gemaakt door</th>
 						<th>Gemaakt op</th>
@@ -28,7 +29,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
+					<tr ng-repeat="object in fullInbox | filter:searchText" id="{{object._id}}">
 						<!-- <td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td> -->
 						<!-- leerbewijs -->
 						<td ng-switch on="object.type">
@@ -106,7 +107,7 @@
 						<!-- <td><span ng-if="object.toelichting[0].type == 'text'">{{object.toelichting[0].source}}</span><span ng-if="object.toelichting[0].type != 'text'"><a href="{{object.toelichting[0].source}}" target="_blank">{{object.toelichting[0].type}}<a></span></td> -->
 						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
 						<td>{{object.createdDate | date: 'd-M-y, HH:mm'}}</td>
-						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Object koppelen</button></td>
+						<td><button class="connectButton" ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Leerbewijs koppelen</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -127,7 +128,7 @@
 						</br>
 						<span>Selecteer een niveau:</span>
 						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
-							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><p style="white-space: pre;">{{niveau.title}} - {{niveau.newDescription}}</p>
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><b> {{niveau.title}}</b><p style="white-space: pre;">{{niveau.newDescription}}</p><hr>
 						</div>
 					  </div>
 					  <div class="modal-footer">

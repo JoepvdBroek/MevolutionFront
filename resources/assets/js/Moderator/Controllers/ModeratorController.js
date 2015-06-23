@@ -199,12 +199,13 @@ module.exports = function(moderator)
                             groups.push(data[i]);
                         }
 
-                        OrganisationService.getOrganisation($routeParams.organisation).then(function(data, status, headers, config){
+                    });
+
+            //* GET THE ORGANISATION *//
+            OrganisationService.getOrganisation($routeParams.organisation).then(function(data){
                             $scope.organisationName = data[0].name;
                             $scope.organisationId = data[0]._id;
                         });
-
-                    });
 
             $scope.allGroups = groups;
 

@@ -1,7 +1,8 @@
 module.exports = function(user)
 {
-    user.controller('UserController', [ '$scope', '$location', '$window', 'UserFactory', 'UserService', 'AuthenticationService', function($scope, $location, $window, UserFactory, UserService, AuthenticationService)
+    user.controller('UserController', [ '$scope', 'UserService', function($scope, UserService)
     {
+        var fd = new FormData();
         $scope.editmode = false; //Profile pagina wanneer true: opent form om gegevens te wijzigen.
         $scope.user = {};
         getUserInfo(); 
@@ -15,78 +16,56 @@ module.exports = function(user)
         }    
 
         $scope.switchToNonEditmode = function switchToEditmode(){
+            getUserInfo();
             $scope.editmode = false;
-        }     
+        }    
+
+        $scope.hasProfilePicture = function hasProfilePicture(){
+            return $scope.user.profilePicture != undefined;
+        } 
 
         $scope.updateUserInfo = function updateUserInfo()
         {
-            /*if (AuthenticationService.isAuthenticated)
-            {*/
-                UserService.updateUser($scope.user).success(function(data)
-                {
-                    switchEditmodeOff();
-                    
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-            /*} else {
-                console.log('not authenticated');
-            }*/
+            
+            UserService.updateUser($scope.user).success(function(data)
+            {
+                switchEditmodeOff();
+                
+            }).error(function(status, data)
+            {
+                console.log(status);
+                console.log(data);
+            });
+
+            UserService.uploadImage($scope.user._id, fd).success(function(data){
+                getUserInfo();
+            }).error(function(status, data)
+            {
+                alert("Het uploaden van de afbeelding ging fout. Is het bestand wel een .JPG of .PNG?")
+                console.log(status);
+                console.log(data);
+            });
+            
+        };
+
+        $scope.setImage = function setImage(files) {
+            //Take the first selected file
+            fd.append("profile", files[0]);            
         };
 
         function getUserInfo(){
-            /*if (AuthenticationService.isAuthenticated)
-            {*/
-                UserService.getUserInfo().success(function(data)
-                {
-                    $scope.user = data[0];
-                    
-                }).error(function(status, data)
-                {
-                    console.log(status);
-                    console.log(data);
-                });
-           /* } else {
-                console.log('not authenticated');
-            }*/
-        };
-
-        $scope.changePassword = function changePassword(password){
-            if(password != null && password.new != null && password.repeat != null)
+            
+            UserService.getUserInfo().success(function(data)
             {
-                if(password.new == password.repeat)
-                {
-                   
-                    var user = {};
-                    user._id = $scope.user._id;
-                    user.currentPassword = password.current;
-                    user.newPassword = password.new;
-
-                    UserService.changePassword(user).success(function(data)
-                    {
-                        alert("Uw wachtwoord is gewijzigd!")
-                        $location.path("/profile");
-                        
-                    }).error(function(data, status)
-                    {
-                        if(data.error == 'Old password is wrong'){
-                            alert('Uw huidig wachtwoord klopt niet. Probeer het opnieuw');
-                            $('#current').val(''); 
-                        }
-                        console.log(status);
-                        console.log(data);
-                    });
-                    
-                } else 
-                {
-                    alert('Het nieuwe wachtwoord komt niet overeen');
-                }
-            } else 
+                $scope.user = data[0];
+                currentProfilePicture = data[0].profilePicture;
+                
+            }).error(function(status, data)
             {
-                alert('Vul alsjeblieft alle velden in');
-            }
+                console.log(status);
+                console.log(data);
+            });
+            
         };
     }]);
 };
