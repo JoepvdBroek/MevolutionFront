@@ -1,11 +1,30 @@
 # Mevolution frontend
 
-Als je de source opnieuw binnentrekt vanuit Github voer altijd even de volgende commando's uit om eventueel toegevoegde dependencies te installeren:
+Email: tom@me-volution.net
 
-1. npm install
-2. bower install
-3. composer install
+# Project structure
 
-# Gulp
+Important folders and files
 
-Gulp prerequisites installeren, in een commandline interface naar de juiste map navigaren en het commando `gulp` draaien.
++ app		Laravel folder
+|
+|- Commands	Custom Laravel command line commands
+|- Http		Http interface for Laravel (define Laravel routes here)
+|
++ config	Laravel config
+|
++ public
+|
+|- assets	Compiled assets (for production)
+|- dev		Compiled assets (for development)
+|
++ resources	Resources
+|
++ storage	Storage
+|
++ tests		Tests
+.env
+bower.json
+composer.json
+gulpfile.js
+package.json
