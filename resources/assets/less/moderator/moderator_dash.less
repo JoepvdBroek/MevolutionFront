@@ -89,7 +89,7 @@ body table { margin-bottom:40px !important; }
 
 .btn { -moz-transition:160ms all;-webkit-transition:160ms all; }
 
-.btn.default { border:2px solid #e1e3e5;border-radius:2px;display:inline-block;font-size:15px;color:#818689 !important;padding:5px 15px;-o-transition: all 700ms;-moz-transition: all 700ms;-webkit-transition: all 700ms;transition: all 700ms;background:#fff; }	
+.btn.default { border:2px solid #e1e3e5;border-radius:2px;display:inline-block;font-size:15px;color:#818689;padding:5px 15px;-o-transition: all 700ms;-moz-transition: all 700ms;-webkit-transition: all 700ms;transition: all 700ms;background:#fff; }	
 
 .btn { font-size:15px;border-radius:2px;color:#fff; }
 .btn.default {  }
@@ -224,31 +224,17 @@ label { font-size:15px;color:#899197;margin:0 0 10px 0; }
 	float: right;
 }
 
-.table.simple tbody tr td {
-	max-width: 500px;
-	word-wrap: break-word;
-	line-height: 20px;
-}
-
 .list {
 	float: left;
-	width: 580px;
+	width: 470px;
 	height: 400px;
 	overflow-y: scroll;
 }
 
 .list label {
   	float: left;
-  	width: 280px;
-  	height: 40px;
-}
-
-.table_row_buttons button {
-	margin: 5px;
-}
-
-.back_link {
-	cursor: pointer;
+  	width: 190px;
+  	height: 25px;
 }
 
 .ng-invalid.ng-dirty {
@@ -257,21 +243,6 @@ label { font-size:15px;color:#899197;margin:0 0 10px 0; }
 
 .ng-valid.ng-dirty {
     border-color: #78FA89;
-}
-
-.input-row {
-	width: 480px;
-	height: 40px;
-}
-
-.input-row input {
-	float: left;
-	width: 330px;
-}
-
-.input-row label {
-	float: left;
-	width: 150px;
 }
  
  @media (max-width: 991px) {
@@ -353,5 +324,29 @@ label { font-size:15px;color:#899197;margin:0 0 10px 0; }
 
 	button{
 		margin:10px;
+	}
+}
+
+.dialog{
+	position:absolute;
+	top:50%;
+	left:50%;
+	z-index: 10;
+	transform:translate(-50%);opacity: 0;
+	color:white;
+	
+	.d-success{
+		width: 300px; 
+		height: 120px; 
+		background:rgba(0,0,0,.8); 
+		border-radius:4px; 
+		color:white; 
+		text-align:center; 
+		padding:5px;	
+		
+		p{
+			font-size:16px;
+			color:white;
+		}
 	}
 }

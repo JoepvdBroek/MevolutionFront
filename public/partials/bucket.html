@@ -11,23 +11,58 @@
 				<thead>
 					<tr>
 						<th>Type</th>
-						<th>Object</th>		
-						<th>Feedback</th>
-						<th>Owner</th>
+						<th>Object</th>
 						<th>Delete</th>				
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="object in fullBucket" id="{{object._id}}">
-						<td ng-model="objectType">{{ object.type }}</td>
-						<td ng-model="objectObject"><a href="{{ object.type === 'video' ?  object.video : object.picture }}">{{ object.type === "video" ?  object.video : object.picture }}</a></td>
-						<td ng-model="objectFeedback">{{ object.feedbackOwner[0] !== "" ?  "No feedback" : object.feedbackOwner[0] }}</td>
-						<td ng-model="objectOwner">{{ object.owner[0] }}</td>
-						<td><button><span class="glyphicon glyphicon-trash"></span></button></td>
+
+<!--
+						<ng-switch on="object.object.type">
+                        	<div ng-switch-when="video">
+                            	<td><i>video</i></td>
+                        	</div>
+                        	<div ng-switch-when="picture">
+                        		<td><i>picture</i></td>
+                        	</div>
+                        	<div ng-switch-when="audio">
+                        	    <td><i>audio</i></td>
+                        	</div>
+                        	<div ng-switch-when="text">
+                        	    <td><i>text</i></td>
+                        	</div>
+                    </ng-switch>
+
+
+-->
+
+
+						<td ng-model="objectType"><span>{{object.type}}</span></td>
+
+						<td>
+							<a ng-if="object.type === 'video'" href="{{object.video}}" target="_blank">{{object.video}}</a>
+							<a ng-if="object.type === 'audio'" href="{{object.audio}}" target="_blank">{{object.audio}}</a>
+							<a ng-if="object.type === 'picture'" href="{{object.picture}}" target="_blank">{{object.picture}}</a>
+							<!-- todo: popup for text -->
+							<span ng-if="object.type === 'text'">{{object.content}}</span>
+						</td>
+						<td><button ng-click="deleteItem(object._id)"><span class="glyphicon glyphicon-trash"></span></button></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+
+		<div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+
+			</div>
+		</div>
+
+
+
+
+
 	</div><!-- /.container -->
 </div>
     

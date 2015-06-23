@@ -1,69 +1,160 @@
-<link rel="stylesheet" href="assets/css/leerlijn-dash.min.css" type="text/css" />
 <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
+
 	    <div class="timeline">
-	    	<div>Dashboard van {{}}</div>
+        <a class="btn btn-default" style="background:#777; color:white;" ng-if="isModerator() || isAdmin()" ng-click="goBack()"><i class="fa fa-arrow-left"></i> Ga terug</a>
+	    	<h2 ng-repeat="user in pageUser">Dashboard van {{user.firstName +' '+ user.middleName +' '+ user.surName}}</h2>
 			
 	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
 				<div class="leerlijn-title">{{leerlijn.title}}</div>
 				
-				<div class="levelbar" ng-click="collapse(leerlijn.title)" style="background:{{leerlijn.color}};">
+				<div class="levelbar" ng-click="collapse(leerlijn._id)" style="background:{{leerlijn.color}};">
 					<div class="level-type" ng-repeat="niveau in leerlijn.niveaux" style="width:{{100/leerlijn.niveaux.length}}%;">
-						<div ng-if="niveau.objects.length">
-					    	<div style="width:100%;height:20px;background:lime;"></div>
-					    </div>
+                        <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
+                        <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>
 					</div>
 				</div>
 
-				<div class="leerlijn-holder {{leerlijn.title}}" ng-repeat="niveau in leerlijn.niveaux">	
-					<div>{{niveau.title}}</div>
-					<div class="level-header" style="background:{{leerlijn.color}};">
-						
-					</div>
+                <div class="fader {{leerlijn._id}}">
+    				<div class="leerlijn-holder" ng-repeat="niveau in leerlijn.niveaux">	
+    					<div class="niveautitle"><i class="fa fa-info info-icon" ng-click="collapse(niveau._id)"></i>{{niveau.title}}</div>
+                        <div ng-if="isModerator()" class="checkbox">
+                            <label ng-if="niveau.participants[0]">
+                                Leerlijn voltooid: 
+                                <input ng-model="niveau.participants[0].accomplished" ng-change="accomplished(leerlijn._id, niveau._id, niveau.participants[0].accomplished)" type="checkbox">
+                            </label>
+                        </div>
+                        <div ng-if="!isModerator() && niveau.participants[0].accomplished || !isAdmin && niveau.participants[0].accomplished" class="accomplished">
+                            <i class="fa fa-check" />
+                            Afgerond
+                        </div>
+                        <div class="desc {{niveau._id}}"><b>Beschrijving</b><br><br><p style="white-space: pre;">{{niveau.descriptionEdited}}</p></div>
+    					<div class="level-header" style="background:{{leerlijn.color}};">
+                            <div ng-if="niveau.participants[0].accomplished" style="background:rgba(0,0,0,.4);"></div>
+                            <div ng-if="!niveau.participants[0].objects.length" style="background:rgba(255,255,255,.4);"></div>               
+                        </div>
 
-					<div ng-repeat="participant in niveau.participants">
-					<i ng-if="participant.accomplished != false" class="accomplished fa fa-check" />
-						<span class=" leerlijn-objects" ng-repeat="object in participant.objects">
-		                    <div class="leerlijn-object">
-		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};"></div>
-                                <div ng-switch on="object.type">
-                                    <a href="" class="object-item" popover ng-switch-when="video">
-                                        <i class="fa fa-play"></i>
-                                        <div class="content hidden">
-                                            <video width="260" height="130" poster="" controls>
-                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
-                                            </video>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+    					<div ng-repeat="participant in niveau.participants">
+    						<span class=" leerlijn-objects" >
+    		                    <div class="leerlijn-object" ng-repeat="object in participant.objects">
+    		                   		<div class="object-stroke" style="border-right:2px solid {{leerlijn.color}};">
+                                        <div ng-if="niveau.participants[0].accomplished" style="border-right:2px solid rgba(0,0,0,.4);"></div>         
+                                    </div>
+                                    <div ng-switch on="object.type">
+                                        <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object, $event)">
+                                            <i class="fa fa-play"></i>
+                                            <div class="content hidden">
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
+                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
+                                                <h4>Feedback:</h4>
+                                                <video width="367" height="182" poster="" controls>
+                                                    <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
+                                                </video>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="object-item" popover ng-switch-when="audio">
-                                        <i class="fa fa-music"></i>
-                                        <div class="content hidden" ng-hide>
-                                            <audio controls>
-                                                <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                        </a>
+                                        <a href="" class="object-item" popover ng-switch-when="audio" ng-click="currentObject(object, $event)">
+                                            <i class="fa fa-music"></i>
+                                            <div class="content hidden" ng-hide>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
+                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
+                                                <h4>Feedback:</h4>
+                                                <audio style="width:367px" controls>
+                                                    <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="object-item" popover ng-switch-when="text">
-                                        <i class="fa fa-file-text"></i>
-                                        <div class="content hidden" ng-hide>
-                                            <p>{{ object.source }}</p>
-                                            <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'">
+                                        </a>
+                                        <a href="" class="object-item" popover ng-switch-when="text" ng-click="currentObject(object, $event)">
+                                            <i class="fa fa-file-text"></i>
+                                            <div class="content hidden" ng-hide>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                </span>
+                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
+                                                <h4>Feedback:</h4>
+                                                <pre style="width:367px">{{ object.source }}</pre>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'"></div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </div>
-		                    </div>
-		                </span>
-					</div>
-			    </div>
+                                        </a>
+                                    </div>
+    		                    </div>
+    		                </span>
+    					</div>
+    			    </div>
+                </div>
 		    </div>
-
 	    </div>
+
+        <!-- Modal warning DELETE -->
+        <div class="modal delete fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="editLearningForm" novalidate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Verwijder object</h4>
+                        </div>
+                        <button data-dismiss="modal" class="btn blue">Annuleren</button>
+                        <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal warning DELETE -->
+        <div class="modal delete fade" id="deleteAdditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="editLearningForm" novalidate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Verwijder deze toelichting</h4>
+                        </div>
+                        <button data-dismiss="modal" class="btn blue">Annuleren</button>
+                        <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj.toelichting[0]._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal warning EDIT -->
+        <div class="modal edit fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="editLearningForm" novalidate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Pas de toelichting aan</h4>
+                            <p style="text-align:left;">
+                                Door hier een tekst te plaatsen wordt de toelichting die nu aan het object zit vervangen.<br />
+                                <b>LET OP:</b> Het is niet mogelijk de oude toelichting terug te krijgen zodra deze is aangepast.
+                            </p>
+                            <div class="form">
+                                <textarea placeholder="Toelichting" ng-model="newAddition" required class="form-control" rows="15" cols="80" id="textarea_niveau"></textarea>
+                            </div>
+                        </div>
+                        <button data-dismiss="modal" class="btn blue">Annuleren</button>
+                        <button type="submit" class="btn btn-danger" ng-click="editAdditionFromNiveau(testobject.obj)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog">
+            <div class="d-success">
+              <h2></h2>
+              <p></p>
+            </div>
+        </div>
+
     </div>
 </div>

@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="dev/css/admin_dash.css" />
+<!-- Bootstrap core CSS -->
+<link href="dev/css/bootstrap.min.css" rel="stylesheet">
+
+<div id="wrap" ng-controller="InboxController">
+	<div class="container">
+		<!-- dropdown group and student selector -->
+		<div id="studentSelector" class="panel-style space">
+			<span>Selecteer een groep</span>
+				<select class="studentSelectorMenu" ng-model='studentSelector'  ng-options='group.title for group in groups'></select>
+					<ul>
+						<li class="studentListItem" ng-model="selectedStudent" ng-repeat="student in studentSelector.participants"><button class="studentButton" ng-click="getInbox(student._id, student.firstName)"> {{student.firstName}} {{student.middleName}} {{student.surName}}</button></li>
+					</ul>
+		</div>
+		<!-- object table -->
+		<div id="objectTable" class="panel-style space">
+			<h3 class="heading-title">Inbox van {{selectedStudent}}</h3>
+			<span ng-if="fullInbox.length === 0">Deze gebruiker heeft geen objecten om te koppelen</span>			
+			<table datatable="" id="inboxTable" class="table simple	" ng-if="fullInbox.length !== 0">
+				<thead>
+					<tr>
+						<th>Object</th>
+						<th>Toelichting</th>
+						<th>Gemaakt door</th>
+						<th>Gemaakt op</th>
+						<th>Acties</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
+						<td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td>
+						<td><span>{{object.toelichting[0].source}}</span></td>
+						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
+						<td>{{object.createdDate | date: 'd-M-y, HH:mm'}}</td>
+						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Object koppelen</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- popup -->
+		<div class="modal fade" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="organisationForm" novalidate ng-submit="addObject(selectedLeerlijn, niveau)">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">voeg dit object toe aan een leerlijn</h4>
+					 </div>
+					 <div class="modal-body input-f-wrapper">
+					 	<span>Selecteer een leerlijn:</span>
+					  	<select class="leerlijnSelector" ng-model='selectedLeerlijn'  ng-options='leerlijn.title for leerlijn in leerlijnen'></select>
+						</br>
+						</br>
+						<span>Selecteer een niveau:</span>
+						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" />{{niveau.title}} - {{niveau.description}}
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue" onclick="$('#newGroup').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Object toevoegen</button>
+					  </div>
+					</div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+	</div>
+</div>
+    

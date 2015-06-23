@@ -15,6 +15,15 @@ module.exports = function(admin)
             $window.history.back();
         }
 
+        function fancyAlert(title, text){
+            $('.dialog .d-success h2').html(title);
+            $('.dialog .d-success p').html(text);
+
+            $('.dialog').fadeTo( 500, 0.8, function(){
+                $('.dialog').fadeTo( "slow", 0);
+            }).delay(1000);
+        }
+
         function refillUsersOfOrganisation(){
             UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                 {
@@ -76,7 +85,9 @@ module.exports = function(admin)
                     $('.modal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-                    alert('Organisatie toegevoegd!');
+
+                    fancyAlert("Succes!", "Organisatie toegevoegd");
+
                     $scope.newGroupName = "";
                     $scope.newGroupColor = "";
                     $scope.newGroupLogo = "";
@@ -97,7 +108,7 @@ module.exports = function(admin)
                     $('.modal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-                    alert('Organisatie bijgewerkt!');
+                    fancyAlert("Succes!", "Organisatie bijgewerkt");
                 });
         };
 
@@ -136,7 +147,7 @@ module.exports = function(admin)
                     $('#newGroup').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-                    alert('Groep aangemaakt!');
+                    fancyAlert("Succes!", "Groep aangemaakt");
                     $scope.newGroupName = "";
 
                 }).error(function(data, status, headers, config)
@@ -204,7 +215,7 @@ module.exports = function(admin)
                     });
                 }
                 
-                alert('Gebruikers zijn aan de organisatie toegevoegd!');
+                fancyAlert("Succes!", "Gebruikers zijn aan de organisatie toegevoegd");
             };
 
             GroupService.getAllModeratorsOfOrganisation($routeParams.organisationid).then(function(data, status, headers, config)
@@ -254,7 +265,8 @@ module.exports = function(admin)
                                 $scope.allGroups.push(data[i]);
                             }
                         });
-                        alert('Groep bijgewerkt!');
+                        
+                        fancyAlert("Succes!", "Groep bijgewerkt");
                     });
             };
 
@@ -309,7 +321,7 @@ module.exports = function(admin)
                     });
                 }
                 
-                alert('Leraren aangemaakt!');
+                fancyAlert("Succes!", "Leraren aangemaakt");
             };
 
             // add user part
@@ -333,7 +345,9 @@ module.exports = function(admin)
                         $('.modal').modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
-                        alert('Gebruiker is aan de organisatie toegevoegd.');
+
+                        fancyAlert("Succes!", "Gebruiker is aan de organisatie toegevoegd");
+
                         refillUsersOfOrganisation();
                         refillExcistingUsersInOrganisation();
                         $scope.username = "";
@@ -345,11 +359,11 @@ module.exports = function(admin)
                         $scope.surName = "";
                     });
                 } else if(password1 != password2){
-                    alert('Wachtwoord komt niet overeen, vul deze aub opnieuw in');
+                    fancyAlert("Helaas!", "Wachtwoord komt niet overeen, vul deze aub opnieuw in");
                     $scope.password1 = "";
                     $scope.password2 = "";
                 } else {
-                    alert('Gebruikersnaam al in gebruik, kies aub een andere');
+                    fancyAlert("Helaas", "Gebruikersnaam al in gebruik, kies aub een andere");
                     $scope.username = "";
                 }
                 
@@ -430,7 +444,7 @@ module.exports = function(admin)
                             for(i=0;i<data[0].participants.length;i++){
                                 $scope.usersOfGroup.push(data[0].participants[i]);        
                             }
-                            alert('Leerlingen succesvol aan groep toegevoegd!');
+                            fancyAlert("Succes!", "Leerlingen succesvol aan groep toegevoegd");
                         });
                     });
             }

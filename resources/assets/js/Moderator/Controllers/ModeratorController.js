@@ -15,6 +15,15 @@ module.exports = function(moderator)
             $window.history.back();
         }
 
+        function fancyAlert(title, text){
+            $('.dialog .d-success h2').html(title);
+            $('.dialog .d-success p').html(text);
+
+            $('.dialog').fadeTo( 500, 0.8, function(){
+                $('.dialog').fadeTo( "slow", 0);
+            }).delay(1000);
+        }
+
         function refillUsersOfOrganisation(){
             UserGroupService.getAllUsersOfOrganisation($routeParams.organisation).then(function(data, status, headers, config)
                 {
@@ -67,9 +76,26 @@ module.exports = function(moderator)
                 });
         }
 
+        function getNiveaus(){
+            NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){ 
+                var regex = /<br\s*[\/]?>/gi;
+                $scope.niveaus = [];
+                for(i = 0; i < data.length; i++){
+                    data[i].descriptionEdited = data[i].description.replace(regex, "\n");
+                    console.log(data[i].descriptionEdited);
+                    console.log(data[i].description);
+                }
+
+                $scope.niveaus = data;
+                LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                    $scope.learningName = data.title;
+                });
+            });
+        }
+
 
         UserService.getUserInfo().then(function(data, status, headers, config){
-        	$scope.user = data.data[0];
+            $scope.user = data.data[0];
             organisationId = $scope.user.organization._id;
             LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
                 {
@@ -85,7 +111,7 @@ module.exports = function(moderator)
                     LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
                     {
                         $scope.learnings = data;
-                        alert('Leerlijn toegevoegd');
+                        fancyAlert("Succes!", 'Leerlijn toegevoegd');
                         $scope.newTitle = "";
                         $scope.newColor = "";
                     });
@@ -101,7 +127,7 @@ module.exports = function(moderator)
                 LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
                     {
                         $scope.learnings = data;
-                        alert('Leerlijn bijgewerkt');
+                        fancyAlert("Succes!", 'Leerlijn bijgewerkt');
                     });
             });
         };
@@ -109,22 +135,13 @@ module.exports = function(moderator)
         $scope.deleteLearning = function(learningId, index){
             LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
                 $scope.learnings.splice(index, 1);
+                fancyAlert("Succes!", 'Leerlijn verwijderd');
             });
         };
 
         /* *  MODERATOR NIVEAUS **/
         if(typeof($routeParams.learningid) != "undefined"){
-            NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){ 
-                var regex = /<br\s*[\/]?>/gi;
-                for(i = 0; i < data.length; i++){
-                    data[i].description = data[i].description.replace(regex, "\n");
-                }
-
-                $scope.niveaus = data;
-                LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
-                    $scope.learningName = data.title;
-                });
-            });
+            getNiveaus();
         }
 
         $scope.addNiveau = function(newTitle, newDescription){
@@ -136,11 +153,11 @@ module.exports = function(moderator)
                 NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
                     var regex = /<br\s*[\/]?>/gi;
                     for(i = 0; i < data.length; i++){
-                        data[i].description = data[i].description.replace(regex, "\n");
+                        data[i].descriptionEdited = data[i].description.replace(regex, "\n");
                     }
                     $scope.niveaus = data;
                     $('#newNiveau').modal('hide');
-                    alert('Niveau toegevoegd');
+                    fancyAlert("Succes!", 'Niveau toegevoegd');
                     $scope.newTitle = "";
                     $scope.newDescription = "";
                     // $scope.newSection = "";
@@ -153,13 +170,15 @@ module.exports = function(moderator)
 
         $scope.editNiveau = function(newTitle, newDescription, niveau){
             NiveauFactory.editNiveau($routeParams.orgid, $routeParams.learningid, niveau._id, newTitle, newDescription).then(function(data, status, headers, config){
-                alert('Niveau bijgewerkt');
+                fancyAlert("Succes!", 'Niveau bijgewerkt');
+                getNiveaus();
             });
         };
 
         $scope.deleteNiveau = function(niveauId, index){
                 NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
                     $scope.niveaus.splice(index, 1);
+                    fancyAlert("Succes!", 'Niveau verwijderd');
                 });
         };
 
@@ -204,7 +223,7 @@ module.exports = function(moderator)
                         $('#newGroup').modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
-                        alert('Groep toegevoegd!');
+                        fancyAlert("Succes!", 'Groep toegevoegd');
 
                     }).error(function(data, status, headers, config)
                     {
@@ -249,7 +268,7 @@ module.exports = function(moderator)
                     
                 }
                 
-                alert('Gebruikers zijn aan de organisatie toegevoegd!');
+                fancyAlert("Succes!", 'Gebruikers zijn aan de organisatie toegevoegd');
             };
 
             /* * ADD MODERATORS TO GROUP AND EDIT GROUP **/
@@ -301,7 +320,8 @@ module.exports = function(moderator)
                                 $scope.allGroups.push(data[i]);
                             }
                         });
-                        alert('Groep bijgewerkt!');
+
+                        fancyAlert("Succes!", 'Groep bijgewerkt');
                     });
             };
 
@@ -356,7 +376,8 @@ module.exports = function(moderator)
                             }
 
                         });
-                alert('Leraren aangemaakt!');
+
+                fancyAlert("Succes!", 'Leraren aangemaakt');
             };
 
             // add user part
@@ -380,7 +401,9 @@ module.exports = function(moderator)
                         $('.modal').modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
-                        alert('Gebruiker is aan de organisatie toegevoegd.');
+
+                        fancyAlert("Succes!", 'Gebruiker is aan de organisatie toegevoegd');
+
                         refillUsersOfOrganisation();
                         refillExcistingUsersInOrganisation();
                         $scope.username = "";
@@ -392,11 +415,11 @@ module.exports = function(moderator)
                         $scope.surName = "";
                     });
                 } else if(password1 != password2){
-                    alert('Wachtwoord komt niet overeen, vul deze aub opnieuw in');
+                    fancyAlert("Helaas", 'Wachtwoord komt niet overeen, vul deze aub opnieuw in');
                     $scope.password1 = "";
                     $scope.password2 = "";
                 } else {
-                    alert('Gebruikersnaam al in gebruik, kies aub een andere');
+                    fancyAlert("Helaas", 'Gebruikersnaam al in gebruik, kies aub een andere');
                     $scope.username = "";
                 }
                 
@@ -464,7 +487,8 @@ module.exports = function(moderator)
                                 for(i=0;i<data[0].participants.length;i++){
                                     $scope.usersOfGroup.push(data[0].participants[i]);
                                 }
-                                alert('Leerlingen succesvol aan groep toegevoegd!');
+
+                                fancyAlert("Succes!", 'Leerlingen succesvol aan groep toegevoegd');
                             });
                         });
                 }

@@ -8,8 +8,7 @@ var modules =
     'app.leerlingDash',
 
     'app.timeline',
-    'app.bucket',
-
+    'app.bucket', 
     'app.canvas'
 ];
 
@@ -132,6 +131,15 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
             requiredPermissions: ['admin', 'moderator']
         }
     })
+    .when('/groups',
+    {
+        template: 'Groups',
+        controller: 'GroupsRedirectController',
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['moderator']
+        }
+    })
     .when('/moderator/:organisation',
     {
         templateUrl: 'partials/moderator/moderator_dash_groups.html',
@@ -212,12 +220,24 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/leerlingdash',
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
-        controller: 'LeerlingdashController'
+        controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
+        css:
+        [{
+            href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
+            bustCache: true
+        }]
     })
     .when('/leerlingdash/:orgid/:userid',
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
-        controller: 'LeerlingdashController'
+        controller: 'LeerlingdashController',
+        controllerAs: 'leerlingdash',
+        css:
+        [{
+            href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
+            bustCache: true
+        }]
     })
     .when('/timeline',
     {
@@ -236,6 +256,20 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
     .when('/forbidden',
     {
         templateUrl: 'partials/authentication/forbidden.html'
+    })
+    .when('/inbox',
+    {
+        templateUrl: 'partials/inbox.html',
+        controller: 'InboxController',
+        css:
+        [{
+             href: debug == true ? 'dev/css/inbox.css' : 'assets/css/inbox.min.css',
+             bustCache: true
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/', 
     {
