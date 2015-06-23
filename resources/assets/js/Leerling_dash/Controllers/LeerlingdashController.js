@@ -50,6 +50,8 @@ module.exports = function(leerlingDash)
                 }
 
                 $scope.learningsParticipant = data2;
+
+                console.log(data2);
             });
 
             UserService.getSpecificUserInfo(userId).then(function(data, status, headers, config){
@@ -92,24 +94,22 @@ module.exports = function(leerlingDash)
             });
         };
 
-
         //TODO:
         //API call to change or add a "toelichting" does not exist
-        $scope.editAdditionFromNiveau = function(object){
+        $scope.editAdditionFromNiveau = function(object, addition){
 
             if(object.toelichting.length){
-                console.log("full: "+ object.toelichting.length);
-            }else{
-                console.log("empty: "+ object.toelichting.length);
 
-                BucketService.updateObject(object._id).then(function(data, status, headers, config){
-                    LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
-                    {
-                        $scope.learningsParticipant = data;
-                        fancyAlert("Succes!", 'De toelichting is toegevoegd.');
-                    });
-                });
+                $scope.deleteObjectFromNiveau(object.toelichting[0]._id);
             }
+
+            BucketService.updateObject(object._id, addition).then(function(data, status, headers, config){
+                LearningFactory.getLearningParticipant(organisationId, userId).then(function(data, status, headers, config)
+                {
+                    $scope.learningsParticipant = data;
+                    fancyAlert("Succes!", 'De toelichting is toegevoegd.');
+                });
+            });
         };
     }]);
 };
