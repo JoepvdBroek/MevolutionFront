@@ -17,6 +17,7 @@ module.exports = function(user)
         }    
 
         $scope.switchToNonEditmode = function switchToEditmode(){
+            getUserInfo();
             $scope.editmode = false;
         }    
 

@@ -149,7 +149,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['moderator', 'admin']
+        }
     })
     .when('/moderator/:organisation/groups/:groupid',
     {
@@ -160,7 +164,11 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
              href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
              bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['moderator', 'admin']
+        }
     })
     .when('/admin',
     {
@@ -217,6 +225,36 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
             requiredPermissions: ['admin']
         }
     })
+    .when('/admin/learning/:orgid',
+    {
+        templateUrl: 'partials/admin/admin_dash_learning.html',
+        controller: 'AdminController',
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin']
+        }
+    })
+    .when('/admin/:orgid/:learningid',
+    {
+        templateUrl: 'partials/admin/admin_dash_niveau.html',
+        controller: 'AdminController',
+        controllerAs: 'admin',
+        css:
+        [{
+             href: debug == true ? 'dev/css/moderator/moderator_dash.css' : 'assets/css/moderator/moderator_dash.min.css',
+             bustCache: true
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
+    })
     .when('/leerlingdash',
     {
         templateUrl: 'partials/leerlingdash/leerlingdash.html',
@@ -226,7 +264,10 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
             href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
             bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/leerlingdash/:orgid/:userid',
     {
@@ -237,17 +278,27 @@ app.config([ '$locationProvider', '$routeProvider', function($location, $routePr
         [{
             href: debug == true ? 'dev/css/leerlijn-dash.css' : 'assets/css/leerlijn-dash.min.css',
             bustCache: true
-        }]
+        }],
+        access: {
+            requiresLogin: true,
+            requiredPermissions: ['admin', 'moderator']
+        }
     })
     .when('/timeline',
     {
         templateUrl: 'partials/timeline/timeline.html',
-        controller: 'TimelineController'
+        controller: 'TimelineController',
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/bucket',
     {
         templateUrl: 'partials/bucket.html',
-        controller: 'BucketController'
+        controller: 'BucketController',
+        access: {
+            requiresLogin: true
+        }
     })
     .when('/unauthorized',
     {

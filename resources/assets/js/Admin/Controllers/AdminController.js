@@ -1,6 +1,6 @@
 module.exports = function(admin)
 {
-    admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', '$rootScope', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory', function($scope, $location, $window, $routeParams, $rootScope, OrganisationService, GroupService, UserGroupService, AdminFactory)
+    admin.controller('AdminController', [ '$scope', '$location', '$window', '$routeParams', '$rootScope', 'OrganisationService', 'GroupService', 'UserGroupService', 'AdminFactory' , 'LearningFactory', 'NiveauFactory', function($scope, $location, $window, $routeParams, $rootScope, OrganisationService, GroupService, UserGroupService, AdminFactory, LearningFactory, NiveauFactory)
     {
 
         $scope.go = function(path){
@@ -123,6 +123,9 @@ module.exports = function(admin)
         $scope.allUsers = [];
 
         if(typeof $routeParams.organisationid !== 'undefined'){
+
+            $scope.organisationId = $routeParams.organisationid;
+            getOrganisation($scope.organisationId);
 
             GroupService.getGroups($routeParams.organisationid).then(function(data, status, headers, config)
                 {
@@ -465,6 +468,121 @@ module.exports = function(admin)
                   $scope.selectionOfUsers.push(userId);
                 }
 
+            };
+        }
+
+        /* *  ADMIN DASH LEERLIJNEN/LEARNING  **/
+        if(typeof $routeParams.orgid !== 'undefined'){
+            var organisationId = $routeParams.orgid;
+            $scope.organisationId = $routeParams.orgid;
+            getOrganisation(organisationId);
+
+            LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
+            {
+                $scope.learnings = data;
+            });
+
+            $scope.addLearning = function(newTitle, newColor){
+                LearningFactory.postLearning(organisationId, newTitle, newColor).success(function(data, status, headers, config)
+                    {
+                        LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
+                        {
+                            $scope.learnings = data;
+                            fancyAlert("Succes!", 'Leerlijn toegevoegd');
+                            $scope.newTitle = "";
+                            $scope.newColor = "";
+                        });
+
+                    }).error(function(data, status, headers, config)
+                    {
+
+                    });
+            };
+
+            $scope.editLearning = function(newTitle, newColor, learning){
+                LearningFactory.editLearning(organisationId, learning._id, newTitle, newColor).then(function(data, status, headers, config){
+                    LearningFactory.getLearningsOfOrganisation(organisationId).then(function(data, status, headers, config)
+                        {
+                            $scope.learnings = data;
+                            fancyAlert("Succes!", 'Leerlijn bijgewerkt');
+                        });
+                });
+            };
+
+            $scope.deleteLearning = function(learningId, index){
+                LearningFactory.deleteLearning(organisationId, learningId).then(function(data, status, headers, config){
+                    $scope.learnings.splice(index, 1);
+                    fancyAlert("Succes!", 'Leerlijn verwijderd');
+                });
+            };
+
+            function getNiveaus(){
+                NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){ 
+                    var regex = /<br\s*[\/]?>/gi;
+                    $scope.niveaus = [];
+                    for(i = 0; i < data.length; i++){
+                        data[i].descriptionEdited = data[i].description.replace(regex, "\n");
+                        console.log(data[i].descriptionEdited);
+                        console.log(data[i].description);
+                    }
+
+                    $scope.niveaus = data;
+                    LearningFactory.getLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                        $scope.learningName = data.title;
+                    });
+                });
+            }
+
+            /* *  MODERATOR NIVEAUS **/
+            if(typeof($routeParams.learningid) != "undefined"){
+                $scope.organisationId = $routeParams.orgid;
+                getNiveaus();
+                getOrganisation($scope.organisationId)
+            }
+
+            function getOrganisation(orgId){
+                OrganisationService.getOrganisation(orgId).then(function(data, status, headers, config){
+                    $scope.organisationName = data[0].name;
+                   $scope.organisation = data[0];
+               });
+            }
+
+            $scope.addNiveau = function(newTitle, newDescription){
+
+                newDescription = newDescription.replace(/\r?\n/g, '<br />');
+
+                NiveauFactory.postNiveau($routeParams.orgid, $routeParams.learningid, newTitle, newDescription).success(function(data, status, headers, config)
+                {
+                    NiveauFactory.getNiveausOfLearning($routeParams.orgid, $routeParams.learningid).then(function(data, status, headers, config){
+                        var regex = /<br\s*[\/]?>/gi;
+                        for(i = 0; i < data.length; i++){
+                            data[i].descriptionEdited = data[i].description.replace(regex, "\n");
+                        }
+                        $scope.niveaus = data;
+                        $('#newNiveau').modal('hide');
+                        fancyAlert("Succes!", 'Niveau toegevoegd');
+                        $scope.newTitle = "";
+                        $scope.newDescription = "";
+                        // $scope.newSection = "";
+                    });
+                }).error(function(data, status, headers, config)
+                {
+
+                });
+            };
+
+            $scope.editNiveau = function(newTitle, newDescription, niveau){
+                NiveauFactory.editNiveau($routeParams.orgid, $routeParams.learningid, niveau._id, newTitle, newDescription).then(function(data, status, headers, config){
+                    fancyAlert("Succes!", 'Niveau bijgewerkt');
+                    getNiveaus();
+                });
+            };
+
+            $scope.deleteNiveau = function(niveauId, index){
+                    NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
+                        $scope.niveaus.splice(index, 1);
+                        fancyAlert("Succes!", 'Niveau verwijderd');
+                    });
             };
         }
 

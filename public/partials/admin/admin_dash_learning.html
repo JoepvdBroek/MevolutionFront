@@ -1,0 +1,132 @@
+<div id="wrap">
+	<div class="container">
+		<div class="panel-style space">
+			
+			<h2>Welkom {{ user.username }}</h2>
+			<h3 class="heading-title">Alle leerlijnen van {{ organisation.name }}</h3>
+			
+			<div class="table_buttons" align="right">
+				<div class="input-group searchbar">
+					<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					<input type="text" class="form-control" placeholder="Zoeken" ng-model="searchTable">
+				</div>
+				<button class="btn blue" data-toggle="modal" data-target="#newLearning"><span class="glyphicon glyphicon-plus"></span> Nieuwe leerlijn toevoegen</button>
+			</div>
+
+			<table class="table simple">
+				<thead>
+					<tr>
+						<!-- <th>Plaatje</th> -->
+						<th>Titel</th>
+						<th>Kleur</th>
+						<th>Instellingen</th>	
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="learning in learnings | filter:searchTable | orderBy:'title'" id="{{learning._id}}" class="tablerow" >
+						{{ learning }}
+						<td data-ng-click="go('/admin/' + organisationId + '/' + learning._id + '/')">{{learning.title}}</td>
+						<td data-ng-click="go('/admin/' + organisationId + '/' + learning._id + '/')">
+						<div style="width:14px;height:14px;display:inline-block;background:{{learning.color}};"></div> {{learning.color}}</td>
+						<td>
+							<button class="btn orange" data-toggle="modal" data-target="#settingsid{{learning._id}}"><i class="fa fa-pencil"></i> Instellingen</button>
+							<button class="btn red second_button" data-toggle="modal" data-target="#deleteid{{learning._id}}" ><i class="fa fa-times"></i> Verwijder</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Modal Add Learning -->
+			<div class="modal fade" id="newLearning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+					<form name="learningForm" novalidate ng-submit="learningForm.$valid && addLearning(newTitle, newColor)">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe leerlijn toe aan {{ user.organization.name }}</h4>
+					  </div>
+					  <div class="modal-body input-f-wrapper input_box">
+
+						<div class="input_row input-group">
+							<label>Leerlijn titel:</label>
+							<input type="text" placeholder="Naam" ng-model="newTitle" required class="form-control" />
+						</div>
+						<div class="input_row input-group">
+							<label>Leerlijn kleur:</label>
+							<input type="text" colorpicker="hex" placeholder="Kleurcode" ng-model="newColor" required class="form-control" />
+						</div>
+
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Annuleren</button>
+						<button type="submit" class="btn blue" onclick="$('#newLearning').modal('hide')">Leerlijn aanmaken</button>
+					  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<!-- Modal Edit Learning -->
+			<div class="modal edit fade" ng-repeat="learningedit in learnings" id="settingsid{{learningedit._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				<form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learningedit.title, learningedit.color, learningedit)">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Wijzig {{organisation.name}}</h4>
+				  </div>
+				  <div class="modal-body input-f-wrapper input_box">
+
+				  	<div class="input_row input-group">
+						<label>Naam leerlijn</label>
+						<input type="text" ng-model="learningedit.title" class="form-control" />
+					</div>
+					<div class="input_row input-group">
+						<label>Kleurcode</label>
+						<input type="text" colorpicker="hex" ng-model="learningedit.color" class="form-control" />
+					</div>
+				  </div>
+
+				  <div class="modal-footer">
+				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
+					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
+					<button type="submit" class="btn blue" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Wijzigen</button>
+				  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<!-- Modal warning DELETE -->
+			<div class="modal delete fade" ng-repeat="learningedit in learnings" id="deleteid{{learningedit._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				<form name="editLearningForm" novalidate ng-submit="editLearningForm.$valid && editLearning(learningedit.title, learningedit.color, learningedit)">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Verwijder {{learningedit.title}}</h4>
+					<p>Weet u zeker dat u "{{learningedit.title}}" wilt verwijderen?</p>
+				  </div>
+				  	<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Verwijder</button> -->
+					<!-- <button type="button" class="btn default" data-dismiss="modal">Annuleren</button> -->
+					<button data-dismiss="modal" class="btn blue">Annuleren</button>
+					<button type="submit" class="btn btn-danger" ng-click="deleteLearning(learningedit._id, $index)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+				  </div>
+				  </form>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+		</div>
+
+		<div class="dialog">
+            <div class="d-success">
+              <h2></h2>
+              <p></p>
+            </div>
+        </div>
+
+	</div><!-- /.container -->
+</div>
+    
