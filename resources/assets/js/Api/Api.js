@@ -421,6 +421,17 @@ module.exports = function(api)
                     "client_secret": API.clientSecret,
                     headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
+            },
+            exportParticipantLearning: function(organisationId, participantId){
+                return $http.get(API.url + '/organization/' + organisationId + '/participant/' + participantId +'/export',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
             }
         };
     }]);
