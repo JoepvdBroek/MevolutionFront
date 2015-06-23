@@ -32,7 +32,7 @@
 						<!-- <td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td> -->
 						<!-- leerbewijs -->
 						<td ng-switch on="object.type">
-                            <a href="" class="object-item" popover ng-switch-when="video">
+                            <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object, $event)">
                             	<i class="fa fa-play"></i>
                             	<div class="content hidden">
                             		<video width="260" height="130" poster="" controls>
@@ -40,7 +40,7 @@
                             		</video>
                             	</div>
                             </a>
-                            <a href="" class="object-item" popover ng-switch-when="audio">
+                            <a href="" class="object-item" popover ng-switch-when="audio" ng-click="currentObject(object, $event)">
                             	<i class="fa fa-music"></i>
                             	<div class="content hidden" ng-hide>
                             		<audio controls>
@@ -49,16 +49,23 @@
                         			</audio>
                             	</div>
                             </a>
-                            <a href="" class="object-item" popover ng-switch-when="text">
+                            <a href="" class="object-item" popover ng-switch-when="text" ng-click="currentObject(object, $event)">
                          		<i class="fa fa-file-text"></i>
                             	<div class="content hidden" ng-hide>
-                        			<p>{{ object.source }}</p>
+                        			<pre>{{ object.source }}</pre>
                             	</div>
+                            </a>
+
+                            <a href="" class="object-item" popover ng-switch-when="picture" ng-click="currentObject(object, $event)">
+                                <i class="fa fa-photo"></i>
+                                <div class="content hidden" ng-hide>
+									<img style="width:367px" src="{{ object.source }}" />
+                                </div>
                             </a>
                         </td>
 						<!-- toelichting -->
                         <td ng-switch on="object.toelichting[0].type">
-                            <a href="" class="object-item" popover ng-switch-when="video">
+                            <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object.toelichting[0], $event)">
                             	<i class="fa fa-play"></i>
                             	<div class="content hidden">
                             		<video width="260" height="130" poster="" controls>
@@ -66,7 +73,7 @@
                             		</video>
                             	</div>
                             </a>
-                            <a href="" class="object-item" popover ng-switch-when="audio">
+                            <a href="" class="object-item" popover ng-switch-when="audio" ng-click="currentObject(object.toelichting[0], $event)">
                             	<i class="fa fa-music"></i>
                             	<div class="content hidden" ng-hide>
                             		<audio controls>
@@ -78,8 +85,14 @@
                             <a href="" class="object-item" popover ng-switch-when="text">
                          		<i class="fa fa-file-text"></i>
                             	<div class="content hidden" ng-hide>
-                        			<p>{{ object.toelichting[0].source }}</p>
+                        			<pre>{{ object.toelichting[0].source }}</pre>
                             	</div>
+                            </a>
+                            <a href="" class="object-item" popover ng-switch-when="picture" ng-click="currentObject(object.toelichting[0], $event)">
+                                <i class="fa fa-photo"></i>
+                                <div class="content hidden" ng-hide>
+									<img style="width:367px" src="{{ object.toelichting[0].source }}" />
+                                </div>
                             </a>
                             <span ng-switch-default>
                             	Dit leerbewijs heeft geen toelichting

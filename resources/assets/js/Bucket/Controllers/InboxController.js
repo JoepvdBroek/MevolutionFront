@@ -1,6 +1,6 @@
 module.exports = function(inbox)
 {
-    inbox.controller('InboxController', [ '$scope', '$location', '$window', 'BucketService', 'UserService', 'GroupService', 'UserGroupService', function($scope, $location, $window, BucketService, UserService, GroupService, UserGroupService)
+    inbox.controller('InboxController', [ '$scope', '$location', '$window', 'BucketService', 'UserService', 'GroupService', 'UserGroupService', '$sce', function($scope, $location, $window, BucketService, UserService, GroupService, UserGroupService, $sce)
     {
 
         var groups = [];
@@ -14,6 +14,12 @@ module.exports = function(inbox)
         var selectedObject;
         var selectedStudent;
         var tempToelichtingen = [];
+        $scope.testobject = {};
+
+        $scope.trustSrc = function(src)
+        {
+            return $sce.trustAsResourceUrl(src);
+        };
 
         UserService.getUserInfo().then(function(userdata){
             if (userdata.data[0].organization !== 'null') {
