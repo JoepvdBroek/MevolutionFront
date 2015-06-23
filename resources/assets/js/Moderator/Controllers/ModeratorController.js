@@ -9,10 +9,6 @@ module.exports = function(moderator)
             $location.path(path);
         };
 
-        $scope.goBack = function(){
-            $window.history.back();
-        };
-
         var organisationId = "";
 
         $scope.goBack = function goBack(){

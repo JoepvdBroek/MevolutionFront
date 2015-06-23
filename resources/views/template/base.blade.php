@@ -34,7 +34,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <ng-view>
+    <ng-view class="full_width_height">
         @yield('content')
     </ng-view>
 </div>

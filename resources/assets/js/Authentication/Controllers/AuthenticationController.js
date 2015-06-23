@@ -13,7 +13,7 @@ module.exports = function(authentication)
                     $window.sessionStorage.refresh_token = data.refresh_token;
                     $window.sessionStorage.last_activity = new Date().getTime();
 
-                    $window.location.href = '#/timeline';
+                    redirectUser();
 
                 }).error(function(status, data)
                 {
@@ -23,6 +23,32 @@ module.exports = function(authentication)
                 });
             }
         };
+
+        function redirectUser(){
+            UserService.getUserInfo().success(function(data)
+            {
+                var roles = data[0].roles;
+
+                if(_.contains(roles, 'admin'))
+                {
+                    $window.location.href = '#/admin';
+                }
+                else if(_.contains(roles, 'moderator'))
+                {
+                    $window.location.href = '#/groups';
+                } else 
+                {
+                    $window.location.href = '#/leerlingdash';
+                }             
+                
+            }).error(function(status, data)
+            {
+                alert('Er ging iets fout met inloggen. Probeer het opnieuw.')
+                $window.location.href = '#/auth/login';
+                console.log(status);
+                console.log(data);
+            });
+        }
 
         $scope.register = function register(user)
         {
@@ -51,7 +77,7 @@ module.exports = function(authentication)
                                     });
                                 }else {
                                     alert('Het e-mail is al in gebruik.');
-                                    user.email = '';
+                                    user.email = null;
                                 }
                             }).error(function(status, data)
                             {
@@ -60,13 +86,13 @@ module.exports = function(authentication)
                             });
                         } else {
                             alert("Gebruikersnaam is al in gebruik");
-                            $('#input-username').val('');
+                            user.username = null;
                         }
                     });
                 } else {
                     alert('Uw wachtwoorden komen niet overeen. Probeer het nog eens.');
-                    user.password1 = '';
-                    user.password2 = '';
+                    user.password1 = null;
+                    user.password2 = null;
                 }
             } else 
             {
@@ -74,7 +100,7 @@ module.exports = function(authentication)
             }
         };
 
-        $scope.checkUsername = function checkUsername(username)
+       /* $scope.checkUsername = function checkUsername(username)
         {
             if (username != null)
             {
@@ -96,6 +122,6 @@ module.exports = function(authentication)
                     console.log(data);
                 });
             }
-        };
+        };*/
     }]);
 };
