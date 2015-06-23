@@ -124,6 +124,16 @@ module.exports = function(api)
                 });
             },
 
+            uploadImage: function(userId, formData)
+            {
+                RefreshService.refreshTokenIfNeeded();
+                return $http.put(API.url + '/users/' + userId, formData,
+                {
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                });
+            },
+
             sentPasswordReset: function (email)
             {
                 return $http.post(API.url + '/users/forgot',
