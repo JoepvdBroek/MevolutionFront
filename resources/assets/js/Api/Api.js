@@ -578,9 +578,11 @@ module.exports = function(api)
                 });
             },
             updateObject: function(objectId, addition){
-                return $http.put(API.url + '/objects/'+ objectId , 
+                return $http.put(API.url + '/objects/'+ objectId +'/toelichting', 
                     {
-                        toelichting: addition
+                        type: "text",
+                        content: addition
+
                     }).then(function(data){
                     return data.data;
                 });
