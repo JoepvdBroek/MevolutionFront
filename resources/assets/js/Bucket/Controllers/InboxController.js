@@ -1,6 +1,6 @@
 module.exports = function(inbox)
 {
-    inbox.controller('InboxController', [ '$scope', '$location', '$window', 'BucketService', 'UserService', 'GroupService', 'UserGroupService', function($scope, $location, $window, BucketService, UserService, GroupService, UserGroupService)
+    inbox.controller('InboxController', [ '$scope', '$location', '$window', 'BucketService', 'UserService', 'GroupService', 'UserGroupService', '$sce', function($scope, $location, $window, BucketService, UserService, GroupService, UserGroupService, $sce)
     {
 
         var groups = [];
@@ -9,15 +9,22 @@ module.exports = function(inbox)
         $scope.leerlijnen = [];
         $scope.fullInbox = [];
         $scope.selectedStudent = "";
-        var organisation;
+        $scope.organisation;
+        $scope.selectedStudentId;
         var selectedObject;
         var selectedStudent;
         var tempToelichtingen = [];
+        $scope.testobject = {};
+
+        $scope.trustSrc = function(src)
+        {
+            return $sce.trustAsResourceUrl(src);
+        };
 
         UserService.getUserInfo().then(function(userdata){
             if (userdata.data[0].organization !== 'null') {
-                organisation = userdata.data[0].organization;
-                GroupService.getGroups(organisation._id).then(function(groupdata){
+                $scope.organisation = userdata.data[0].organization;
+                GroupService.getGroups($scope.organisation._id).then(function(groupdata){
                     for (var i = 0; i<groupdata.length; i++) {
                         groups.push(groupdata[i]);
                     };
@@ -37,6 +44,7 @@ module.exports = function(inbox)
 
         var getInbox = function(id){
             selectedStudent = id;
+            $scope.selectedStudentId = id;
             BucketService.getInbox(id).then(function(data){
                 $scope.fullInbox = data[0];
                 if (data.length===0) {
@@ -50,17 +58,13 @@ module.exports = function(inbox)
         $scope.getInbox = function(id, firstname){
             $scope.fullInbox = [];
             selectedStudent = id;
+            $scope.selectedStudentId = id;
             tempToelichtingen = [];
             $scope.selectedStudent = ""+firstname+"";
             BucketService.getInbox(id).then(function(data){
                 for (var i =0; i<data.length; i++) {
-                    if (data[i].toelichting.length !== 0) {
+                    if (!data[i].filepath){
                         $scope.fullInbox.push(data[i]);
-                        tempToelichtingen.push(data[(i+1)]);
-                    } else {
-                        if (!(_.findWhere(tempToelichtingen, {_id: data[i]._id}))) {
-                            $scope.fullInbox.push(data[i]);
-                        }
                     }
                 }
             });
@@ -68,8 +72,19 @@ module.exports = function(inbox)
         
         $scope.getPopUp = function(object){
             selectedObject = object;
-            BucketService.getLeerlijnen(organisation._id).then(function(data){
+            BucketService.getLeerlijnen($scope.organisation._id).then(function(data){
                 var leerlijnen = data;
+                var regex = /<br\s*[\/]?>/gi;
+                for(i = 0; i < leerlijnen.length; i++){
+                    var leerlijn = leerlijnen[i];
+                    for(a = 0; a < leerlijn.niveaux.length; a++){
+                        var niveaux = leerlijn.niveaux[a];
+                        niveaux.newDescription = niveaux.description.replace(regex, '\n');
+                    }
+                }
+                // for(i = 0; i < leerlijnen.niveaux.length; i++){
+                //     data[i].newDescription = data[i].description.replace(regex, "\n");
+                // }
                 $scope.leerlijnen = leerlijnen;
                 console.log(data);
             });
@@ -84,7 +99,7 @@ module.exports = function(inbox)
         }
 
         var combineObjectLeerlijn = function(leerlijn, niveau, participant){
-            BucketService.addObject(organisation._id, leerlijn._id, niveau._id, participant, selectedObject._id).then(function(data){
+            BucketService.addObject($scope.organisation._id, leerlijn._id, niveau._id, participant, selectedObject._id).then(function(data){
                 {
                     console.log(data);
                     alert("toegevoegd");
@@ -108,7 +123,7 @@ module.exports = function(inbox)
         };
 
         var createNewParticipant = function(niveau, leerlijn){
-            BucketService.makeParticipant(organisation._id, leerlijn._id, niveau._id, selectedStudent).then(function(participantData){
+            BucketService.makeParticipant($scope.organisation._id, leerlijn._id, niveau._id, selectedStudent).then(function(participantData){
                     var participant = participantData;
                     console.log(participantData);
                     combineObjectLeerlijn(leerlijn, niveau, participant.participant);

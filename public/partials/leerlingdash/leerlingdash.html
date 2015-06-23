@@ -5,7 +5,7 @@
 	    <div class="timeline">
         <a class="btn btn-default" style="background:#777; color:white;" ng-if="isModerator() || isAdmin()" ng-click="goBack()"><i class="fa fa-arrow-left"></i> Ga terug</a>
 	    	<h2 ng-repeat="user in pageUser">Dashboard van {{user.firstName +' '+ user.middleName +' '+ user.surName}}</h2>
-			
+			<!--<button class="btn blue" ng-click="exportParticipantLearning()" ng-if="isModerator() || isAdmin()"><i class="fa fa-download"></i>  Export</button>-->
 	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
 				<div class="leerlijn-title">{{leerlijn.title}}</div>
 				
@@ -46,9 +46,9 @@
                                             <i class="fa fa-play"></i>
                                             <div class="content hidden">
                                                 <span ng-if="isModerator() || isAdmin()">
-                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-trash delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 </span>
-                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <video width="367" height="182" poster="" controls>
                                                     <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
@@ -61,9 +61,9 @@
                                             <i class="fa fa-music"></i>
                                             <div class="content hidden" ng-hide>
                                                 <span ng-if="isModerator() || isAdmin()">
-                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-trash delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 </span>
-                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <audio style="width:367px" controls>
                                                     <source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
@@ -77,11 +77,23 @@
                                             <i class="fa fa-file-text"></i>
                                             <div class="content hidden" ng-hide>
                                                 <span ng-if="isModerator() || isAdmin()">
-                                                    <i class="fa fa-remove delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-trash delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
                                                 </span>
-                                                <!--<i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>-->
                                                 <h4>Feedback:</h4>
                                                 <pre style="width:367px">{{ object.source }}</pre>
+                                                <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'"></div>
+                                            </div>
+                                        </a>
+                                        <a href="" class="object-item" popover ng-switch-when="picture" ng-click="currentObject(object, $event)">
+                                            <i class="fa fa-photo"></i>
+                                            <div class="content hidden" ng-hide>
+                                                <span ng-if="isModerator() || isAdmin()">
+                                                    <i class="fa fa-trash delete-object"  data-toggle="modal" data-target="#deleteModal"></i>
+                                                    <i class="fa fa-pencil edit-object" data-toggle="modal" data-target="#editModal"></i>
+                                                </span>
+                                                <h4>Feedback:</h4>
+                                                <img style="width:367px" src="{{ object.source }}" />
                                                 <div ng-repeat="toelichting in object.toelichting" ng-include="'partials/leerlingdash/toelichting.html'"></div>
                                             </div>
                                         </a>
@@ -133,17 +145,21 @@
                     <form name="editLearningForm" novalidate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Pas de toelichting aan</h4>
+                            <h4 class="modal-title" id="myModalLabel">Toelichting</h4>
                             <p style="text-align:left;">
+                            <br />
                                 Door hier een tekst te plaatsen wordt de toelichting die nu aan het object zit vervangen.<br />
                                 <b>LET OP:</b> Het is niet mogelijk de oude toelichting terug te krijgen zodra deze is aangepast.
                             </p>
                             <div class="form">
-                                <textarea placeholder="Toelichting" ng-model="newAddition" required class="form-control" rows="15" cols="80" id="textarea_niveau"></textarea>
+                                <textarea placeholder="Toelichting" ng-model="testobject.obj.toelichting[0].content" required class="form-control" rows="15" cols="80" id="textarea_niveau">
+                                    
+                                </textarea>
                             </div>
                         </div>
                         <button data-dismiss="modal" class="btn blue">Annuleren</button>
-                        <button type="submit" class="btn btn-danger" ng-click="editAdditionFromNiveau(testobject.obj)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                        <button type="submit" class="btn orange" ng-click="editAdditionFromNiveau(testobject.obj, testobject.obj.toelichting[0].content)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Aanpassen</button>
+                        <button ng-if="testobject.obj.toelichting.length" type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj.toelichting[0]._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
                     </form>
                 </div>
             </div>
