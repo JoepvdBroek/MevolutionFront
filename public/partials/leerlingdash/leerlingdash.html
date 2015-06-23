@@ -5,7 +5,7 @@
 	    <div class="timeline">
         <a class="btn btn-default" style="background:#777; color:white;" ng-if="isModerator() || isAdmin()" ng-click="goBack()"><i class="fa fa-arrow-left"></i> Ga terug</a>
 	    	<h2 ng-repeat="user in pageUser">Dashboard van {{user.firstName +' '+ user.middleName +' '+ user.surName}}</h2>
-			
+			<!--<button class="btn blue" ng-click="exportParticipantLearning()" ng-if="isModerator() || isAdmin()"><i class="fa fa-download"></i>  Export</button>-->
 	    	<div class="leerlijn-container" ng-repeat="leerlijn in learningsParticipant" >
 				<div class="leerlijn-title">{{leerlijn.title}}</div>
 				
@@ -159,7 +159,7 @@
                         </div>
                         <button data-dismiss="modal" class="btn blue">Annuleren</button>
                         <button type="submit" class="btn orange" ng-click="editAdditionFromNiveau(testobject.obj, testobject.obj.toelichting[0].content)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Aanpassen</button>
-                        <button type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj.toelichting[0]._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
+                        <button ng-if="testobject.obj.toelichting.length" type="submit" class="btn btn-danger" ng-click="deleteObjectFromNiveau(testobject.obj.toelichting[0]._id)" onclick="$('.modal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();">Verwijderen</button>
                     </form>
                 </div>
             </div>

@@ -108,6 +108,7 @@ module.exports = function(api)
                 RefreshService.refreshTokenIfNeeded();
                 return $http.put(API.url + '/users/' + user._id,
                 {
+                    //"password" : user.password,
                     "email" : user.emai,
                     "firstName" : user.firstName,
                     "middleName" : user.middleName,
@@ -118,16 +119,8 @@ module.exports = function(api)
                     "zipCode" : user.zipCode,
                     "phone1" : user.phone1,
                     "phone2" : user.phone2
-                });
-            },
-
-            uploadImage: function (userId, formData)
-            {
-                RefreshService.refreshTokenIfNeeded();
-                return $http.put(API.url + '/users/' + userId, formData,
-                {
-                    headers: {'Content-Type': undefined },
-                    transformRequest: angular.identity
+                    // "organization" : user.organization,
+                    // "roles" : user.roles
                 });
             },
 
@@ -171,7 +164,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 }).then(function(data){
                     return data.data;
                 });
@@ -182,7 +176,8 @@ module.exports = function(api)
                 {
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 }).then(function(data){
                     return data.data;
                 });
@@ -194,7 +189,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             },
             postNewOrganisationName: function(newName, newColor, organisationId){
@@ -204,7 +200,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             }
         };
@@ -221,7 +218,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 }).then(function(data){
                     return data.data;
                 });
@@ -233,7 +231,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 });
             },
             getAllModeratorsOfOrganisation: function(organisationId){
@@ -243,7 +242,8 @@ module.exports = function(api)
                     password: 'terry',
                     "grant_type": "password",
                     "client_id": API.clientId,
-                    "client_secret": API.clientSecret
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
                 }).then(function(data){
                     return data.data;
                 });
@@ -268,32 +268,83 @@ module.exports = function(api)
         return {
             getGroup: function (groupId)
             {
-                return $http.get(API.url + '/groups/' + groupId).then(function(data){
+                return $http.get(API.url + '/groups/' + groupId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
              },
              getAllUsers: function(){
-                return $http.get(API.url + '/users').then(function(data){
+                return $http.get(API.url + '/users',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             getAllUsersOfOrganisation: function(orgId){
-                return $http.get(API.url + '/organization/users/' + orgId)
-                .then(function(data){
+                return $http.get(API.url + '/organization/users/' + orgId,
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             putUserToOrganisation: function(userId, organisationId){
-                return $http.put(API.url + '/users/' + userId, {organization:organisationId});
+                return $http.put(API.url + '/users/' + userId, {organization:organisationId}, 
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             pushUsersToGroup: function(groupId, userArray){
-                return $http.put(API.url + '/groups/' + groupId, {participants:userArray});
+                return $http.put(API.url + '/groups/' + groupId, {participants:userArray}, 
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             makeUserModerator: function(userId){
-                return $http.put(API.url + '/users/role/' + userId, {roles:'moderator'});
+                return $http.put(API.url + '/users/role/' + userId, {roles:'moderator'}, 
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             pushNewGroupName: function(groupId, newName, moderatorArray){
-                return $http.put(API.url + '/groups/' + groupId, {title:newName, moderators: moderatorArray});
+                return $http.put(API.url + '/groups/' + groupId, {title:newName, moderators: moderatorArray},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             }
             
         };
@@ -303,31 +354,84 @@ module.exports = function(api)
         {
         return {
             getLearningsOfOrganisation: function(orgId){
-                return $http.get(API.url + '/organization/' + orgId + '/leerlijn').then(function(data){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             getLearning: function(orgId, learningId){
-                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId).then(function(data){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId,
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             getLearningParticipant: function(orgId, participantId){
-                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/?participant=' + participantId).then(function(data){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/?participant=' + participantId,
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             putLearningParticipant: function(orgId, leerlijnId, niveauId, participantId, newAccomplished){
-                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant/' + participantId, {accomplished: newAccomplished});
+                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant/' + participantId, {accomplished: newAccomplished},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             postLearning: function(orgId, newTitle, newColor){
-                return $http.post(API.url + '/organization/' + orgId + '/leerlijn', {title:newTitle, color:newColor});
+                return $http.post(API.url + '/organization/' + orgId + '/leerlijn', {title:newTitle, color:newColor},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             editLearning: function(orgId, learningId, newTitle, newColor){
-                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId, {title:newTitle, color: newColor});
+                return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId, {title:newTitle, color: newColor},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             deleteLearning: function(organisationId, learningId){
-                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId, {});
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId, {},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
+            },
+            exportParticipantLearning: function(organisationId, participantId){
+                return $http.get(API.url + '/organization/' + organisationId + '/participant/' + participantId +'/export',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
+                    return data.data;
+                });
             }
         };
     }]);
@@ -336,7 +440,13 @@ module.exports = function(api)
         {
         return {
             getNiveausOfLearning: function(orgId, learningId){
-                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau').then(function(data){
+                return $http.get(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau',
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
@@ -346,7 +456,13 @@ module.exports = function(api)
                         title: newTitle, 
                         description: newDescription,
                         section: "test"
-                    });
+                    },
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             editNiveau: function(orgId, learningId, niveauId, newTitle, newDescription){
                 return $http.put(API.url + '/organization/' + orgId + '/leerlijn/' + learningId + '/niveau/' + niveauId, 
@@ -354,10 +470,22 @@ module.exports = function(api)
                         title: newTitle, 
                         description: newDescription
                         //section: newSection
-                    });
+                    },
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             },
             deleteNiveau: function(organisationId, learningId, niveauId){
-                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId + '/niveau/' + niveauId, {});
+                return $http.delete(API.url + '/organization/' + organisationId + '/leerlijn/' + learningId + '/niveau/' + niveauId, {},
+                {
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             }
         };
     }]);
@@ -367,12 +495,28 @@ module.exports = function(api)
         return {
             getCanvases: function ()
             {
-                return $http.get(API.url + '/canvas?orderBy=createdDate').then(function(data){
+                return $http.get(API.url + '/canvas?orderBy=createdDate',
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                }).then(function(data){
                     return data.data;
                 });
             },
             postCanvas: function(newName, type){
-                return $http.post(API.url + '/canvas', {title:newName, type:type});
+                return $http.post(API.url + '/canvas', {title:newName, type:type},
+                {
+                    username: 'terry',
+                    password: 'terry',
+                    "grant_type": "password",
+                    "client_id": API.clientId,
+                    "client_secret": API.clientSecret,
+                    headers: {'Authorization': 'Bearer ' + sessionStorage.access_token}
+                });
             }
         }
     }]);

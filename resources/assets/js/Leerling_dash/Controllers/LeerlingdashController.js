@@ -21,6 +21,16 @@ module.exports = function(leerlingDash)
             }).delay(1000);
         };
 
+        $scope.trustSrc = function(src)
+        {
+            return $sce.trustAsResourceUrl(src);
+        };
+
+
+        $scope.collapse = function(e) {
+            $('.'+e).slideToggle(100);
+        };
+
         if(typeof($routeParams.orgid) != "undefined" && typeof($routeParams.userid) != "undefined"){
 
             organisationId = $routeParams.orgid;
@@ -60,16 +70,6 @@ module.exports = function(leerlingDash)
             });
         }
 
-        $scope.trustSrc = function(src)
-        {
-            return $sce.trustAsResourceUrl(src);
-        };
-
-
-        $scope.collapse = function(e) {
-            $('.'+e).slideToggle(100);
-        };
-
 
         $scope.accomplished = function(leerlijnId, niveauId, newAccomplished){
             LearningFactory.putLearningParticipant(organisationId, leerlijnId, niveauId, userId, newAccomplished).then(function(data, status, headers, config){
@@ -94,8 +94,6 @@ module.exports = function(leerlingDash)
             });
         };
 
-        //TODO:
-        //API call to change or add a "toelichting" does not exist
         $scope.editAdditionFromNiveau = function(object, addition){
 
             if(object.toelichting.length){
@@ -111,5 +109,14 @@ module.exports = function(leerlingDash)
                 });
             });
         };
+
+        $scope.exportParticipantLearning = function(){
+            LearningFactory.exportParticipantLearning(organisationId, userId).then(function(data, status, headers, config)
+                {
+                    console.log(data);
+                    fancyAlert("Succes!", 'De toelichting is toegevoegd.');
+                });
+        };
+
     }]);
 };

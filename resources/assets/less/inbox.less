@@ -36,10 +36,61 @@
 	font-weight: bold;
 	color: black;
 }
+
 .leerlijnSelector{
 	height: 25px;
 	border-radius: 7px;
 	background: rgba(225, 227, 228, 0.3);	
 	border: 1px solid black;
 	font-weight: bold;
+}
+
+#search-label{
+	float: right;
+	font-weight: bold;
+}
+
+#name-label{
+	float: left;
+}
+
+#searchBox{
+	border-radius: 7px;
+	background: rgba(225, 227, 228, 0.3);	
+	border: 1px solid #e1e3e4;
+}
+
+.connectButton{
+	border-radius: 7px;
+	border: 1px solid #e1e3e4;
+	color: #798189;
+	background: rgba(225, 227, 228, 0.5);
+	font-weight: bold;
+}
+
+.popover{
+	max-width:400px !important;
+
+	i {
+		padding: 7px;
+		color: white;
+		position: absolute;
+		right: 0;
+		margin-right: -25px;
+		border-left: 1px solid #ccc;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		cursor: pointer;
+		box-shadow: 1px 2px 2px rgba(0,0,0,0.4);
+		max-width: 26px;
+
+		&.delete-object{
+			background: red;
+		}
+
+		&.edit-object{
+			background: orange;
+			margin-top:28px;
+		}
+	}
 }

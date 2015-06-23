@@ -176,10 +176,10 @@ module.exports = function(moderator)
         };
 
         $scope.deleteNiveau = function(niveauId, index){
-                NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
-                    $scope.niveaus.splice(index, 1);
-                    fancyAlert("Succes!", 'Niveau verwijderd');
-                });
+            NiveauFactory.deleteNiveau($routeParams.orgid, $routeParams.learningid, niveauId).then(function(data, status, headers, config){
+                $scope.niveaus.splice(index, 1);
+                fancyAlert("Succes!", 'Niveau verwijderd');
+            });
         };
 
         /* * MODERATOR GROUPS **/
