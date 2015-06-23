@@ -42,9 +42,9 @@ module.exports = function(admin)
             faClass: 'fa-briefcase'
         },
         {
-            showWhen: 'isModerator()',
-            href: '#/bucket',
-            text: 'Bucket',
+            showWhen: 'onlyModerator()',
+            href: '#/inbox',
+            text: 'Inbox',
             faClass: 'fa-inbox'
         },
         {

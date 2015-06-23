@@ -14,7 +14,7 @@
 		</div>
 		<!-- object table -->
 		<div id="objectTable" class="panel-style space">
-			<h3 class="heading-title">Inbox van {{selectedStudent}}</h3>
+			<h3 class="heading-title">Inbox van <a href="#/leerlingdash/{{organisation._id}}/{{selectedStudentId}}">{{selectedStudent}}</a></h3>
 			<span ng-if="fullInbox.length === 0">Deze gebruiker heeft geen objecten om te koppelen</span>			
 			<table datatable="" id="inboxTable" class="table simple	" ng-if="fullInbox.length !== 0">
 				<thead>
@@ -29,8 +29,68 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="object in fullInbox" id="{{object._id}}">
-						<td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td>
-						<td><span>{{object.toelichting[0].source}}</span></td>
+						<!-- <td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td> -->
+						<!-- leerbewijs -->
+						<td ng-switch on="object.type">
+                            <a href="" class="object-item" popover ng-switch-when="video">
+                            	<i class="fa fa-play"></i>
+                            	<div class="content hidden">
+                            		<video width="260" height="130" poster="" controls>
+                            			<source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}" />
+                            		</video>
+                            	</div>
+                            </a>
+                            <a href="" class="object-item" popover ng-switch-when="audio">
+                            	<i class="fa fa-music"></i>
+                            	<div class="content hidden" ng-hide>
+                            		<audio controls>
+                            			<source ng-src="{{ trustSrc(object.source) }}" type="{{ object.mimetype }}">
+                            			Your browser does not support the audio element.
+                        			</audio>
+                            	</div>
+                            </a>
+                            <a href="" class="object-item" popover ng-switch-when="text">
+                         		<i class="fa fa-file-text"></i>
+                            	<div class="content hidden" ng-hide>
+                        			<p>{{ object.source }}</p>
+                            	</div>
+                            </a>
+                        </td>
+						<!-- toelichting -->
+                        <td ng-switch on="object.toelichting[0].type">
+                            <a href="" class="object-item" popover ng-switch-when="video">
+                            	<i class="fa fa-play"></i>
+                            	<div class="content hidden">
+                            		<video width="260" height="130" poster="" controls>
+                            			<source ng-src="{{ trustSrc(object.toelichting[0].source) }}" type="{{ object.toelichting[0].mimetype }}" />
+                            		</video>
+                            	</div>
+                            </a>
+                            <a href="" class="object-item" popover ng-switch-when="audio">
+                            	<i class="fa fa-music"></i>
+                            	<div class="content hidden" ng-hide>
+                            		<audio controls>
+                            			<source ng-src="{{ trustSrc(object.toelichting[0].source) }}" type="{{ object.toelichting[0].mimetype }}">
+                            			Your browser does not support the audio element.
+                        			</audio>
+                            	</div>
+                            </a>
+                            <a href="" class="object-item" popover ng-switch-when="text">
+                         		<i class="fa fa-file-text"></i>
+                            	<div class="content hidden" ng-hide>
+                        			<p>{{ object.toelichting[0].source }}</p>
+                            	</div>
+                            </a>
+                            <span ng-switch-default>
+                            	Dit leerbewijs heeft geen toelichting
+                            </span>
+                        </td>
+
+
+
+
+
+						<!-- <td><span ng-if="object.toelichting[0].type == 'text'">{{object.toelichting[0].source}}</span><span ng-if="object.toelichting[0].type != 'text'"><a href="{{object.toelichting[0].source}}" target="_blank">{{object.toelichting[0].type}}<a></span></td> -->
 						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
 						<td>{{object.createdDate | date: 'd-M-y, HH:mm'}}</td>
 						<td><button ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Object koppelen</button></td>
@@ -54,7 +114,7 @@
 						</br>
 						<span>Selecteer een niveau:</span>
 						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
-							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" />{{niveau.title}} - {{niveau.description}}
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><p style="white-space: pre;">{{niveau.title}} - {{niveau.newDescription}}</p>
 						</div>
 					  </div>
 					  <div class="modal-footer">
