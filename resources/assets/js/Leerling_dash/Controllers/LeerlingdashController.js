@@ -50,6 +50,8 @@ module.exports = function(leerlingDash)
                 }
 
                 $scope.learningsParticipant = data2;
+
+                console.log(data2);
             });
 
             UserService.getSpecificUserInfo(userId).then(function(data, status, headers, config){
