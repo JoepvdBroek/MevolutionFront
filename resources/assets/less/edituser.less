@@ -27,12 +27,29 @@ body{
     margin-left: 10px;
 }
 
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
 /*maakt de echte upload knop onzichtbaar*/
-#photo-file {
+/*#photo-file {
     height: 0px;
     width:0px; 
     overflow:hidden;
-}
+}*/
 
 #changePasswordLink {
 	float: right;

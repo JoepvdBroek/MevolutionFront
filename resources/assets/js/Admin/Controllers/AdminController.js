@@ -59,6 +59,14 @@ module.exports = function(admin)
                 });
         }
 
+        
+        function getOrganisation(orgId){
+            OrganisationService.getOrganisation(orgId).then(function(data, status, headers, config){
+                $scope.organisationName = data[0].name;
+               $scope.organisation = data[0];
+           });
+        }
+
         /* *  ADMIN DASH ORGANISATIONS  **/
         var organisations = [];
 
@@ -538,13 +546,6 @@ module.exports = function(admin)
                 $scope.organisationId = $routeParams.orgid;
                 getNiveaus();
                 getOrganisation($scope.organisationId)
-            }
-
-            function getOrganisation(orgId){
-                OrganisationService.getOrganisation(orgId).then(function(data, status, headers, config){
-                    $scope.organisationName = data[0].name;
-                   $scope.organisation = data[0];
-               });
             }
 
             $scope.addNiveau = function(newTitle, newDescription){
