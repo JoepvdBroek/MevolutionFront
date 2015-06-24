@@ -4,7 +4,7 @@ module.exports = function(api)
 {
     api.constant('API',
     {
-        url: 'http://merijncelie.nl:3000/api',
+        url: 'http://api.mevolution.net/api',
         key: 'EP3qxDM91vOA4FC3i0ERa7SE72le8L32',
         clientId: 'WebV1',
         clientSecret: 'Web123456'
@@ -576,9 +576,8 @@ module.exports = function(api)
                 return $http.post(API.url + '/organization/'+ organizationId +'/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant/'+ participantId +'/object',
                     {
                         objectId: objectId
-                    }).then(function(data){
-                    return data.data;
-                });
+                    });
+                
             },
             makeParticipant: function(organizationId, leerlijnId, niveauId, studentId){
                 return $http.post(API.url + '/organization/'+ organizationId +'/leerlijn/'+ leerlijnId +'/niveau/'+ niveauId +'/participant', 

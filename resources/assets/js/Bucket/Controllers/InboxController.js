@@ -99,13 +99,20 @@ module.exports = function(inbox)
         }
 
         var combineObjectLeerlijn = function(leerlijn, niveau, participant){
-            BucketService.addObject($scope.organisation._id, leerlijn._id, niveau._id, participant, selectedObject._id).then(function(data){
-                {
-                    console.log(data);
-                    alert("toegevoegd");
-                    getInbox(selectedStudent);
 
+            BucketService.addObject($scope.organisation._id, leerlijn._id, niveau._id, participant, selectedObject._id).success(function(data){          
+                //console.log(data);
+                getInbox(selectedStudent);
+                
+            }).error(function(data, status){
+                console.log(data);
+                console.log(status);
+                if(data.msg == "Niveau is already accomplished"){
+                    alert("Dit niveau is al afgerond. Kies een andere.");
+                } else {
+                    alert("Het is niet gelukt. Het niveau is mogelijk al afgerond.")
                 }
+                
             });
         }
 
