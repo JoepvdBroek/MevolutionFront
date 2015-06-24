@@ -20,8 +20,14 @@ module.exports = function(admin)
         [{
             showWhen: 'isAuthenticated()',
             href: '#/timeline',
-            text: 'Timeline',
+            text: 'Tijdlijn',
             faClass: 'fa-dashboard'
+        },
+        {
+            showWhen: 'isAuthenticated() && !isAdmin()',
+            href: '#/leerlingdash',
+            text: 'Voortgang',
+            faClass: 'fa-server'
         },
         {
             showWhen: 'isAdmin()',
