@@ -129,7 +129,7 @@
 						</br>
 						<span>Selecteer een niveau:</span>
 						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
-							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><b> {{niveau.title}}</b><p style="white-space: pre;">{{niveau.newDescription}}</p><hr>
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><b> {{niveau.title}}</b><p style="white-space: pre; word-wrap:break-word;">{{niveau.newDescription}}</p><hr>
 						</div>
 					  </div>
 					  <div class="modal-footer">
