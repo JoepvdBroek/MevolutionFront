@@ -18,7 +18,7 @@ Important folders and files
 |- assets	Compiled assets (for production)
 |- dev		Compiled assets (for development)
 |
-+ resources	Resources
++ resources	Resources, main source location (AngularJS)
 |
 + storage	Storage
 |
