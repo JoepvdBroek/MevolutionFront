@@ -10,7 +10,7 @@
 		</div>
 		<!-- object table -->
 		<div id="objectTable" class="panel-style space">
-			<h3 class="heading-title" id="name-label">Inbox van <a href="#/leerlingdash/{{organisation._id}}/{{selectedStudentId}}">{{selectedStudent}}</a></h3><label id="search-label">Search: <input ng-model="searchText" id="searchBox"></label>
+			<h3 class="heading-title" id="name-label">Inbox van <a href="#/leerlingdash/{{organisation._id}}/{{selectedStudentId}}">{{selectedStudent}}</a></h3><label id="search-label">Zoeken: <input ng-model="searchText" id="searchBox"></label>
 			<br>
 			<br>
 			<span ng-if="fullInbox.length === 0 && selectedStudent !== ''">Deze gebruiker heeft geen leerbewijzen om te koppelen</span>			
@@ -117,7 +117,7 @@
 						</br>
 						<span>Selecteer een niveau:</span>
 						<div ng-repeat="niveau in selectedLeerlijn.niveaux">
-							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><b> {{niveau.title}}</b><p style="white-space: pre;">{{niveau.newDescription}}</p><hr>
+							<input type="radio" ng-value="niveau" ng-model="$parent.niveau" /><b> {{niveau.title}}</b><p style="white-space: pre; word-wrap:break-word; max-width: 550px">{{niveau.newDescription}}</p><hr>
 						</div>
 					  </div>
 					  <div class="modal-footer">
