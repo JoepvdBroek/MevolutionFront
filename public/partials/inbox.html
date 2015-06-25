@@ -1,7 +1,3 @@
-<link rel="stylesheet" type="text/css" href="dev/css/admin_dash.css" />
-<!-- Bootstrap core CSS -->
-<!-- <link href="dev/css/bootstrap.min.css" rel="stylesheet"> -->
-
 <div id="wrap" ng-controller="InboxController">
 	<div class="container">
 		<!-- dropdown group and student selector -->
@@ -31,8 +27,6 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="object in fullInbox | filter:searchText" id="{{object._id}}">
-						<!-- <td><a href="{{object.source}}" target="_blank">{{object.type}}</a></td> -->
-						<!-- leerbewijs -->
 						<td ng-switch on="object.type">
                             <a href="" class="object-item" popover ng-switch-when="video" ng-click="currentObject(object, $event)">
                             	<i class="fa fa-play"></i>
@@ -100,12 +94,6 @@
                             	Dit leerbewijs heeft geen toelichting
                             </span>
                         </td>
-
-
-
-
-
-						<!-- <td><span ng-if="object.toelichting[0].type == 'text'">{{object.toelichting[0].source}}</span><span ng-if="object.toelichting[0].type != 'text'"><a href="{{object.toelichting[0].source}}" target="_blank">{{object.toelichting[0].type}}<a></span></td> -->
 						<td>{{object.owner[0].firstName}} {{object.owner[0].middleName}} {{object.owner[0].surName}}</td>
 						<td>{{object.createdDate | date: 'd-M-y, HH:mm'}}</td>
 						<td><button class="connectButton" ng-click="getPopUp(object, student._id)" data-toggle="modal" data-target="#newGroup">Leerbewijs koppelen</button></td>
